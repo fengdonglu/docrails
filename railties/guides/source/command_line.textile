@@ -1,10 +1,10 @@
-h2. A Guide to The Rails Command Line
+h2. Rails命令行指南
 
 Rails comes with every command line tool you'll need to
 
-* Create a Rails application
-* Generate models, controllers, database migrations, and unit tests
-* Start a development server
+* 创建Rails应用程序
+* 产生模型,控制器,数据库迁移,以及单元测试
+* 启动开发服务器
 * Experiment with objects through an interactive shell
 * Profile and benchmark your new creation
 
