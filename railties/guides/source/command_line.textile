@@ -14,7 +14,7 @@ NOTE: This tutorial assumes you have basic Rails knowledge from reading the "Get
 
 WARNING. This Guide is based on Rails 3.0. Some of the code shown here will not work in earlier versions of Rails.
 
-h3. Command Line Basics
+h3. 命令行基础
 
 There are a few commands that are absolutely critical to your everyday usage of Rails. In the order of how much you'll probably use them are:
 
@@ -25,13 +25,13 @@ There are a few commands that are absolutely critical to your everyday usage of 
 * <tt>rails dbconsole</tt>
 * <tt>rails new app_name</tt>
 
-Let's create a simple Rails application to step through each of these commands in context.
+让我们创建一个简单的应用程序，学习每条命令的含义。
 
 h4. +rails new+
 
-The first thing we'll want to do is create a new Rails application by running the +rails new+ command after installing Rails.
+在安装了Rails后，我们首先运行 +rails new+ 命令，创建一个简单的应用程序。
 
-WARNING: You can install the rails gem by typing +gem install rails+, if you don't have it already. Follow the instructions in the "Rails 3 Release Notes":/3_0_release_notes.html
+警告: You can install the rails gem by typing +gem install rails+, if you don't have it already. Follow the instructions in the "Rails 3 Release Notes":/3_0_release_notes.html
 
 <shell>
 $ rails new commandsapp
