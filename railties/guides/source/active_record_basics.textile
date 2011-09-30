@@ -1,6 +1,6 @@
 h2. Active Record基础
 
-本指南是Active Record的介绍。我们希望你通过本指南学到：
+本指南是Active Record的介绍。我们希望你通过本指南可以学习到：
 
 * 什么是ORM和Active Record，它们在Rails的作用
 * Active Record在MVC模式中的作用
@@ -12,7 +12,7 @@ endprologue.
 
 h3. 什么是ActiveRecord?
 
-Active Record是"MVC"中的M:getting_started.html#the-mvc-architecture - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
+Active Record是"MVC"中的M： getting_started.html#the-mvc-architecture - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
 
 h4. The Active Record模式
 
@@ -51,24 +51,24 @@ h4. 名称转换
 |Person        |people|
 
 
-h4. Schema Conventions
+h4. 模式转换
 
-Active Record使用名称转换for the columns in database tables, depending on the purpose of these columns.
+Active Record使用名称转换for the columns in database tables，基于这些列的意图。
 
-* *Foreign keys* - These fields should be named following the pattern table_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.
-* *Primary keys* - By default, Active Record will use an integer column named "id" as the table's primary key. When using "Rails Migrations":migrations.html to create your tables, this column will be automatically created.
+* *外键* - These fields should be named following the pattern table_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.
+* *主键* - 默认情况下，ActiveRecord会使用名为"id"的整数字段作为表的主键。当使用"Rails Migrations":migrations.html to create your tables, this column will be automatically created.
 
-There are also some optional column names that will create additional features to Active Record instances:
+另外还有一些可选的列名可以用于描述ActiveRecord实例的特性：
 
-* *created_at* - Automatically gets set to the current date and time when the record is first created.
-* *created_on* - Automatically gets set to the current date when the record is first created.
-* *updated_at* - Automatically gets set to the current date and time whenever the record is updated.
-* *updated_on* - Automatically gets set to the current date whenever the record is updated.
+* *created_at* - 自动设为记录的创建日期和时间
+* *created_on* - 自动设为记录的创建日期
+* *updated_at* - 自动设为记录的更新日期和时间
+* *updated_on* - 自动设为记录的更新日期
 * *lock_version* - Adds "optimistic locking":http://api.rubyonrails.org/classes/ActiveRecord/Locking.html to a model.
 * *type* - Specifies that the model uses "Single Table Inheritance":http://api.rubyonrails.org/classes/ActiveRecord/Base.html
-* *(table_name)_count* - Used to cache the number of belonging objects on associations. For example, a +comments_count+ column in a +Post+ class that has many instances of +Comment+ will cache the number of existent comments for each post.
+* *(table_name)_count* - Used to cache the number of belonging objects on associations. 例如, a +comments_count+ column in a +Post+ class that has many instances of +Comment+ will cache the number of existent comments for each post.
 
-NOTE: While these column names are optional they are in fact reserved by Active Record. Steer clear of reserved keywords unless you want the extra functionality. For example, "type" is a reserved keyword used to designate a table using Single Table Inheritance. If you are not using STI, try an analogous keyword like "context", that may still accurately describe the data you are modeling.
+NOTE: While these column names are optional they are in fact reserved by Active Record. Steer clear of reserved keywords unless you want the extra functionality. For example, "type" is a reserved keyword used to designate a table using Single Table Inheritance. 如果你不使用STI, try an analogous keyword like "context", that may still accurately describe the data you are modeling.
 
 h3. 创建ActiveRecord模型
 
@@ -100,7 +100,7 @@ h3. 重载名称转换
 
 What if you need to follow a different naming convention or need to use your Rails application with a legacy database? No problem, you can easily override the default conventions.
 
-You can use the +ActiveRecord::Base.set_table_name+ method to specify the table name that should be used:
+你可以使用 +ActiveRecord::Base.set_table_name+ 方法指定要使用的表名：
 
 <ruby>
 class Product < ActiveRecord::Base
