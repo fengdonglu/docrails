@@ -1,12 +1,12 @@
-h2. Action View Overview
+h2. Action View概览
 
-In this guide you will learn:
+在本指南中，你将会学习到：
 
-* What Action View is, and how to use it with Rails
-* How to use Action View outside of Rails
-* How best to use templates, partials, and layouts
+* Action View是什么，怎么在Rails中使用它
+* 怎么在Rails之外使用Action View
+* 怎么更好地使用模板, partials, and layouts
 * What helpers are provided by Action View, and how to make your own
-* How to use localized views
+* 怎么使用本地化视图
 
 endprologue.
 
