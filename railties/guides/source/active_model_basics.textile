@@ -1,18 +1,18 @@
-h2. Active Model Basics
+h2. ActiveModel基础
 
-This guide should provide you with all you need to get started using model classes. Active Model allow for Action Pack helpers to interact with non-ActiveRecord models. Active Model also helps building custom ORMs for use outside of the Rails framework.
+这份指南提供你开始使用模型类所需要的所有东西。ActiveModel允许Action Pack helpers与非ActiveRecord模型交互. ActiveModel还帮助用户在Rails框架之外，建立自己的ORMs。
 
 endprologue.
 
-WARNING. This Guide is based on Rails 3.0. Some of the code shown here will not work in earlier versions of Rails.
+WARNING. 这份指南基于Rails 3.0。这里展示的一些代码无法用于早期版本的Rails。
 
-h3. Introduction
+h3. 介绍
 
-Active Model is a library containing various modules used in developing frameworks that need to interact with the Rails Action Pack library. Active Model provides a known set of interfaces for usage in classes. Some of modules are explained below -  
+Active Model是一个库，包括了开发框架过程中使用的几个模块，需要与ActionPack库交互。Active Model提供了a known set of interfaces for usage in classes. 下面讨论了一些模块 -  
 
 h4. AttributeMethods
 
-AttributeMethods module can add custom prefixes and suffixes on methods of a class. It is used by defining the prefixes and suffixes, which methods on the object will use them.
+AttributeMethods模块可以在类中加入加入用户化的前后缀方法。It is used by defining the prefixes and suffixes, which methods on the object will use them.
 
 <ruby>
 class Person
@@ -43,7 +43,7 @@ person.age_highest?  # false
 
 </ruby>
 
-h4. Callbacks
+h4. 回调
 
 Callbacks gives Active Record style callbacks. This provides the ability to define the callbacks and those will run at appropriate time. After defining a callbacks you can wrap with before, after and around custom methods.
 
@@ -148,7 +148,7 @@ person.changed_attributes #=> {"first_name" => "First Name Changed"}
 person.changes #=> {"first_name" => ["First Name","First Name Changed"]}
 </ruby>
 
-h5. Attribute based accessor methods
+h5. 基于属性的访问方法
 
 Track whether the particular attribute has been changed or not.
 
@@ -177,7 +177,7 @@ person.first_name_change #=> ["First Name", "First Name 1"]
 person.last_name_change #=> nil
 </ruby>
 
-h4. Validations
+h4. 校验
 
 Validations module adds the ability to class objects to validate them in Active Record style.
 
