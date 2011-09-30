@@ -150,7 +150,7 @@ If none is found you get an error message.
 
 INFO: The examples above put files under the application's +lib+ because said directory belongs to +$LOAD_PATH+.
 
-h3. Customizing Your Workflow
+h3. 定制你的工作流
 
 Rails own generators are flexible enough to let you customize scaffolding. They can be configured in +config/application.rb+, these are some defaults:
 
@@ -162,7 +162,7 @@ config.generators do |g|
 end
 </ruby>
 
-Before we customize our workflow, let's first see what our scaffold looks like:
+在我们定制工作流之前，首先来看看我们的脚手架:
 
 <shell>
 $ rails generate scaffold User name:string
@@ -192,7 +192,7 @@ $ rails generate scaffold User name:string
       create    app/assets/stylesheets/scaffold.css
 </shell>
 
-Looking at this output, it's easy to understand how generators work in Rails 3.0 and above. The scaffold generator doesn't actually generate anything, it just invokes others to do the work. This allows us to add/replace/remove any of those invocations. For instance, the scaffold generator invokes the scaffold_controller generator, which invokes erb, test_unit and helper generators. Since each generator has a single responsibility, they are easy to reuse, avoiding code duplication.
+查看输出，很容易理解generators在Rails 3.0和以上版本是如何工作的。The scaffold generator doesn't actually generate anything, it just invokes others to do the work. This allows us to add/replace/remove any of those invocations. For instance, the scaffold generator invokes the scaffold_controller generator, which invokes erb, test_unit and helper generators. Since each generator has a single responsibility, they are easy to reuse, avoiding code duplication.
 
 Our first customization on the workflow will be to stop generating stylesheets and test fixtures for scaffolds. We can achieve that by changing our configuration to the following:
 
@@ -365,7 +365,7 @@ $ rails generate scaffold Comment body:text
 
 Fallbacks allow your generators to have a single responsibility, increasing code reuse and reducing the amount of duplication.
 
-h3. Application Templates
+h3. 应用程序模板
 
 Now that you've seen how generators can be used _inside_ an application, did you know they can also be used to _generate_ applications too? This kind of generator is referred as a "template".
 
@@ -431,7 +431,7 @@ gem("rspec", :group => "test", :version => "2.1.0")
 gem("devise", "1.1.5")
 </ruby>
 
-Available options are:
+可用的选项:
 
 * +:group+ - The group in the +Gemfile+ where this gem should go.
 * +:version+ - The version string of the gem you want to use. Can also be specified as the second argument to the method.
@@ -495,7 +495,7 @@ end
 
 h4. +git+
 
-Runs the specified git command:
+运行 git 命令:
 
 <ruby>
 git :init
@@ -540,7 +540,7 @@ end
 
 h4. +rakefile+
 
-Creates a Rake file in the +lib/tasks+ directory of the application.
+在应用程序的 +lib/tasks+ 目录中创建 Rake 文件。
 
 <ruby>
 rakefile("test.rake", 'hello there')
