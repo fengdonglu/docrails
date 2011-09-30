@@ -24,13 +24,13 @@ Object-Relational Mapping，通常缩写成ORM, 是用来将应用程序中丰�
 
 h4. 作为ORM框架的ActiveRecord
 
-ActiveRecord给我们一些机制, 其中最重要的能力是：
+ActiveRecord给了我们一些机制, 其中最重要的功能是：
 
 * Represent models和其中的数据
 * Represent associations between these models
 * Represent inheritance hierarchies through related models
-* Validate models before they get persisted to the database
-* Perform database operations in an object-oriented fashion.
+* 在保存至数据库前校验模型
+* 以面向对象的风格实现数据库操作
 
 h3. Convention over Configuration in Active Record
 
@@ -43,7 +43,7 @@ h4. 名称转换
 * 数据库表 - Plural with underscores separating words (e.g., book_clubs)
 * 模型类 - Singular with the first letter of each word capitalized (e.g., BookClub)
 
-|_.Model / Class |_.Table / Schema |
+|_.模型 / 类 |_.表 / 模式 |
 |Post          |posts|
 |LineItem      |line_items|
 |Deer          |deer|
@@ -108,7 +108,7 @@ class Product < ActiveRecord::Base
 end
 </ruby>
 
-If you do so, you will have to define manually the class name that is hosting the fixtures (class_name.yml) using the +set_fixture_class+ method in your test definition:
+If you do so, 你必须手工地定义类名that is hosting the fixtures (class_name.yml) using the +set_fixture_class+ method in your test definition:
 
 <ruby>
 class FunnyJoke < ActiveSupport::TestCase
@@ -134,13 +134,13 @@ h4. 创建
 
 Active Record objects can be created from a hash, a block or have its attributes manually set after creation. The _new_ method will return a new object while _create_ will return the object and save it to the database.
 
-For example, given a model +User+ with attributes of +name+ and +occupation+, the _create_ method call will create and save a new record into the database:
+例如, given a model +User+ with attributes of +name+ and +occupation+, the _create_ method call will create and save a new record into the database:
 
 <ruby>
   user = User.create(:name => "David", :occupation => "Code Artist")
 </ruby>
 
-Using the _new_ method, an object can be created without being saved:
+使用 _new_ 方法，对象可以不用保存而先被创建出来：
 
 <ruby>
   user = User.new
@@ -150,7 +150,7 @@ Using the _new_ method, an object can be created without being saved:
 
 A call to _user.save_ will commit the record to the database.
 
-Finally, passing a block to either create or new will return a new User object:
+最后， passing a block to either create or new will return a new User object:
 
 <ruby>
   user = User.new do |u|
@@ -161,15 +161,15 @@ Finally, passing a block to either create or new will return a new User object:
 
 h4. 读取
 
-Active Record provides a rich API for accessing data within a database. Below are a few examples of different data access methods provided by Active Record.
+ActiveRecord提供了丰富的API在数据库中访问数据。以下是由Active Record提供的不同的数据库访问方法的一些例子。
 
 <ruby>
-  # return all records
+  # 返回所有的记录
   users = User.all
 </ruby>
 
 <ruby>
-  # return the first record
+  # 返回首条记录
   user = User.first
 </ruby>
 
@@ -210,7 +210,7 @@ Active Record允许你在将模型写入数据库前进行状态校验。There a
 
 h3. 回调
 
-ActiveRecord回调允许你allow you to attach code to certain events in the life-cycle of your models. This enables you to add behavior to your models by transparently executing code when those events occur, like when you create a new record, update it, destroy it and so on. You can learn more about callbacks in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#callbacks-overview.
+ActiveRecord回调允许你to attach code to certain events in the life-cycle of your models. This enables you to add behavior to your models by transparently executing code when those events occur, like when you create a new record, update it, destroy it and so on. You can learn more about callbacks in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#callbacks-overview.
 
 h3. 迁移
 
