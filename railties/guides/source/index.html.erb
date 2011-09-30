@@ -1,28 +1,28 @@
 <% content_for :page_title do %>
-Ruby on Rails Guides
+Ruby on Rails 指南
 <% end %>
 
 <% content_for :header_section do %>
-<h2>Ruby on Rails Guides (<%= ENV['RAILS_VERSION'] || 'edge' %>)</h2>
+<h2>Ruby on Rails 指南 (<%= ENV['RAILS_VERSION'] || 'edge' %>)</h2>
 
 <% if @edge %>
 <p>
-  These are <b>Edge Guides</b>, based on the current
-  <a href="https://github.com/rails/rails/tree/master">master branch</a>.
+  These are <b>Edge Guides</b>, 基于当前的
+  <a href="https://github.com/rails/rails/tree/master">主分支</a>。
 </p>
 <p>
-  If you are looking for the ones for the stable version please check
-  <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a> instead.
+  如果你需要稳定版本，请到这里：
+  <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a> 查看。
 </p>
 <% else %>
 <p>
-  These are the new guides for Rails 3. The guides for Rails 2.3 are still available
+  这里是 Rails 3 的新指南。  Rails 2.3 在这里
   at <a href="http://guides.rubyonrails.org/v2.3.11/">http://guides.rubyonrails.org/v2.3.11/</a>.
 </p>
 <% end %>
 <p>
-  These guides are designed to make you immediately productive with Rails,
-  and to help you understand how all of the pieces fit together.
+  这份指南用于让你立即投入 Rails 的开发,
+  并帮助你了解各部分的组成原理。
 </p>
 
 <% end %>
