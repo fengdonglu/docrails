@@ -55,7 +55,7 @@ Rails 3.1 ships with a +rails plugin new+ command which creates a
 $ rails plugin --help
 </shell>
 
-h3. Testing your newly generated plugin
+h3. 测试你新产生的插件
 
 You can navigate to the directory that contains the plugin, run the +bundle install+ command
  and run the one generated test using the +rake+ command.
