@@ -1,4 +1,4 @@
-h2. Active Resource Basics
+h2. Active Resource基础
 
 This guide should provide you with all you need to get started managing the connection between business objects and RESTful web services. It implements a way to map web-based resources to local objects with CRUD semantics.
 
@@ -6,13 +6,13 @@ endprologue.
 
 WARNING. This Guide is based on Rails 3.0. Some of the code shown here will not work in earlier versions of Rails.
 
-h3. Introduction
+h3. 介绍
 
-Active Resource allows you to connect with RESTful web services. So, in Rails, Resource classes inherited from +ActiveResource::Base+ and live in  +app/models+.
+Active Resource用于连接 RESTful 的web服务。 所以在 Rails 中，资源类从 +ActiveResource::Base+ 继承and live in  +app/models+.
 
-h3. Configuration and Usage
+h3. 配置和使用方法
 
-Putting Active Resource to use is very similar to Active Record.  It's as simple as creating a model class
+使用Active Resource和Active Record类似。和创建一个模型类一样简单
 that inherits from ActiveResource::Base and providing a <tt>site</tt> class variable to it:
 
 <ruby>
@@ -24,7 +24,7 @@ end
 Now the Person class is REST enabled and can invoke REST services very similarly to how Active Record invokes
 life cycle methods that operate against a persistent store.
 
-h3. Reading and Writing Data
+h3. 读写数据
 
 Active Resource make request over HTTP using a standard JSON format. It mirrors the RESTful routing built into Action Controller but will also work with any other REST service that properly implements the protocol.
 
@@ -41,7 +41,7 @@ Person.exists?(1)  # => true
 Person.all
 </ruby>
 
-h4. Create
+h4. 创建
 
 Creating a new resource submits the JSON form of the resource as the body of the request with HTTP POST method and parse the response into Active Resource object.
 
@@ -50,7 +50,7 @@ person = Person.create(:name => 'Vishnu')
 person.id  # => 1
 </ruby>
 
-h4. Update
+h4. 更新
 
 To update an existing resource, 'save' method is used. This method make a HTTP PUT request in JSON format.
 
@@ -60,7 +60,7 @@ person.name = 'Atrai'
 person.save
 </ruby>
 
-h4. Delete
+h4. 删除
 
 'destroy' method makes a HTTP DELETE request for an existing resource in JSON format to delete that resource.
 
