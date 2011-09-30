@@ -620,7 +620,7 @@ end
 
 h3. Schema Dumping and You
 
-h4. What are Schema Files for?
+h4. 模式文件有啥用?
 
 Migrations, mighty as they may be, are not the authoritative source for your database schema. That role falls to either +db/schema.rb+ or an SQL file which Active Record generates by examining the database. They are not designed to be edited, they just represent the current state of the database.
 
@@ -630,9 +630,9 @@ For example, this is how the test database is created: the current development d
 
 Schema files are also useful if you want a quick look at what attributes an Active Record object has. This information is not in the model's code and is frequently spread across several migrations but is all summed up in the schema file. The "annotate_models":http://agilewebdevelopment.com/plugins/annotate_models plugin, which automatically adds (and updates) comments at the top of each model summarizing the schema, may also be of interest.
 
-h4. Types of Schema Dumps
+h4. 模式导出的种类
 
-There are two ways to dump the schema. This is set in +config/application.rb+ by the +config.active_record.schema_format+ setting, which may be either +:sql+ or +:ruby+.
+有两种方法导出模式。 This is set in +config/application.rb+ by the +config.active_record.schema_format+ setting, which may be either +:sql+ or +:ruby+.
 
 If +:ruby+ is selected then the schema is stored in +db/schema.rb+. If you look at this file you'll find that it looks an awful lot like one very big migration:
 
