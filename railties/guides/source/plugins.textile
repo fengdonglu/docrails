@@ -4,7 +4,7 @@ h2. Rails 插件创建基础
 
 * a way for developers to share bleeding-edge ideas without hurting the stable code base
 * a segmented architecture so that units of code can be fixed or updated on their own release schedule
-* 解放了核心开发者的途径，使他们可以不在核心中包括每个超酷的特性
+* 解放了核心开发者的途径，使他们可以不必在核心中包括每个超酷的特性
 
 阅读本指南后，你将会熟悉：
 
@@ -108,7 +108,7 @@ module Yaffle
 end
 </ruby>
 
-Finally, create the +core_ext.rb+ file and add the +to_squawk+ method:
+最后，创建 +core_ext.rb+ 文件并add the +to_squawk+ method:
 
 <ruby>
 # yaffle/lib/yaffle/core_ext.rb
