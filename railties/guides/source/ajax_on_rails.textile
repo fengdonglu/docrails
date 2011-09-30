@@ -2,13 +2,13 @@ h2. AJAX on Rails
 
 This guide covers the built-in Ajax/JavaScript functionality of Rails (and more); it will enable you to create rich and dynamic AJAX applications with ease! We will cover the following topics:
 
-* Quick introduction to AJAX and related technologies
+* AJAX的快速介绍和相关技术
 * Handling JavaScript the Rails way: Rails helpers, Prototype and script.aculo.us
 * Testing JavaScript functionality
 
 endprologue.
 
-h3. Hello AJAX - a Quick Intro
+h3. Hello AJAX - 一份快速介绍
 
 You'll need the basics of DOM, HTTP requests and other topics discussed here to really understand Ajax on Rails.
 
@@ -65,7 +65,7 @@ link_to_remote "Add to cart",
   :update => { :success => "cart", :failure => "error" }
 </ruby>
 
-If the server returns 200, the output of the above example is equivalent to our first, simple one. However, in case of error, the element with the DOM id +error+ is updated rather than the +cart+ element.
+如果服务器返回 200, the output of the above example is equivalent to our first, simple one. However, in case of error, the element with the DOM id +error+ is updated rather than the +cart+ element.
 
 ** *position* By default (i.e. when not specifying this option, like in the examples before) the response is injected into the element with the specified DOM id, replacing the original content of the element (if there was any). You might want to alter this behavior by keeping the original content - the only question is where to place the new content? This can specified by the +position+ parameter, with four possibilities:
 *** +:before+ Inserts the response text just before the target element. More precisely, it creates a text node from the response and inserts it as the left sibling of the target element.
@@ -73,7 +73,7 @@ If the server returns 200, the output of the above example is equivalent to our 
 *** +:top+ Inserts the text into the target element, before it's original content. If the target element was empty, this is equivalent with not specifying +:position+ at all.
 *** +:bottom+ The counterpart of +:top+: the response is inserted after the target element's original content.
 
-A typical example of using +:bottom+ is inserting a new &lt;li&gt; element into an existing list:
+使用 +:bottom+ 的典型例子就是在已存在的列表中插入一个新的 &lt;li&gt; 元素：
 
 <ruby>
 link_to_remote "Add new item",
