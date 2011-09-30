@@ -1,4 +1,4 @@
-h2. Action Mailer Basics
+h2. Action Mailer基础
 
 This guide should provide you with all you need to get started in sending and receiving emails from and to your application, and many internals of Action Mailer. It also covers how to test your mailers.
 
@@ -10,7 +10,7 @@ h3. Introduction
 
 Action Mailer allows you to send emails from your application using a mailer model and views. So, in Rails, emails are used by creating mailers that inherit from +ActionMailer::Base+ and live in +app/mailers+. Those mailers have associated views that appear alongside controller views in +app/views+.
 
-h3. Sending Emails
+h3. 发送电子邮件
 
 This section will provide a step-by-step guide to creating a mailer and its views.
 
