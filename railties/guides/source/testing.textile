@@ -1,4 +1,4 @@
-h2. A Guide to Testing Rails Applications
+h2. 测试Rails应用程序指南
 
 This guide covers built-in mechanisms offered by Rails to test your application. By referring to this guide, you will be able to:
 
@@ -16,13 +16,13 @@ h3. Why Write Tests for your Rails Applications?
 * By simply running your Rails tests you can ensure your code adheres to the desired functionality even after some major code refactoring.
 * Rails tests can also simulate browser requests and thus you can test your application's response without having to test it through your browser.
 
-h3. Introduction to Testing
+h3. 介绍测试
 
 Testing support was woven into the Rails fabric from the beginning. It wasn't an "oh! let's bolt on support for running tests because they're new and cool" epiphany. Just about every Rails application interacts heavily with a database - and, as a result, your tests will need a database to interact with as well. To write efficient tests, you'll need to understand how to set up this database and populate it with sample data.
 
-h4. The Three Environments
+h4. 三种环境
 
-Every Rails application you build has 3 sides: a side for production, a side for development, and a side for testing.
+在每个Rails应用程序中，你都建立了三种环境：生产、开发、测试。
 
 One place you'll find this distinction is in the +config/database.yml+ file. This YAML configuration file has 3 different sections defining 3 unique database setups:
 
