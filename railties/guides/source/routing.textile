@@ -1,8 +1,8 @@
-h2. Rails Routing from the Outside In
+h2. Rails 路由深入浅出
 
-This guide covers the user-facing features of Rails routing. By referring to this guide, you will be able to:
+本指南包括了the user-facing features of Rails routing. By referring to this guide, you will be able to:
 
-* Understand the code in +routes.rb+
+* 理解 +routes.rb+ 中的代码
 * Construct your own routes, using either the preferred resourceful style or the <tt>match</tt> method
 * Identify what parameters to expect an action to receive
 * Automatically create paths and URLs using route helpers
@@ -14,15 +14,15 @@ h3. The Purpose of the Rails Router
 
 The Rails router recognizes URLs and dispatches them to a controller's action. It can also generate paths and URLs, avoiding the need to hardcode strings in your views.
 
-h4. Connecting URLs to Code
+h4. 把 URLs 连接至代码
 
-When your Rails application receives an incoming request
+当你的应用程序接收到一个请求
 
 <plain>
 GET /patients/17
 </plain>
 
-it asks the router to match it to a controller action. If the first matching route is
+它会要求路由器匹配至控制器action。如果第一条匹配的路由是
 
 <ruby>
 match "/patients/:id" => "patients#show"
