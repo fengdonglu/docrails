@@ -1,75 +1,53 @@
-== Welcome to Rails
+== 欢迎使用 Rails
 
-Rails is a web-application framework that includes everything needed to create
-database-backed web applications according to the {Model-View-Controller (MVC)}[http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller] pattern.
+Rails 是一个web应用开发框架，包括了创建根据 {模型-视图-控制器 (MVC)}[http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller] 模式的、基于后端数据库的web应用需要的所有东西。
 
-Understanding the MVC pattern is key to understanding Rails. MVC divides your application
-into three layers, each with a specific responsibility.
+理解 Rails 的关键是 MVC 模式。 MVC 把应用分为三层，每层都有特定的职责。
 
-The View layer is composed of "templates" that are responsible for providing 
-appropriate representations of your application's resources. Templates
-can come in a variety of formats, but most view templates are \HTML with embedded Ruby
-code (.erb files). 
+视图层由“模板”组成，它负责为应用程序的资源提供恰当的展现。模板可以有多种格式，但大多数视图模板是内嵌 Ruby 代码的 \HTML 文件(.erb)。
 
-The Model layer represents your domain model (such as Account, Product, Person, Post) 
-and encapsulates the business logic that is specific to your application. In Rails, 
-database-backed model classes are derived from ActiveRecord::Base. Active Record allows
-you to present the data from database rows as objects and embellish these data objects 
-with business logic methods. Although most Rails models are backed by a database, models 
-can also be ordinary Ruby classes, or Ruby classes that implement a set of interfaces as
-provided by the ActiveModel module. You can read more about Active Record in its
-{README}[link:/rails/rails/blob/master/activerecord/README.rdoc].
+模型层表现你特定的模型(例如帐户、产品、人、帖子) and encapsulates the business logic that is specific to your application. 在Rails中，后端数据库的类由 ActiveRecord::Base 派生。 Active Record允许你把数据库的行展现成对象，并按实际逻辑包装。虽然大多数 Rails 模型由后端数据库支撑，但模型也可以是普通的 Ruby 类，或者由ActiveModel模块提供一系列接口而实现的 Ruby 类。 你可以从 {README}[link:/rails/rails/blob/master/activerecord/README.rdoc]了解更多关于Active Record的内容。
 
-The Controller layer is responsible for handling incoming HTTP requests and providing a 
-suitable response. Usually this means returning \HTML, but Rails controllers can also
-generate XML, JSON, PDFs, mobile-specific views, and more. Controllers manipulate models 
-and render view templates in order to generate the appropriate HTTP response.
+控制器层负责响应 HTTP 请求，提供合适的响应。 通常返回 \HTML ，但 Rails 控制器也可以产生 XML、 JSON、 PDFs、 特定的手机视图等等。控制器操纵模型，渲染视图模板，以产生恰当的 HTTP 响应。
 
-In Rails, the Controller and View layers are handled together by Action Pack.
-These two layers are bundled in a single package due to their heavy interdependence. 
-This is unlike the relationship between Active Record and Action Pack which are
-independent. Each of these packages can be used independently outside of Rails. You 
-can read more about Action Pack in its {README}[link:/rails/rails/blob/master/actionpack/README.rdoc].
+在Rails中，控制器层和视图层集成在 Action Pack 中。因为严重互相依赖，所以这两层捆绑在单个包中。 不像Active Record和Action Pack之间的关系，它们很独立。这些每个包都可以在Rails之外独立使用。你可以从 Action Pack 的 {README}[link:/rails/rails/blob/master/actionpack/README.rdoc]了解更多信息。
 
-== Getting Started
+== 开始
 
-1. Install Rails at the command prompt if you haven't yet:
+1. 从命令行安装 Rails ：
 
     gem install rails
 
-2. At the command prompt, create a new Rails application:
+2. 在命令提示符下，创建新的 Rails 应用程序：
 
     rails new myapp
 
-   where "myapp" is the application name.
+   "myapp" 是你的应用程序名字。
 
-3. Change directory to +myapp+ and start the web server:
+3. 进入 +myapp+ 目录，启动 web 服务器：
 
     cd myapp; rails server
 
-   Run with <tt>--help</tt> for options.
+   运行 <tt>--help</tt> ，可以得到更多选项。
 
-4. Go to http://localhost:3000 and you'll see:
+4. 进入 http://localhost:3000 ，你会看到：
 
     "Welcome aboard: You're riding Ruby on Rails!"
 
-5. Follow the guidelines to start developing your application. You may find the following resources handy:
+5. 按以下指导进入开发。 你可以就近找到资源：
 
-* The README file created within your application.
-* The {Getting Started with Rails}[http://guides.rubyonrails.org/getting_started.html].
-* The {Ruby on Rails Tutorial}[http://railstutorial.org/book].
-* The {Ruby on Rails Guides}[http://guides.rubyonrails.org].
-* The {API Documentation}[http://api.rubyonrails.org].
+* 你的应用程序本身创建的 README 文件
+* {从这里开始 Rails}[http://guides.rubyonrails.org/getting_started.html].
+* {Ruby on Rails 教程}[http://railstutorial.org/book].
+* {Ruby on Rails 指南}[http://guides.rubyonrails.org].
+* {API 文档}[http://api.rubyonrails.org].
 
-== Contributing
+== 贡献
 
-We encourage you to contribute to Ruby on Rails! Please check out the {Contributing to Rails
-guide}[http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html] for guidelines about how
-to proceed. {Join us}[http://contributors.rubyonrails.org]!
+我们鼓励你为 Ruby on Rails 做贡献！ 请签出 {Contributing to Rails guide}[http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html]，得到如何操作的指导。 {加入我们}[http://contributors.rubyonrails.org]!
 
 == Travis Build Status {<img src="https://secure.travis-ci.org/rails/rails.png"/>}[http://travis-ci.org/rails/rails]
 
-== License
+== 许可协议
 
-Ruby on Rails is released under the MIT license.
-
+Ruby on Rails 在 MIT 许可协议下发布。
