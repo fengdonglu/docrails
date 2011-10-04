@@ -8,9 +8,9 @@ By referring to this guide you will learn the extensions to the Ruby core classe
 
 endprologue.
 
-h3. How to Load Core Extensions
+h3. 如何装载核心扩展
 
-h4. Stand-Alone Active Support
+h4. 独立的 Active Support
 
 In order to have a near zero default footprint, Active Support does not load anything by default. It is broken in small pieces so that you may load just what you need, and also has some convenience entry points to load related extensions in one shot, even everything.
 
@@ -364,7 +364,7 @@ TIP: Since +with_options+ forwards calls to its receiver they can be nested. Eac
 
 NOTE: Defined in +active_support/core_ext/object/with_options.rb+.
 
-h4. Instance Variables
+h4. 实例变量
 
 Active Support provides several methods to ease access to instance variables.
 
@@ -504,7 +504,7 @@ Rails uses +alias_method_chain+ all over the code base. For example validations 
 
 NOTE: Defined in +active_support/core_ext/module/aliasing.rb+.
 
-h4. Attributes
+h4. 属性
 
 h5. +alias_attribute+
 
@@ -569,7 +569,7 @@ attr_accessor_with_default :primary_key, 'id'
 
 NOTE: Defined in +active_support/core_ext/module/attr_accessor_with_default.rb+.
 
-h5. Internal Attributes
+h5. 内部属性
 
 When you are defining an attribute in a class that is meant to be subclassed name collisions are a risk. That's remarkably important for libraries.
 
@@ -725,7 +725,7 @@ WARNING: This method is exact if running under Ruby 1.9. In previous versions it
 
 NOTE: Defined in +active_support/core_ext/module/introspection.rb+.
 
-h4. Synchronization
+h4. 同步
 
 The +synchronize+ macro declares a method to be synchronized:
 
