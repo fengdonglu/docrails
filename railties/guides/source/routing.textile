@@ -10,7 +10,7 @@ h2. Rails 路由深入浅出
 
 endprologue.
 
-h3. The Purpose of the Rails Router
+h3. Rails 路由器的用途
 
 The Rails router recognizes URLs and dispatches them to a controller's action. It can also generate paths and URLs, avoiding the need to hardcode strings in your views.
 
