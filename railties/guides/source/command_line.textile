@@ -73,9 +73,9 @@ $ rails server
 
 With just three commands we whipped up a Rails server listening on port 3000. Go to your browser and open "http://localhost:3000":http://localhost:3000, you will see a basic Rails app running.
 
-You can also use the alias "s" to start the server: <tt>rails s</tt>.
+你也可以使用别名 "s" 启动服务器： <tt>rails s</tt>.
 
-The server can be run on a different port using the +-p+ option. The default development environment can be changed using +-e+.
+也可以使用 +-p+ 选项使服务器运行在其它端口上。 使用 +-e+ 改变默认的开发环境。
 
 <shell>
 $ rails server -e production -p 4000
@@ -251,7 +251,7 @@ dependency  model
 
 The generator checks that there exist the directories for models, controllers, helpers, layouts, functional and unit tests, stylesheets, creates the views, controller, model and database migration for HighScore (creating the +high_scores+ table and fields), takes care of the route for the *resource*, and new tests for everything.
 
-The migration requires that we *migrate*, that is, run some Ruby code (living in that +20100209025147_create_high_scores.rb+) to modify the schema of our database. Which database? The sqlite3 database that Rails will create for you when we run the +rake db:migrate+ command. We'll talk more about Rake in-depth in a little while.
+The migration requires that we *migrate*, that is, run some Ruby code (living in that +20100209025147_create_high_scores.rb+) to modify the schema of our database. Which database? The sqlite3 database that Rails will create for you when we run the +rake db:migrate+ command. 我们稍后将深入讨论 Rake 。
 
 <shell>
 $ rake db:migrate
