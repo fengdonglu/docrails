@@ -6,63 +6,63 @@ endprologue.
 
 h3. Textile
 
-Guides are written in "Textile":http://www.textism.com/tools/textile/. There's comprehensive documentation "here":http://redcloth.org/hobix.com/textile/ and a cheatsheet for markup "here":http://redcloth.org/hobix.com/textile/quick.html.
+指南使用"Textile"文档格式:http://www.textism.com/tools/textile/。综合文档 "这里":http://redcloth.org/hobix.com/textile/ 和一份标记样式表 "这里":http://redcloth.org/hobix.com/textile/quick.html.
 
-h3. Prologue
+h3. 序言
 
-Each guide should start with motivational text at the top (that's the little introduction in the blue area.) The prologue should tell the reader what the guide is about, and what they will learn. See for example the "Routing Guide":routing.html.
+每篇指南的开头是文档的写作动机 (蓝色区域中的简短介绍) 序言告诉读者指南的主要内容和学习方法。 查看例子 "路由指南":routing.html.
 
-h3. Titles
+h3. 标题
 
-The title of every guide uses +h2+, guide sections use +h3+, subsections +h4+, etc.
+每篇指南的标题使用 +h2+, guide sections use +h3+, subsections +h4+, etc.
 
-Capitalize all words except for internal articles, prepositions, conjunctions, and forms of the verb to be:
+Capitalize all words except for internal articles, prepositions, 连词, and forms of the verb to be:
 
 <plain>
 h5. Middleware Stack is an Array
 h5. When are Objects Saved?
 </plain>
 
-Use the same typography as in regular text:
+使用相同的排版样式 as in regular text:
 
 <plain>
 h6. The <tt>:content_type</tt> Option
 </plain>
 
-h3. API Documentation Guidelines
+h3. API 文档方针
 
-The guides and the API should be coherent where appropriate. Please have a look at these particular sections of the "API Documentation Guidelines":api_documentation_guidelines.html:
+指南和API应该保持一致。请查看相关的部分章节 "API Documentation Guidelines":api_documentation_guidelines.html:
 
 * "Wording":api_documentation_guidelines.html#wording
-* "Example Code":api_documentation_guidelines.html#example-code
-* "Filenames":api_documentation_guidelines.html#filenames
-* "Fonts":api_documentation_guidelines.html#fonts
+* "示例代码":api_documentation_guidelines.html#example-code
+* "文件名":api_documentation_guidelines.html#filenames
+* "字体":api_documentation_guidelines.html#fonts
 
-Those guidelines apply also to guides.
+这些方针对指南同样有效。
 
-h3. HTML Generation
+h3. 生成HTML
 
-To generate all the guides, just +cd+ into the +railties+ directory and execute:
+生成所有的指南，只要进入 +cd+ +railties+ 目录并执行：
 
 <plain>
 bundle exec rake generate_guides
 </plain>
 
-(You may need to run +bundle install+ first to install the required gems.)
+(你可能需要首先运行 +bundle install+ 以安装需要的 gems 。)
 
-To process +my_guide.textile+ and nothing else use the +ONLY+ environment variable:
+如果要处理 +my_guide.textile+ ，只需要使用 +ONLY+ 环境变量：
 
 <plain>
 bundle exec rake generate_guides ONLY=my_guide
 </plain>
 
-By default, guides that have not been modified are not processed, so +ONLY+ is rarely needed in practice.
+默认地， 未修改的指南不会被处理，所以实际上 +ONLY+ 选项很少用。
 
-To force process of all the guides, pass +ALL=1+.
+要强制处理所有的指南，加入 +ALL=1+ 。
 
-It is also recommended that you work with +WARNINGS=1+. This detects duplicate IDs and warns about broken internal links.
+同样推荐你使用 +WARNINGS=1+ 。这样会检测重复的 IDs ，并警告失效的内部链接。
 
-If you want to generate guides in languages other than English, you can keep them in a separate directory under +source+ (eg. <tt>source/es</tt>) and use the +GUIDES_LANGUAGE+ environment variable:
+如果你想使用英语之外的语言生成指南， 你可以在 +source+ 目录下建立一个单独的文件夹（例如 <tt>source/es</tt>），使用 +GUIDES_LANGUAGE+ 环境变量：
 
 <plain>
 bundle exec rake generate_guides GUIDES_LANGUAGE=es
@@ -76,4 +76,4 @@ Please validate the generated HTML with:
 bundle exec rake validate_guides
 </plain>
 
-Particularly, titles get an ID generated from their content and this often leads to duplicates. Please set +WARNINGS=1+ when generating guides to detect them. The warning messages suggest a way to fix them.
+Particularly, titles get an ID generated from their content and this often leads to duplicates. 生成指南时请设置 +WARNINGS=1+ 以检测它们。警告信息还会提出修正建议。
