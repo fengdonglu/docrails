@@ -1,6 +1,6 @@
-h2. The Rails Initialization Process
+h2. Rails的初始化过程
 
-This guide explains the internals of the initialization process in Rails as of Rails 3.1. It is an extremely in-depth guide and recommended for advanced Rails developers.
+本篇说明了 Rails 3.1 内部初始化过程。这是进阶读物，推荐高级开发者。
 
 * Using +rails server+
 * Using Passenger
@@ -31,11 +31,11 @@ rescue LoadError
 end
 </ruby>
 
-This file will attempt to load +rails/cli+ and if it cannot find it then add the +railties/lib+ path to the load path (+$:+) and will then try to require it again.
+这个程序尝试装载 +rails/cli+ ，如果找不到，it then add the +railties/lib+ path to the load path (+$:+) 后重试。
 
 h4. +railties/lib/rails/cli.rb+
 
-This file looks like this:
+这个文件看起来象这样：
 
 <ruby>
 require 'rbconfig'
