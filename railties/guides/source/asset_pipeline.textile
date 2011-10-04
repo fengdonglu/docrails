@@ -1,164 +1,164 @@
-h2. Asset Pipeline
+h2. 资产管道
 
-This guide covers the asset pipeline introduced in Rails 3.1.
-By referring to this guide you will be able to:
+本篇介绍在 Rails 3.1 中引进的资产管道。
+通过本篇你可以：
 
-* Understand what the asset pipeline is and what it does
-* Properly organize your application assets
-* Understand the benefits of the asset pipeline
-* Adding a pre-processor to the pipeline
-* Package assets with a gem
+* 理解资产管道是什么，干什么用
+* 合理组织应用程序的资产
+* 理解资产管道的好处
+* 为管道添加预处理器
+* 使用 gem 打包资产
 
 endprologue.
 
-h3. What is the Asset Pipeline?
+h3. 什么是资产管道？
 
-The asset pipeline provides a framework to concatenate and minify or compress JavaScript and CSS assets. It also adds the ability to write these assets in other languages such as CoffeeScript, Sass and ERB.
+资产管道提供了联系和最小化或压缩 JavaScript and CSS 资产的框架。它还提供了在其它语言，比如CoffeeScript, Sass and ERB中编写这些资产的能力。
 
-Prior to Rails 3.1 these features were added through third-party Ruby libraries such as Jammit and Sprockets. Rails 3.1 is integrated with Sprockets through Action Pack which depends on the +sprockets+ gem, by default.
+在Rails 3.1之前， 这些特性需要通过第三方 Ruby 库增加，比如 Jammit 和 Sprockets。 Rails 3.1 通过 Action Pack 集成了 Sprockets，默认情况下依赖 +sprockets+ gem。
 
-By having this as a core feature of Rails, all developers can benefit from the power of having their assets pre-processed, compressed and minified by one central library, Sprockets. This is part of Rails' "Fast by default" strategy as outlined by DHH in his 2011 keynote at Railsconf.
+这是 Rails 核心的特性，所有的开发者都可以从Sprockets这个单个中心库的资产预处理、压缩和最小化功能中受益。 This is part of Rails' "Fast by default" strategy as outlined by DHH in his 2011 keynote at Railsconf.
 
-In Rails 3.1, the asset pipeline is enabled by default. It can be disabled in +application.rb+ by putting this line inside the +Application+ class definition:
+在 Rails 3.1 中，资产管道默认可用。 可以在 +application.rb+ 文件通过把这行代码放入 +Application+ 类定义中禁用：
 
 <plain>
 config.assets.enabled = false
 </plain>
 
-You can also disable it while creating a new application by passing the <tt>--skip-sprockets</tt> option.
+你也可以在创建应用程序时禁用它，加入 <tt>--skip-sprockets</tt> 选项。
 
 <plain>
 rails new appname --skip-sprockets
 </plain>
 
-It is recommended that you use the defaults for all new apps.
+推荐你在所有新应用中使用默认值。
 
 
-h4. Main Features
+h4. 主要特性
 
-The first feature of the pipeline is to concatenate assets. This is important in a production environment, as it reduces the number of requests that a browser must make to render a web page. While Rails already has a feature to concatenate these types of assets -- by placing +:cache => true+ at the end of tags such as +javascript_include_tag+ and +stylesheet_link_tag+ -- many people do not use it.
+管道的首要特性是把资产联系起来。这在生产环境中很重要，因为它可以减少浏览器渲染页面时的请求数量。 While Rails already has a feature to concatenate these types of assets -- 通过在标签末尾放置 +:cache => true+ ，比如 +javascript_include_tag+ 和 +stylesheet_link_tag+ -- 很多人不使用它。
 
-The default behavior in Rails 3.1 and onward is to concatenate all files into one master file each for JS and CSS. However, you can separate files or groups of files if required (see below). In production, an MD5 fingerprint is inserted into each filename so that the file is cached by the web browser but can be invalidated if the fingerprint is altered.
+Rails 3.1 和后续版本的默认行为是把每个JS和CSS关系起来，成为一个大的主文件。然而，你还是可以在需要时分别使用多个文件或者分组文件（看下面）。在生产中，一个 MD5 指纹放入每个文件名，文件可以被浏览器缓存，如果指纹被修改，文件会被作废。
 
-The second feature is to minify or compress assets. For CSS, this usually involves removing whitespace and comments. For JavaScript, more complex processes can be applied. You can choose from a set of built in options or specify your own.
+第二个特性是最小化或者压缩资产。对CSS来说，这通常包括了删除空白和注释。 对 JavaScript来说，可以使用更多的综合压缩手段。你可以从一系列选项中选择，或者指定你自己的。
 
-The third feature is the ability to code these assets using another language, or language extension. These include Sass for CSS, CoffeeScript for JavaScript, and ERB for both.
+第三个特性是使用其它语言或者语言扩展编写这些资产的能力。这包括了 Sass for CSS, CoffeeScript for JavaScript, 和 ERB for both.
 
-h4. What is Fingerprinting and Why Should I Care?
+h4. 什么是指纹？为什么要关心它？
 
-Fingerprinting is a technique whereby the filenames of content that is static or infrequently updated is altered to be unique to the content contained in the file.
+指纹是一种依靠内容的文件名 that is static or infrequently updated is altered to be unique to the content contained in the file.
 
 When a filename is unique and based on its content, HTTP headers can be set to encourage caches everywhere (at ISPs, in browsers) to keep their own copy of the content. When the content is updated, the fingerprint will change and the remote clients will request the new file. This is generally known as _cachebusting_.
 
-The most effective technique is to insert a hash of the content into the name, usually at the end. For example a CSS file +global.css+ is hashed and the filename is updated to incorporate the hash.
+最有效的技术是在文件中插入内容的哈希值，通常是在末尾。 比如一个 CSS 文件 +global.css+ 被哈希后，文件名就包含了哈希值。
 
 <plain>
 global.css => global-908e25f4bf641868d8683022a5b62f54.css
 </plain>
 
-This is the strategy adopted by the Rails asset pipeline.
+这是Rails资产管道所采取的策略。
 
-Rails' old strategy was to append a query string to every asset linked with a built-in helper. In the source the generated code looked like this:
+Rails旧的策略是使用内置辅助方法链接时在每个资产中加入查询字符串 。在资源中生成代码看起来象这样：
 
 <plain>
 /stylesheets/global.css?1309495796
 </plain>
 
-This has several disadvantages:
+这会有几个障碍：
 
 <ol>
   <li>
-    <strong>Not all caches will cache content with a query string</strong><br>
-    "Steve Souders recommends":http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/, "...avoiding a querystring for cacheable resources". He found that in this case 5-20% of requests will not be cached.
+    <strong>不是所有的缓存会带着查询字符串缓存内容</strong><br>
+    "Steve Souders recommends":http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/, "...avoiding a querystring for cacheable resources". 他发现在这种情况下 5-20% 的请求不会被缓存。
   </li>
   <li>
-    <strong>The file name can change between nodes in multi-server environments.</strong><br>
-    The query string in Rails is based on the modification time of the files. When assets are deployed to a cluster, there is no guarantee that the timestamps will be the same, resulting in different values being used depending on which server handles the request.
+    <strong>在多服务器环境下，文件名在不同节点上会被改变。</strong><br>
+    The query string in Rails is based on the modification time of the files. 当资产被发布到集群，就无法保证时间戳一致， resulting in different values being used depending on which server handles the request.
   </li>
 </ol>
 
-The other problem is that when static assets are deployed with each new release of code, the mtime of *all* these files changes, forcing all remote clients to fetch them again, even when the content of those assets has not changed.
+另一个问题，当静态资产随着每个代码版本发布， *所有* 这些文件的mtime就会改变，即使那些资产的内容并没有改变，也会强迫所有远程客户端去重新获取它们。
 
-Fingerprinting avoids all these problems by ensuring filenames are consistent based on their content.
+指纹通过确保文件名基于它们的内容，避免了所有这些问题。
 
-Fingerprinting is enabled by default for production and disabled for all the others environments. You can enable or disable it in your configuration through the +config.assets.digest+ option.
+默认情况下，指纹在生产环境中生效，而在其它所有环境中无效。你可以在你的配置中，通过 +config.assets.digest+ 选项激活或禁用它。
 
-More reading:
+进阶阅读:
 
-* "Optimize caching":http://code.google.com/speed/page-speed/docs/caching.html
+* 优化缓存"Optimize caching":http://code.google.com/speed/page-speed/docs/caching.html
 * "Revving Filenames: don’t use querystring":http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/
 
 
-h3. How to Use the Asset Pipeline
+h3. 如何使用资产管道
 
-In previous versions of Rails, all assets were located in subdirectories of +public+ such as +images+, +javascripts+ and +stylesheets+. With the asset pipeline, the preferred location for these assets is now the +app/assets+ directory. Files in this directory are served by the Sprockets middleware included in the sprockets gem.
+在之前的 Rails 版本中， 所有的资产位于 +public+ 的子目录中，比如 +images+ 、 +javascripts+ 和 +stylesheets+ 。 With the asset pipeline, the preferred location for these assets is now the +app/assets+ directory. Files in this directory are served by the Sprockets 中间件 included in the sprockets gem.
 
 This is not to say that assets can (or should) no longer be placed in +public+; they still can be and will be served as static files by the application or web server. You would only use +app/assets+ if you wish your files to undergo some pre-processing before they are served.
 
 In production, the default is to precompile these files to +public/assets+ so that they can be more efficiently delivered by the webserver.
 
-When a scaffold or controller is generated for the application, Rails also generates a JavaScript file (or CoffeeScript file if the +coffee-rails+ gem is in the +Gemfile+) and a Cascading Style Sheet file (or SCSS file if +sass-rails+ is in the +Gemfile+) for that controller.
+当应用程序中的脚手架或者控制器做生成操作，Rails 也会为控制器生成 JavaScript 文件 (或者如果在+Gemfile+文件中有+coffee-rails+ gem，会产生 CoffeeScript 文件) 和层叠样式文件（或者如果在+Gemfile+文件中有 +sass-rails+ ，会产生 SCSS 文件 ）
 
-For example, if a +ProjectsController+ is generated, there will be a new file at +app/assets/javascripts/projects.js.coffee+ and another at +app/assets/stylesheets/projects.css.scss+. You should put any JavaScript or CSS unique to a controller inside their respective asset files, as these files can then be loaded just for these controllers with lines such as +<%= javascript_include_tag params[:controller] %>+ or +<%= stylesheet_link_tag params[:controller] %>+.
+例如, if a +ProjectsController+ is generated, there will be a new file at +app/assets/javascripts/projects.js.coffee+ and another at +app/assets/stylesheets/projects.css.scss+. You should put any JavaScript or CSS unique to a controller inside their respective asset files, as these files can then be loaded just for these controllers with lines such as +<%= javascript_include_tag params[:controller] %>+ or +<%= stylesheet_link_tag params[:controller] %>+.
 
-NOTE: You will need a "ExecJS":https://github.com/sstephenson/execjs#readme supported runtime in order to use CoffeeScript. If you are using Mac OS X or Windows you have a JavaScript runtime installed in your operating system. Check "ExecJS":https://github.com/sstephenson/execjs#readme documentation to know all supported JavaScript runtimes.
+NOTE: 你会需要 "ExecJS":https://github.com/sstephenson/execjs#readme 运行时支持，以使用 CoffeeScript。如果你使用 Mac OS X 或者 Windows ，你的操作系统上已经安装了 JavaScript 运行环境。查看 "ExecJS":https://github.com/sstephenson/execjs#readme 文档以了解所有 JavaScript 运行环境信息。
 
-h4. Asset Organization
+h4. 组织资产
 
-Assets can be placed inside an application in one of three locations: +app/assets+, +lib/assets+ or +vendor/assets+.
+资产可以放置在应用程序中的这三个位置： +app/assets+, +lib/assets+ or +vendor/assets+ 。
 
-+app/assets+ is for assets that are owned by the application, such as custom images, JavaScript files or stylesheets.
++app/assets+ 是应用程序拥有的资产，例如顾客图片、 JavaScript 文件或者样式表。
 
 +lib/assets+ is for your own libraries' code that doesn't really fit into the scope of the application or those libraries which are shared across applications.
 
-+vendor/assets+ is for assets that are owned by outside entities, such as code for JavaScript plugins.
++vendor/assets+ 用于外部实体拥有的资产，比如 JavaScript 插件的代码。
 
-All subdirectories that exist within these three locations are added to the search path for Sprockets (visible by calling +Rails.application.config.assets.paths+ in a console). When an asset is requested, these paths are traversed to see if they contain an asset matching the name specified. Once an asset has been found, it's processed by Sprockets and served.
+在这三个位置的所有子目录都加入了 Sprockets 的搜索路径(visible by calling +Rails.application.config.assets.paths+ in a console). When an asset is requested, these paths are traversed to see if they contain an asset matching the name specified. Once an asset has been found, it's processed by Sprockets and served.
 
-You can add additional (fully qualified) paths to the pipeline in +application.rb+. For example:
+你完全可以在 +application.rb+ 中为管道添加更多的路径。例如：
 
 <erb>
 config.assets.paths << File.join(Rails.root, 'app', 'assets', 'flash')
 </erb>
 
-h4. Coding Links to Assets
+h4. 编写链接至资产的代码
 
-Sprockets does not add any new methods to access your assets - you still use the familiar +javascript_include_tag+ and +stylesheet_link_tag+.
+Sprockets 不会添加更多的访问资产方法 - 你还是使用已熟知的 +javascript_include_tag+ 和 +stylesheet_link_tag+ 。
 
 <erb>
 <%= stylesheet_link_tag "application" %>
 <%= javascript_include_tag "application" %>
 </erb>
 
-In regular views you can access images in the +assets/images+ directory like this:
+在正常的视图中，你可以象这样在 +assets/images+ 路径中访问图片：
 
 <erb>
 <%= image_tag "rails.png" %>
 </erb>
 
-Provided that the pipeline is enabled within your application (and not disabled in the current environment context), this file is served by Sprockets. If a file exists at +public/assets/rails.png+ it is served by the webserver.
+Provided that the pipeline is enabled within your application (and not disabled in the current environment context), 文件由 Sprockets 发布。 如果文件在 +public/assets/rails.png+ ，它由网页服务器发布。
 
-Alternatively, a request for a file with an MD5 hash such as +public/assets/rails-af27b6a414e6da00003503148be9b409.png+ is treated the same way. How these hashes are generated is covered in the "In Production":#in-production section later on in this guide.
+可选地， a request for a file with an MD5 hash such as +public/assets/rails-af27b6a414e6da00003503148be9b409.png+ is treated the same way. How these hashes are generated is covered in the "In Production":#in-production section later on in this guide.
 
 Sprockets will also look through the paths specified in +config.assets.paths+ which includes the standard application paths and any path added by Rails engines.
 
-Images can also be organized into subdirectories if required, and they can be accessed by specifying the directory's name in the tag:
+如果需要，图片也可以组织成目录，在标签中指定目录名访问：
 
 <erb>
 <%= image_tag "icons/rails.png" %>
 </erb>
 
-h5. CSS and ERB
+h5. CSS 和 ERB
 
-If you add an +erb+ extension to a CSS asset, making it something such as +application.css.erb+, then you can use the +asset_path+ helper in your CSS rules:
+如果你为CSS资产指定了 +erb+ 扩展名， 比如 +application.css.erb+ ， 在你的CSS规则中可以使用 +asset_path+ 辅助方法：
 
 <plain>
 .class { background-image: url(<%= asset_path 'image.png' %>) }
 </plain>
 
-This writes the path to the particular asset being referenced. In this example, it would make sense to have an image in one of the asset load paths, such as +app/assets/images/image.png+, which would be referenced here. If this image is already available in +public/assets+ as a fingerprinted file, then that path is referenced.
+This writes the path to the particular asset being referenced. 本例中， it would make sense to have an image in one of the asset load paths, such as +app/assets/images/image.png+, which would be referenced here. If this image is already available in +public/assets+ as a fingerprinted file, then that path is referenced.
 
-If you want to use a "css data URI":http://en.wikipedia.org/wiki/Data_URI_scheme -- a method of embedding the image data directly into the CSS file -- you can use the +asset_data_uri+ helper.
+如果你想使用 "css data URI":http://en.wikipedia.org/wiki/Data_URI_scheme -- 一种在CSS文件中直接内嵌图片数据的方法 -- 你可以使用 +asset_data_uri+ 辅助方法。
 
 <plain>
 #logo { background: url(<%= asset_data_uri 'logo.png' %>) }
@@ -168,21 +168,21 @@ This inserts a correctly-formatted data URI into the CSS source.
 
 Note that the closing tag cannot be of the style +-%>+.
 
-h5. CSS and Sass
+h5. CSS 和 Sass
 
-When using the asset pipeline, paths to assets must be re-written and +sass-rails+ provides +-url+ and +-path+ helpers (hyphenated in Sass, underscored in Ruby) for the following asset classes: image, font, video, audio, JavaScript and stylesheet.
+使用资产管道时， 必须重新编写资产的路径。+sass-rails+ 提供了 +-url+ 和 +-path+ 辅助方法 (在 Sass 中是连字符，在 Ruby 中是下划线) for the following asset classes: image, font, video, audio, JavaScript and stylesheet.
 
-* +image-url("rails.png")+ becomes +url(/assets/rails.png)+
-* +image-path("rails.png")+ becomes +"/assets/rails.png"+.
+* +image-url("rails.png")+ 变成 +url(/assets/rails.png)+
+* +image-path("rails.png")+ 变成 +"/assets/rails.png"+.
 
 The more generic form can also be used but the asset path and class must both be specified:
 
 * +asset-url("rails.png", image)+ becomes +url(/assets/rails.png)+
 * +asset-path("rails.png", image)+ becomes +"/assets/rails.png"+
 
-h5. JavaScript/CoffeeScript and ERB
+h5. JavaScript/CoffeeScript 和 ERB
 
-If you add an +erb+ extension to a JavaScript asset, making it something such as +application.js.erb+, then you can use the +asset_path+ helper in your JavaScript code:
+如果你为JavaScript资产指定了 +erb+ 扩展名， 比如 +application.js.erb+ ，你就可以在你的 JavaScript 代码中使用 +asset_path+ 辅助方法：
 
 <plain>
 $('#logo').attr({
@@ -192,17 +192,17 @@ $('#logo').attr({
 
 This writes the path to the particular asset being referenced.
 
-Similarly, you can use the +asset_path+ helper in CoffeeScript files with +erb+ extension (eg. application.js.coffee.erb):
+类似地,你可以使用在 +erb+ 扩展名的 CoffeeScript 文件中使用 +asset_path+ 辅助方法 (例如 application.js.coffee.erb)：
 
 <plain>
 $('#logo').attr src: "<% asset_path('logo.png') %>"
 </plain>
 
-h4. Manifest Files and Directives
+h4. Manifest 文件和 Directives
 
 Sprockets uses manifest files to determine which assets to include and serve. These manifest files contain _directives_ -- instructions that tell Sprockets which files to require in order to build a single CSS or JavaScript file. With these directives, Sprockets loads the files specified, processes them if necessary, concatenates them into one single file and then compresses them (if +Rails.application.config.assets.compress+ is set to +true+). By serving one file rather than many, the load time of pages are greatly reduced as there are fewer requests to make.
 
-For example, in the default Rails application there's a +app/assets/javascripts/application.js+ file which contains the following lines:
+例如， in the default Rails application there's a +app/assets/javascripts/application.js+ file which contains the following lines:
 
 <plain>
 //= require jquery
@@ -210,13 +210,13 @@ For example, in the default Rails application there's a +app/assets/javascripts/
 //= require_tree .
 </plain>
 
-In JavaScript files, the directives begin with +//=+. In this case, the file is using the +require+ and the +require_tree+ directives. The +require+ directive is used to tell Sprockets the files that you wish to require. Here, you are requiring the files +jquery.js+ and +jquery_ujs.js+ that are available somewhere in the search path for Sprockets. You need not supply the extensions explicitly. Sprockets assumes you are requiring a +.js+ file when done from within a +.js+ file.
+在 JavaScript 文件中， 指令由 +//=+ 开头。 这种情况下，文件使用 +require+ 和 +require_tree+ 指令。 +require+ 指令用于告诉 Sprockets the files that you wish to require. 在这里， you are requiring the files +jquery.js+ and +jquery_ujs.js+ that are available somewhere in the search path for Sprockets. You need not supply the extensions explicitly. Sprockets 假定你请求一个 +.js+ 文件 when done from within a +.js+ file.
 
-NOTE. In Rails 3.1, the +jquery.js+ and +jquery_ujs.js+ files are located inside the +vendor/assets/javascripts+ directory contained within the +jquery-rails+ gem.
+NOTE. Rails 3.1 中，+jquery.js+ 和 +jquery_ujs.js+ 文件 are located inside the +vendor/assets/javascripts+ directory contained within the +jquery-rails+ gem.
 
 The +require_tree .+ directive tells Sprockets to include _all_ JavaScript files in this directory into the output. Only a path relative to the file can be specified. There is also a +require_directory+ directive which includes all JavaScript files only in the directory specified (no nesting).
 
-There's also a default +app/assets/stylesheets/application.css+ file which contains these lines:
+There's also a default +app/assets/stylesheets/application.css+ 文件，包含了以下行：
 
 <plain>
 /* ...
@@ -231,7 +231,7 @@ In this example +require_self+ is used. This puts the CSS contained within the f
 
 You can have as many manifest files as you need. For example the +admin.css+ and +admin.js+ manifest could contain the JS and CSS files that are used for the admin section of an application.
 
-For some assets (like CSS) the compiled order is important. You can specify individual files and they are compiled in the order specified:
+对于一些资产来说(象 CSS)，编译次序很重要。你可以指定文件的编译次序：
 
 <plain>
 /* ...
@@ -242,19 +242,19 @@ For some assets (like CSS) the compiled order is important. You can specify indi
 </plain>
 
 
-h4. Preprocessing
+h4. 预处理
 
-The file extensions used on an asset determine what preprocessing is applied. When a controller or a scaffold is generated with the default Rails gemset, a CoffeeScript file and a SCSS file are generated in place of a regular JavaScript and CSS file. The example used before was a controller called "projects", which generated an +app/assets/javascripts/projects.js.coffee+ and a +app/assets/stylesheets/projects.css.scss+ file.
+资产的扩展名决定了应该采用哪种预处理方法。When a controller or a scaffold is generated with the default Rails gemset, a CoffeeScript file and a SCSS file are generated in place of a regular JavaScript and CSS file. 之前的名为 "projects" 的控制器示例,，生成了+app/assets/javascripts/projects.js.coffee+ 和 +app/assets/stylesheets/projects.css.scss+ 文件。
 
 When these files are requested, they are processed by the processors provided by the +coffee-script+ and +sass-rails+ gems and then sent back to the browser as JavaScript and CSS respectively.
 
 Additional layers of pre-processing can be requested by adding other extensions, where each extension is processed in a right-to-left manner. These should be used in the order the processing should be applied. For example, a stylesheet called +app/assets/stylesheets/projects.css.scss.erb+ is first processed as ERB, then SCSS and finally served as CSS. The same applies to a JavaScript file -- +app/assets/javascripts/projects.js.coffee.erb+ is processed as ERB, CoffeeScript and served as JavaScript.
 
-Keep in mind that the order of these pre-processors is important. For example, if you called your JavaScript file +app/assets/javascripts/projects.js.erb.coffee+ then it is processed with the CoffeeScript interpreter first, which wouldn't understand ERB and therefore you would run into problems.
+Keep in mind that the order of these pre-processors is important. 例如，如果你调用 JavaScript 文件 +app/assets/javascripts/projects.js.erb.coffee+ ，它由 CoffeeScript 转译器首先处理，它将不会理解 ERB ，and therefore you would run into problems.
 
-h3. In Development
+h3. 开发中
 
-In development mode assets are served as separate files in the order they are specified in the manifest file.
+开发模式中，资产被分为多个文件，in the order they are specified in the manifest file.
 
 This manifest +application.js+:
 
@@ -264,7 +264,7 @@ This manifest +application.js+:
 //= require tickets
 </plain>
 
-would generate this HTML:
+会生成这个 HTML ：
 
 <html>
 <script src='/assets/core.js?body=1'></script>
@@ -272,23 +272,23 @@ would generate this HTML:
 <script src='/assets/tickets.js?body=1'></script>
 </html>
 
-The +body+ param is required by Sprockets.
+Sprockets 需要 +body+ 参数。
 
-h4. Turning Debugging off
+h4. 关闭调试
 
-You can turn off debug mode by updating +development.rb+ to include:
+你可以关闭调试模式，修改 +development.rb+ ，包含以下代码：
 
 <erb>
 config.assets.debug = false
 </erb>
 
-When debug mode is off Sprockets will concatenate and run the necessary preprocessors on all files, generating the following HTML:
+调试模式关闭后，Sprockets will concatenate and run the necessary preprocessors on all files, 产生以下的 HTML：
 
 <html>
 <script src='/assets/application.js'></script>
 </html>
 
-Assets are compiled and cached on the first request after the server is started. Sprockets sets a +must-revalidate+ Cache-Control HTTP header to reduce request overhead on subsequent requests -- on these the browser gets a 304 (not-modified) response.
+资产在服务器启动后的首次请求时被编译和缓存。 Sprockets sets a +must-revalidate+ Cache-Control HTTP header to reduce request overhead on subsequent requests -- 这时浏览器会得到一个 304 (无修改) 的应答。
 
 If any of the files in the manifest have changed between requests, the server responds with a new compiled file.
 
@@ -301,25 +301,25 @@ Debug can also be set in the Rails helper methods:
 <%= javascript_include_tag "application", :debug => true %>
 </erb>
 
-The +:debug+ option is ignored if the debug mode is off.
+如果关闭了调试模式， +:debug+ 选项会被忽略。
 
 You could potentially also enable compression in development mode as a sanity check, and disable it on-demand as required for debugging.
 
 
-h3. In Production
+h3. 生产中
 
-In the production environment Rails uses the fingerprinting scheme outlined above. By default it is assumed that assets have been precompiled and will be served as static assets by your web server.
+生产环境中， Rails使用上面提到的指纹模式。默认时，它假定资产已经被预编译，作为静态资产由你的网页服务器发布。
 
-During the precompilation phase an MD5 is generated from the contents of the compiled files, and inserted into the filenames as they are written to disc. These fingerprinted names are used by the Rails helpers in place of the manifest name.
+During the precompilation phase an MD5 is generated from the contents of the compiled files, and inserted into the filenames as they are written to disc. 这些指纹化的名字 are used by the Rails helpers in place of the manifest name.
 
-For example this:
+比如这样：
 
 <erb>
 <%= javascript_include_tag "application" %>
 <%= stylesheet_link_tag "application" %>
 </erb>
 
-generates something like this:
+产生了一些东西，象这样：
 
 <html>
 <script src="/assets/application-908e25f4bf641868d8683022a5b62f54.js" type="text/javascript"></script>
@@ -330,21 +330,21 @@ The fingerprinting behavior is controlled by the setting of +config.assets.diges
 
 NOTE: Under normal circumstances the default option should not be changed. If there are no digests in the filenames, and far-future headers are set, remote clients will never know to refetch the files when their content changes.
 
-h4. Precompiling Assets
+h4. 预编译资产
 
 Rails comes bundled with a rake task to compile the asset manifests and other files in the pipeline to the disk.
 
-Compiled assets are written to the location specified in +config.assets.prefix+. The default setting will use the +public/assets+ directory.
+编译后的资产被写入 +config.assets.prefix+ 指定的位置。默认是 +public/assets+ 目录。
 
 You must use this task either during deployment or locally if you do not have write access to your production filesystem.
 
-The rake task is:
+rake 任务是：
 
 <plain>
 bundle exec rake assets:precompile
 </plain>
 
-Capistrano (v2.8.0 and above) has a recipe to handle this in deployment. Add the following line to +Capfile+:
+Capistrano (v2.8.0 and above) has a recipe to handle this in deployment. 在 +Capfile+ 中加入以下行：
 
 <erb>
 load 'deploy/assets'
@@ -352,9 +352,9 @@ load 'deploy/assets'
 
 This links the folder specified in +config.assets.prefix+ to +shared/assets+. If you already use this shared folder you'll need to write your own deployment task.
 
-It is important that this folder is shared between deployments so that remotely cached pages that reference the old compiled assets still work for the life of the cached page.
+很重要的一点，这个文件夹 is shared between deployments so that remotely cached pages that reference the old compiled assets still work for the life of the cached page.
 
-NOTE. If you are precompiling your assets locally, you can use +bundle install --without assets+ on the server to avoid installing the assets gems (the gems in the assets group in the Gemfile).
+NOTE. 如果你在本地预编译你的资产， you can use +bundle install --without assets+ on the server to avoid installing the assets gems (the gems in the assets group in the Gemfile).
 
 The default matcher for compiling files includes +application.js+, +application.css+ and all files that do not end in +js+ or +css+:
 
@@ -362,13 +362,13 @@ The default matcher for compiling files includes +application.js+, +application.
 [ /\w<plus>\.(?!js|css).<plus>/, /application.(css|js)$/ ]
 </ruby>
 
-If you have other manifests or individual stylesheets and JavaScript files to include, you can add them to the +precompile+ array:
+If you have other manifests or individual stylesheets and JavaScript files to include, 你可以把它们加入 +precompile+ 队列：
 
 <erb>
 config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
 </erb>
 
-The rake task also generates a +manifest.yml+ that contains a list with all your assets and their respective fingerprints. This is used by the Rails helper methods and avoids handing the mapping requests back to Sprockets. A typical manifest file looks like:
+rake任务还会生成 +manifest.yml+ ，包含了你所有的资产和各自指纹的列表。由辅助方法使用，用于避免handing the mapping requests back to Sprockets. 一个典型的 manifest 文件看来象这样：
 
 <plain>
 ---
@@ -381,19 +381,19 @@ application.css: application-8af74128f904600e41a6e39241464e03.css
 
 The default location for the manifest is the root of the location specified in +config.assets.prefix+ ('/assets' by default).
 
-This can be changed with the +config.assets.manifest+ option. A fully specified path is required:
+可以使用 +config.assets.manifest+ 选项进行修改。需要指定完整的路径：
 
 <erb>
 config.assets.manifest = '/path/to/some/other/location'
 </erb>
 
-NOTE: If there are missing precompiled files in production you will get an <tt>AssetNoPrecompiledError</tt> exception indicating the name of the missing file(s).
+NOTE: 如果生产时丢失了预编译文件，你会得到一个 <tt>AssetNoPrecompiledError</tt> 异常，指出了丢失文件的文件名。
 
-h5. Server Configuration
+h5. 服务器配置
 
-Precompiled assets exist on the filesystem and are served directly by your webserver. They do not have far-future headers by default, so to get the benefit of fingerprinting you'll have to update your server configuration to add them.
+文件系统上预编译后的资产直接由你的网页服务器发布。 They do not have far-future headers by default, so to get the benefit of fingerprinting you'll have to update your server configuration to add them.
 
-For Apache:
+对于Apache：
 
 <plain>
 <LocationMatch "^/assets/.*$">
@@ -409,7 +409,7 @@ For Apache:
 </LocationMatch>
 </plain>
 
-For nginx:
+对于nginx：
 
 <plain>
 location ~ ^/assets/ {
@@ -425,9 +425,9 @@ location ~ ^/assets/ {
 }
 </plain>
 
-When files are precompiled, Sprockets also creates a "Gzip":http://en.wikipedia.org/wiki/Gzip (.gz) version of your assets. This avoids the server having to do this for any requests; it can simply read the compressed files from disk. You must configure your server to use gzip compression and serve the compressed assets that will be stored in the +public/assets+ folder. The following configuration options can be used:
+当文件被预压缩， Sprockets 还会创建一个 "Gzip":http://en.wikipedia.org/wiki/Gzip (.gz) 版本的资产。这避免了服务器为每个请求做同样的事； it can simply read the compressed files from disk. 你必须配置服务器使用 gzip 压缩方式，提供 +public/assets+ 目录中的压缩资产。可以使用以下的配置选项：
 
-For Apache:
+对于Apache：
 
 <plain>
 <LocationMatch "^/assets/.*$">
@@ -446,7 +446,7 @@ For Apache:
 </FilesMatch>
 </plain>
 
-For nginx:
+对于Nginx：
 
 <plain>
 location ~ ^/(assets)/  {
@@ -459,9 +459,9 @@ location ~ ^/(assets)/  {
 
 h4. Live Compilation
 
-In some circumstances you may wish to use live compilation. In this mode all requests for assets in the pipeline are handled by Sprockets directly.
+某些情况下，你会希望使用 live compilation。这种模式下，管道中所有的资产请求都直接由 Sprockets 处理。
 
-To enable this option set:
+打开这个选项：
 
 <erb>
 config.assets.compile = true
@@ -469,11 +469,11 @@ config.assets.compile = true
 
 On the first request the assets are compiled and cached as outlined in development above, and the manifest names used in the helpers are altered to include the MD5 hash.
 
-Sprockets also sets the +Cache-Control+ HTTP header to +max-age=31536000+. This signals all caches between your server and the client browser that this content (the file served) can be cached for 1 year. The effect of this is to reduce the number of requests for this asset from your server; the asset has a good chance of being in the local browser cache or some intermediate cache.
+Sprockets 还会设置 +Cache-Control+ HTTP header to +max-age=31536000+. This signals all caches between your server and the client browser that this content (the file served) can be cached for 1 year.这个的效果就是减少了从你服务器的这个资产的请求数量；这个资产就更有机会进入浏览器或者某些中间层的缓存。
 
-This mode uses more memory, performs poorer than the default and is not recommended.
+这种模式使用更多的内存，会比默认情况恶化性能，不推荐。
 
-When deploying a production application to a system without any pre-existing JavaScript runtimes, you may want to add one to your Gemfile:
+当在未具备 JavaScript 运行时的系统中部署生产程序，你可以加入 Gemfile 文件：
 
 <plain>
 group :production do
@@ -481,39 +481,39 @@ group :production do
 end
 </plain>
 
-h3. Customizing the Pipeline
+h3. 自定义管道
 
-h4. CSS Compression
+h4. CSS 压缩
 
-There is currently one option for compressing CSS, YUI. The "YUI CSS compressor":http://developer.yahoo.com/yui/compressor/css.html provides minification.
+目前有一个YUI选项用于压缩 CSS 。The "YUI CSS compressor":http://developer.yahoo.com/yui/compressor/css.html provides minification.
 
-The following line enables YUI compression, and requires the +yui-compressor+ gem.
+下面激活 YUI 压缩器，需要 +yui-compressor+ gem.
 
 <erb>
 config.assets.css_compressor = :yui
 </erb>
 
-The +config.assets.compress+ must be set to +true+ to enable CSS compression.
+ +config.assets.compress+ 选项必须设置为 +true+ ，以激活 CSS 压缩。
 
-h4. JavaScript Compression
+h4. JavaScript 压缩
 
-Possible options for JavaScript compression are +:closure+, +:uglifier+ and +:yui+. These require the use of the +closure-compiler+, +uglifier+ or +yui-compressor+ gems respectively.
+JavaScript 压缩的可选参数有 +:closure+ 、 +:uglifier+ 和 +:yui+ 。 这些各自需要使用 +closure-compiler+ 、 +uglifier+ 或者 +yui-compressor+ gems 。
 
-The default Gemfile includes "uglifier":https://github.com/lautis/uglifier. This gem wraps "UglifierJS":https://github.com/mishoo/UglifyJS (written for NodeJS) in Ruby. It compresses your code by removing white space and other magical things like changing your +if+ and +else+ statements to ternary operators where possible.
+Gemfile 默认包含了 "uglifier":https://github.com/lautis/uglifier. 这个 Gem 在 Ruby 中包装了 "UglifierJS":https://github.com/mishoo/UglifyJS (为NodeJS编写) 。 它压缩你的代码 by removing white space and other magical things like changing your +if+ and +else+ statements to ternary operators where possible.
 
-The following line invokes +uglifier+ for JavaScript compression.
+下面引用了 +uglifier+ 进行 JavaScript 压缩。
 
 <erb>
 config.assets.js_compressor = :uglifier
 </erb>
 
-The +config.assets.compress+ must be set to +true+ to enable JavaScript compression
++config.assets.compress+ 必须设置成 +true+ 以激活 JavaScript 压缩。
 
 NOTE: You will need a "ExecJS":https://github.com/sstephenson/execjs#readme supported runtime in order to use +uglifier+. If you are using Mac OS X or Windows you have installed a JavaScript runtime in your operating system. Check "ExecJS":https://github.com/sstephenson/execjs#readme documentation to know all supported JavaScript runtimes.
 
-h4. Using Your Own Compressor
+h4. 使用你自己的压缩器
 
-The compressor config settings for CSS and JavaScript also take any Object. This object must have a +compress+ method that takes a string as the sole argument and it must return a string.
+The compressor config settings for CSS and JavaScript also take any Object. 这个对象必须拥有一个 +compress+ 方法，使用一个字符串作为唯一的参数，必须返回一个字符串。
 
 <erb>
 class Transformer
@@ -523,18 +523,18 @@ class Transformer
 end
 </erb>
 
-To enable this, pass a +new+ Object to the config option in +application.rb+:
-
+在+application.rb+的配置选项中放置一个+new+对象来要激活它：
+ 
 <erb>
 config.assets.css_compressor = Transformer.new
 </erb>
 
 
-h4. Changing the _assets_ Path
+h4. 改变 _assets_ 路径
 
 The public path that Sprockets uses by default is +/assets+.
 
-This can be changed to something else:
+可以改成：
 
 <erb>
 config.assets.prefix = "/some_other_path"
@@ -546,38 +546,38 @@ h4. X-Sendfile Headers
 
 The X-Sendfile header is a directive to the server to ignore the response from the application, and instead serve the file specified in the headers. This option is off by default, but can be enabled if your server supports it. When enabled, this passes responsibility for serving the file to the web server, which is faster.
 
-Apache and nginx support this option which is enabled in <tt>config/environments/production.rb</tt>.
+Apache 和 Nginx 支持这个选项 which is enabled in <tt>config/environments/production.rb</tt>.
 
 <erb>
 # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
 # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 </erb>
 
-WARNING: If you are upgrading an existing application and intend to use this option, take care to paste this configuration option only into +production.rb+ (and not +application.rb+) and any other environment you define with production behavior.
+WARNING: 如果你正在升级一个已存在的应用程序，想要使用这个选项，要注意这个配置选项只能粘贴入 +production.rb+ (而不能在 +application.rb+ 中) and any other environment you define with production behavior.
 
-h3. How Caching Works
+h3. 缓存如何工作
 
-Sprockets uses the default Rails cache store to cache assets in development and production.
+Sprockets 使用默认的 Rails 缓存存储，在开发和生产环境中缓存资产。
 
 TODO: Add more about changing the default store.
 
-h3. Adding Assets to Your Gems
+h3. 在你的 Gems 中添加资产
 
-Assets can also come from external sources in the form of gems.
+资产也可以用gems的形式由外部资源提供。
 
-A good example of this is the +jquery-rails+ gem which comes with Rails as the standard JavaScript library gem. This gem contains an engine class which inherits from +Rails::Engine+. By doing this, Rails is informed that the directory for this gem may contain assets and the +app/assets+, +lib/assets+ and +vendor/assets+ directories of this engine are added to the search path of Sprockets.
+关于这个有个很好的例子。Rails带的 +jquery-rails+ gem ，就是一个标准的 JavaScript 库 gem。这个 gem 包含了从 +Rails::Engine+ 继承的一个引擎类。 By doing this, Rails is informed that the directory for this gem may contain assets and the +app/assets+, +lib/assets+ and +vendor/assets+ directories of this engine are added to the search path of Sprockets.
 
 h3. Making Your Library or Gem a Pre-Processor
 
 TODO: Registering gems on "Tilt":https://github.com/rtomayko/tilt enabling Sprockets to find them.
 
-h3. Upgrading from Old Versions of Rails
+h3. 从 Rails 旧版本升级
 
-There are two issues when upgrading. The first is moving the files to the new locations. See the section above for guidance on the correct locations for different file types.
+升级时有两个任务。第一个是将文件移到新的位置。 查看之前的小节，得到不同文件类型的正确位置的指导。
 
-The second is updating the various environment files with the correct default options. The following changes reflect the defaults in version 3.1.0.
+第二个是使用正确的默认选项升级各种环境文件。 下面的修改反映了 3.1.0 版本中的默认情况：
 
-In +application.rb+:
++application.rb+ 中：
 
 <erb>
 # Enable the asset pipeline
@@ -590,7 +590,7 @@ config.assets.version = '1.0'
 # config.assets.prefix = "/assets"
 </erb>
 
-In +development.rb+:
++development.rb+ 中：
 
 <erb>
 # Do not compress assets
@@ -600,7 +600,7 @@ config.assets.compress = false
 config.assets.debug = true
 </erb>
 
-And in +production.rb+:
+和在+production.rb+中：
 
 <erb>
 # Compress JavaScripts and CSS
@@ -623,9 +623,9 @@ config.assets.digest = true
 # config.assets.precompile += %w( search.js )
 </erb>
 
-There are no changes to +test.rb+. The defaults in the test environment are: +config.assets.compile+ is true and +config.assets.compress+, +config.assets.debug+ and +config.assets.digest+ are false.
+不用改变 +test.rb+ 。测试环境的默认值是： +config.assets.compile+ 为 true ， +config.assets.compress+ 、 +config.assets.debug+ 和 +config.assets.digest+ 是 false 。
 
-The following should also be added to +Gemfile+:
+在 +Gemfile+ 中加入：
 
 <plain>
 # Gems used only for assets and not required
