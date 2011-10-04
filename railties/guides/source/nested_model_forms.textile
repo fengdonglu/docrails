@@ -1,4 +1,4 @@
-h2. Rails nested model forms
+h2. Rails 嵌套模型表单
 
 Creating a form for a model _and_ its associations can become quite tedious. Therefore Rails provides helpers to assist in dealing with the complexities of generating these forms _and_ the required CRUD operations to create, update, and destroy associations.
 
@@ -13,13 +13,13 @@ NOTE: This guide assumes the user knows how to use the "Rails form helpers":form
 
 h3. Model setup
 
-To be able to use the nested model functionality in your forms, the model will need to support some basic operations.
+为了在你的表单中使用嵌套模型功能，模型需要支持一些基本操作。
 
-First of all, it needs to define a writer method for the attribute that corresponds to the association you are building a nested model form for. The +fields_for+ form helper will look for this method to decide whether or not a nested model form should be build.
+首先， it needs to define a writer method for the attribute that corresponds to the association you are building a nested model form for. The +fields_for+ form helper will look for this method to decide whether or not a nested model form should be build.
 
 If the associated object is an array a form builder will be yielded for each object, else only a single form builder will be yielded.
 
-Consider a Person model with an associated Address. When asked to yield a nested FormBuilder for the +:address+ attribute, the +fields_for+ form helper will look for a method on the Person instance named +address_attributes=+.
+注意到Person 模型有一个关联 Address。 When asked to yield a nested FormBuilder for the +:address+ attribute, the +fields_for+ form helper will look for a method on the Person instance named +address_attributes=+.
 
 h4. ActiveRecord::Base model
 
@@ -86,9 +86,9 @@ end
 
 NOTE: See (TODO) in the advanced section for more information on how to deal with the CRUD operations in your custom model.
 
-h3. Views
+h3. 视图
 
-h4. Controller code
+h4. 控制器代码
 
 A nested model form will _only_ be built if the associated object(s) exist. This means that for a new model instance you would probably want to build the associated object(s) first.
 
@@ -113,11 +113,11 @@ end
 
 NOTE: Obviously the instantiation of the associated object(s) can become tedious and not DRY, so you might want to move that into the model itself. ActiveRecord::Base provides an +after_initialize+ callback which is a good way to refactor this.
 
-h4. Form code
+h4. 表单代码
 
 Now that you have a model instance, with the appropriate methods and associated object(s), you can start building the nested model form.
 
-h5. Standard form
+h5. 标准表单
 
 Start out with a regular RESTful form:
 
@@ -127,7 +127,7 @@ Start out with a regular RESTful form:
 <% end %>
 </erb>
 
-This will generate the following html:
+这将生成以下的html:
 
 <html>
 <form action="/people" class="new_person" id="new_person" method="post">
@@ -149,7 +149,7 @@ Now add a nested form for the +address+ association:
 <% end %>
 </erb>
 
-This generates:
+生成:
 
 <html>
 <form action="/people" class="new_person" id="new_person" method="post">
@@ -190,7 +190,7 @@ The form code for an association collection is pretty similar to that of a singl
 <% end %>
 </erb>
 
-Which generates:
+生成：
 
 <html>
 <form action="/people" class="new_person" id="new_person" method="post">
