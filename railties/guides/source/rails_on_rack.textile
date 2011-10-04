@@ -1,35 +1,35 @@
 h2. Rails on Rack
 
-This guide covers Rails integration with Rack and interfacing with other Rack components. By referring to this guide, you will be able to:
+本篇涵盖了 Rails 与 Rack 和其它 Rack 组件的集成。通过本篇你将学习到：
 
 * Create Rails Metal applications
-* Use Rack Middlewares in your Rails applications
-* Understand Action Pack's internal Middleware stack
-* Define a custom Middleware stack
+* 在你的Rails应用中使用Rack中间件
+* 理解ActionPack的内部堆
+* 定义用户化的中间件堆
 
 endprologue.
 
 WARNING: This guide assumes a working knowledge of Rack protocol and Rack concepts such as middlewares, url maps and +Rack::Builder+.
 
-h3. Introduction to Rack
+h3. Rack介绍
 
-bq. Rack provides a minimal, modular and adaptable interface for developing web applications in Ruby. By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call.
+bq. Rack 用 Ruby 为Web应用程序开发提供了一个最小的、模块化的和可适配的接口。By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call.
 
-- "Rack API Documentation":http://rack.rubyforge.org/doc/
+- "Rack API 文档":http://rack.rubyforge.org/doc/
 
-Explaining Rack is not really in the scope of this guide. In case you are not familiar with Rack's basics, you should check out the "Resources":#resources section below.
+讲解Rack并不是本篇的真正目的。如果你对Rack的基础不熟悉，你可以查看下面的 "学习资源":#学习资源 小节。
 
 h3. Rails on Rack
 
-h4. Rails Application's Rack Object
+h4. Rails 应用程序的 Rack 对象
 
-<tt>ActionController::Dispatcher.new</tt> is the primary Rack application object of a Rails application. Any Rack compliant web server should be using +ActionController::Dispatcher.new+ object to serve a Rails application.
+<tt>ActionController::Dispatcher.new</tt> 是一个Rails应用程序中首要的Rack应用对象。符合Rack的网页服务器会使用 +ActionController::Dispatcher.new+ 对象来发布Rails应用。
 
 h4. +rails server+
 
 <tt>rails server</tt> does the basic job of creating a +Rack::Builder+ object and starting the webserver. This is Rails' equivalent of Rack's +rackup+ script.
 
-Here's how +rails server+ creates an instance of +Rack::Builder+
+这里是 +rails server+ 如何创建 +Rack::Builder+ 实例
 
 <ruby>
 app = Rack::Builder.new {
@@ -40,7 +40,7 @@ app = Rack::Builder.new {
 }.to_app
 </ruby>
 
-Middlewares used in the code above are primarily useful only in the development environment. The following table explains their usage:
+Middlewares used in the code above are primarily useful only in the development environment. 以下表格解释了它们的用法：
 
 |_.Middleware|_.Purpose|
 |+Rails::Rack::LogTailer+|Appends log file output to console|
@@ -49,7 +49,7 @@ Middlewares used in the code above are primarily useful only in the development 
 
 h4. +rackup+
 
-To use +rackup+ instead of Rails' +rails server+, you can put the following inside +config.ru+ of your Rails application's root directory:
+使用 +rackup+ 代替 Rails的 +rails server+, you can put the following inside +config.ru+ of your Rails application's root directory:
 
 <ruby>
 # Rails.root/config.ru
@@ -66,27 +66,27 @@ And start the server:
 $ rackup config.ru
 </shell>
 
-To find out more about different +rackup+ options:
+查找更多不同的 +rackup+ 选项：
 
 <shell>
 $ rackup --help
 </shell>
 
-h3. Action Controller Middleware Stack
+h3. Action Controller 中间件堆
 
-Many of Action Controller's internal components are implemented as Rack middlewares. +ActionController::Dispatcher+ uses +ActionController::MiddlewareStack+ to combine various internal and external middlewares to form a complete Rails Rack application.
+很多Action Controller的内部组件使用Rack中间件实现。 +ActionController::Dispatcher+ 使用 +ActionController::MiddlewareStack+ to combine various internal and external middlewares to form a complete Rails Rack application.
 
 NOTE: +ActionController::MiddlewareStack+ is Rails' equivalent of +Rack::Builder+, but built for better flexibility and more features to meet Rails' requirements.
 
-h4. Inspecting Middleware Stack
+h4. 检查中间件堆
 
-Rails has a handy rake task for inspecting the middleware stack in use:
+Rails 提供了方便的工具，可以检查使用中的中间件堆：
 
 <shell>
 $ rake middleware
 </shell>
 
-For a freshly generated Rails application, this might produce something like:
+对于刚生成的Rails应用程序，看来会象这样：
 
 <ruby>
 use ActionDispatch::Static
@@ -110,17 +110,17 @@ use ActionDispatch::BestStandardsSupport
 run Blog::Application.routes
 </ruby>
 
-Purpose of each of this middlewares is explained in the "Internal Middlewares":#internal-middleware-stack section.
+每个中间件的用途可以在 "Internal Middlewares":#internal-middleware-stack 这节查看。
 
-h4. Configuring Middleware Stack
+h4. 配置中间件堆
 
-Rails provides a simple configuration interface +config.middleware+ for adding, removing and modifying the middlewares in the middleware stack via +application.rb+ or the environment specific configuration file <tt>environments/&lt;environment&gt;.rb</tt>.
+Rails 提供了一个简单的配置界面：+config.middleware+ ，可以添加、删除和修改堆里的中间件 via +application.rb+ or the environment specific configuration file <tt>environments/&lt;environment&gt;.rb</tt>.
 
-h5. Adding a Middleware
+h5. 添加中间件
 
-You can add a new middleware to the middleware stack using any of the following methods:
+你可以使用下列的方法在堆中添加新的中间件：
 
-* <tt>config.middleware.use(new_middleware, args)</tt> - Adds the new middleware at the bottom of the middleware stack.
+* <tt>config.middleware.use(new_middleware, args)</tt> - 在堆底添加新的中间件。
 
 * <tt>config.middleware.insert_before(existing_middleware, new_middleware, args)</tt> - Adds the new middleware before the specified existing middleware in the middleware stack.
 
@@ -148,17 +148,17 @@ You can swap an existing middleware in the middleware stack using +config.middle
 config.middleware.swap ActionController::Failsafe, Lifo::Failsafe
 </ruby>
 
-h5. Middleware Stack is an Array
+h5. 中间件堆是一个队列Middleware Stack is an Array
 
-The middleware stack behaves just like a normal +Array+. You can use any +Array+ methods to insert, reorder, or remove items from the stack. Methods described in the section above are just convenience methods.
+中间堆表现象一个普通的 +Array+ 。 你可以使用任意的 +Array+ 方法去插入、排序或者删除 items from the stack. Methods described in the section above are just convenience methods.
 
-For example, the following removes the middleware matching the supplied class name:
+例如， the following removes the middleware matching the supplied class name:
 
 <ruby>
 config.middleware.delete(middleware)
 </ruby>
 
-h4. Internal Middleware Stack
+h4. 内部中间件堆
 
 Much of Action Controller's functionality is implemented as Middlewares. The following table explains the purpose of each of them:
 
@@ -174,9 +174,9 @@ Much of Action Controller's functionality is implemented as Middlewares. The fol
 
 TIP: It's possible to use any of the above middlewares in your custom Rack stack.
 
-h4. Customizing Internal Middleware Stack
+h4. 定制内部中间件堆
 
-It's possible to replace the entire middleware stack with a custom stack using <tt>ActionController::Dispatcher.middleware=</tt>.
+可以使用<tt>ActionController::Dispatcher.middleware=</tt>将整个中间件堆替换成定制的堆。
 
 Put the following in an initializer:
 
@@ -189,7 +189,7 @@ ActionController::Dispatcher.middleware = ActionController::MiddlewareStack.new 
 end
 </ruby>
 
-And now inspecting the middleware stack:
+现在检查一下中间件堆：
 
 <shell>
 $ rake middleware
@@ -220,15 +220,15 @@ use MyOwnStackFromScratch
 run ActionController::Dispatcher.new
 </ruby>
 
-h3. Resources
+h3. 学习资源
 
-h4. Learning Rack
+h4. 学习Rack
 
-* "Official Rack Website":http://rack.github.com
-* "Introducing Rack":http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html
+* "Rack的官方网站":http://rack.github.com
+* "介绍Rack":http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html
 * "Ruby on Rack #1 - Hello Rack!":http://m.onkey.org/ruby-on-rack-1-hello-rack
 * "Ruby on Rack #2 - The Builder":http://m.onkey.org/ruby-on-rack-2-the-builder
 
-h4. Understanding Middlewares
+h4. 理解中间件
 
 * "Railscast on Rack Middlewares":http://railscasts.com/episodes/151-rack-middleware
