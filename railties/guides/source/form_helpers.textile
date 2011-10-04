@@ -1,8 +1,8 @@
-h2. Rails Form helpers
+h2. Rails 表单辅助方法
 
 Forms in web applications are an essential interface for user input. However, form markup can quickly become tedious to write and maintain because of form control naming and their numerous attributes. Rails deals away with these complexities by providing view helpers for generating form markup. However, since they have different use-cases, developers are required to know all the differences between similar helper methods before putting them to use.
 
-In this guide you will:
+在本篇文档中你将:
 
 * Create search forms and similar kind of generic forms not representing any specific model in your application
 * Make model-centric forms for creation and editing of specific database records
@@ -17,9 +17,9 @@ endprologue.
 NOTE: This guide is not intended to be a complete documentation of available form helpers and their arguments. Please visit "the Rails API documentation":http://api.rubyonrails.org/ for a complete reference.
 
 
-h3. Dealing with Basic Forms
+h3. 处理基本的表单
 
-The most basic form helper is +form_tag+.
+最基本的表单辅助方法是 +form_tag+ 。
 
 <erb>
 <%= form_tag do %>
@@ -27,7 +27,7 @@ The most basic form helper is +form_tag+.
 <% end %>
 </erb>
 
-When called without arguments like this, it creates a +&lt;form&gt;+ tag which, when submitted, will POST to the current page. For instance, assuming the current page is +/home/index+, the generated HTML will look like this (some line breaks added for readability):
+象这样不带参数， it creates a +&lt;form&gt;+ tag which, when submitted, will POST to the current page. For instance, assuming the current page is +/home/index+, the generated HTML will look like this (some line breaks added for readability):
 
 <html>
 <form accept-charset="UTF-8" action="/home/index" method="post">
@@ -43,9 +43,9 @@ Now, you'll notice that the HTML contains something extra: a +div+ element with 
 
 NOTE: Throughout this guide, the +div+ with the hidden input elements will be excluded from code samples for brevity.
 
-h4. A Generic Search Form
+h4. 一个通用的搜索表单
 
-One of the most basic forms you see on the web is a search form. This form contains:
+网上最基本的表单是搜索表单。包括：
 
 # a form element with "GET" method,
 # a label for the input,
@@ -180,9 +180,9 @@ IMPORTANT: The search, telephone, URL, and email inputs are HTML5 controls. If y
 
 TIP: If you're using password input fields (for any purpose), you might want to configure your application to prevent those parameters from being logged. You can learn about this in the "Security Guide":security.html#logging.
 
-h3. Dealing with Model Objects
+h3. 处理模型对象
 
-h4. Model Object Helpers
+h4. 模型对象辅助方法
 
 A particularly common task for a form is editing or creating a model object. While the +*_tag+ helpers can certainly be used for this task they are somewhat verbose as for each tag you would have to ensure the correct parameter name is used and set the default value of the input appropriately. Rails provides helpers tailored to this task. These helpers lack the <notextile>_tag</notextile> suffix, for example +text_field+, +text_area+.
 
@@ -637,7 +637,7 @@ ActionController::UrlEncodedPairParser.parse_query_parameters "name=fred&phone=0
 # => {"name"=>"fred", "phone"=>"0123456789"}
 </ruby>
 
-h4. Basic Structures
+h4. 基本结构
 
 The two basic structures are arrays and hashes. Hashes mirror the syntax used for accessing the value in +params+. For example if a form contains
 
@@ -786,9 +786,9 @@ Or if you don't want to render an +authenticity_token+ field:
 <% end %>
 </erb>
 
-h3. Building Complex Forms
+h3. 复合表单
 
-Many apps grow beyond simple forms editing a single object. For example when creating a Person you might want to allow the user to (on the same form) create multiple address records (home, work, etc.). When later editing that person the user should be able to add, remove or amend addresses as necessary. While this guide has shown you all the pieces necessary to handle this, Rails does not yet have a standard end-to-end way of accomplishing this, but many have come up with viable approaches. These include:
+Many apps grow beyond simple forms editing a single object. 例如当创建一个人，你会考虑允许用户 (使用同样的表单) 创建多个地址记录（家庭、工作等等）。 When later editing that person the user should be able to add, remove or amend addresses as necessary. While this guide has shown you all the pieces necessary to handle this, Rails does not yet have a standard end-to-end way of accomplishing this, but many have come up with viable approaches. These include:
 
 * As of Rails 2.3, Rails includes "Nested Attributes":./2_3_release_notes.html#nested-attributes and "Nested Object Forms":./2_3_release_notes.html#nested-object-forms
 * Ryan Bates' series of Railscasts on "complex forms":http://railscasts.com/episodes/75
