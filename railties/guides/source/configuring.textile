@@ -7,9 +7,9 @@ This guide covers the configuration and initialization features available to Rai
 
 endprologue.
 
-h3. Locations for Initialization Code
+h3. 初始化代码的位置
 
-Rails offers four standard spots to place initialization code:
+Rails 提供了四个用于放置初始化代码的标准位置：
 
 * +config/application.rb+
 * Environment-specific configuration files
@@ -20,11 +20,11 @@ h3. Running Code Before Rails
 
 In the rare event that your application needs to run some code before Rails itself is loaded, put it above the call to +require 'rails/all'+ in +config/application.rb+.
 
-h3. Configuring Rails Components
+h3. 配置 Rails 组件
 
 In general, the work of configuring Rails means configuring the components of Rails, as well as configuring Rails itself. The configuration file +config/application.rb+ and environment-specific configuration files (such as +config/environments/production.rb+) allow you to specify the various settings that you want to pass down to all of the components.
 
-For example, the default +config/application.rb+ file includes this setting:
+例如，默认的 +config/application.rb+ 文件包含了以下设定：
 
 <ruby>
 config.filter_parameters += [:password]
@@ -175,7 +175,7 @@ The full set of methods that can be used in this block are as follows:
 * +test_framework+ defines which test framework to use. Defaults to +false+ and will use Test::Unit by default.
 * +template_engine+ defines which template engine to use, such as ERB or Haml. Defaults to +:erb+.
 
-h4. Configuring Middleware
+h4. 配置中间件
 
 Every Rails application comes with a standard set of middleware which it uses in this order in the development environment:
 
@@ -199,7 +199,7 @@ Every Rails application comes with a standard set of middleware which it uses in
 * +ActionDispatch::Head+ converts HEAD requests to GET requests and serves them as so.
 * +ActionDispatch::BestStandardsSupport+ enables "best standards support" so that IE8 renders some elements correctly.
 
-Besides these usual middleware, you can add your own by using the +config.middleware.use+ method:
+除了这些通常的中间件之外，你可以使用 +config.middleware.use+ 方法加入自已的：
 
 <ruby>
 config.middleware.use Magical::Unicorns
@@ -229,7 +229,7 @@ They can also be removed from the stack completely:
 config.middleware.delete ActionDispatch::BestStandardsSupport
 </ruby>
 
-h4. Configuring i18n
+h4. 配置国际化
 
 * +config.i18n.default_locale+ sets the default locale of an application used for i18n. Defaults to +:en+.
 
@@ -432,7 +432,7 @@ There are a few configuration options available in Active Support:
 * +ActiveSupport::Logger.silencer+ is set to +false+ to disable the ability to silence logging in a block. The default is +true+.
 
 
-h3. Rails Environment Settings
+h3. Rails 环境设定
 
 Some parts of Rails can also be configured externally by supplying environment variables. The following environment variables are recognized by various parts of Rails:
 
@@ -445,7 +445,7 @@ Some parts of Rails can also be configured externally by supplying environment v
 * +ENV["RAILS_CACHE_ID"]+ and +ENV["RAILS_APP_VERSION"]+ are used to generate expanded cache keys in Rails' caching code. This allows you to have multiple separate caches from the same application.
 
 
-h3. Using Initializer Files
+h3. 使用初始化文件
 
 After loading the framework and any gems and plugins in your application, Rails turns to loading initializers. An initializer is any Ruby file stored under +config/initializers+ in your application. You can use initializers to hold configuration settings that should be made after all of the frameworks, plugins and gems are loaded, such as options to configure settings for these parts.
 
@@ -453,7 +453,7 @@ NOTE: You can use subfolders to organize your initializers if you like, because 
 
 TIP: If you have any ordering dependency in your initializers, you can control the load order by naming. For example, +01_critical.rb+ will be loaded before +02_normal.rb+.
 
-h3. Initialization events
+h3. 初始化事件
 
 Rails has 5 initialization events which can be hooked into (listed in the order that they are ran):
 
