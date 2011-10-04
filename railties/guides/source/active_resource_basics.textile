@@ -1,6 +1,6 @@
 h2. Active Resource基础
 
-This guide should provide you with all you need to get started managing the connection between business objects and RESTful web services. It implements a way to map web-based resources to local objects with CRUD semantics.
+本篇包括了开始管理商业对象与 RESTful web服务连接所需的一切。It implements a way to map web-based resources to local objects with CRUD semantics.
 
 endprologue.
 
@@ -28,7 +28,7 @@ h3. 读写数据
 
 Active Resource make request over HTTP using a standard JSON format. It mirrors the RESTful routing built into Action Controller but will also work with any other REST service that properly implements the protocol.
 
-h4. Read
+h4. 获取
 
 Read requests use the GET method and expect the JSON form of whatever resource/resources is/are being requested.
 
@@ -73,7 +73,7 @@ h3. Validations
 
 Module to support validation and errors with Active Resource objects. The module overrides Base#save to rescue ActiveResource::ResourceInvalid exceptions and parse the errors returned in the web service response. The module also adds an errors collection that mimics the interface of the errors provided by ActiveRecord::Errors.
 
-h4. Validating client side resources by overriding validation methods in base class
+h4. 在基类中重载方法，用于校验客户端资源
 
 <ruby>
 class Person < ActiveResource::Base
@@ -103,7 +103,7 @@ person.last_name = "Halpert"
 person.save                   # => true (and person is now saved to the remote service)
 </ruby>
 
-h4. Public instance methods
+h4. 公开的实例方法
 
 ActiveResource::Validations have three public instance methods
 
