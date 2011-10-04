@@ -1,4 +1,4 @@
-h2. Performance Testing Rails Applications
+h2. 性能测试
 
 This guide covers the various ways of performance testing a Ruby on Rails application. By referring to this guide, you will be able to:
 
@@ -12,7 +12,7 @@ Performance testing is an integral part of the development cycle. It is very imp
 
 endprologue.
 
-h3. Performance Test Cases
+h3. 性能测试用例
 
 Rails performance tests are a special type of integration tests, designed for benchmarking and profiling the test code. With performance tests, you can determine where your application's memory or speed problems are coming from, and get a more in-depth picture of those problems.
 
@@ -54,7 +54,7 @@ class HomepageTest < ActionDispatch::PerformanceTest
 end
 </ruby>
 
-h4. Examples
+h4. 示例
 
 Let's assume your application has the following controller and model:
 
@@ -169,7 +169,7 @@ To run performance tests in profiling mode:
 $ rake test:profile
 </shell>
 
-h4. Metrics
+h4. 度量
 
 Benchmarking and profiling run performance tests and give you multiple metrics. The availability of each metric is determined by the interpreter being used—none of them support all metrics—and by the mode in use. A brief description of each metric and their availability across interpreters/modes is given below.
 
@@ -193,7 +193,7 @@ h5. Memory
 
 Memory measures the amount of memory used for the performance test case.
 
-h5. Objects
+h5. 对象
 
 Objects measures the number of objects allocated for the performance test case.
 
@@ -246,7 +246,7 @@ BrowsingTest#test_homepage (31 ms warmup)
              gc_time: 19 ms
 </shell>
 
-h6. CSV Files
+h6. CSV 文件
 
 Performance test results are also appended to +.csv+ files inside +tmp/performance+. For example, running the default +BrowsingTest#test_homepage+ will generate following five files:
 
@@ -278,7 +278,7 @@ h5(#output-profiling). Profiling
 
 In profiling mode, performance tests can generate multiple types of outputs. The command line output is always presented but support for the others is dependent on the interpreter in use. A brief description of each type and their availability across interpreters is given below.
 
-h6. Command Line
+h6. 命令行
 
 This is a very basic form of output in profiling mode:
 
@@ -289,15 +289,15 @@ BrowsingTest#test_homepage (58 ms warmup)
              objects: 7,882
 </shell>
 
-h6. Flat
+h6. 平坦
 
 Flat output shows the metric—time, memory, etc—measure in each method. "Check Ruby-Prof documentation for a better explanation":http://ruby-prof.rubyforge.org/files/examples/flat_txt.html.
 
-h6. Graph
+h6. 图表
 
 Graph output shows the metric measure in each method, which methods call it and which methods it calls. "Check Ruby-Prof documentation for a better explanation":http://ruby-prof.rubyforge.org/files/examples/graph_txt.html.
 
-h6. Tree
+h6. 树
 
 Tree output is profiling information in calltree format for use by "kcachegrind":http://kcachegrind.sourceforge.net/html/Home.html and similar tools.
 
@@ -348,7 +348,7 @@ Metrics and formats have different defaults depending on the interpreter in use.
 
 As you've probably noticed by now, metrics and formats are specified using a symbol array with each name "underscored.":http://api.rubyonrails.org/classes/String.html#method-i-underscore
 
-h4. Performance Test Environment
+h4. 性能测试环境
 
 Performance tests are run in the +test+ environment. But running performance tests will set the following configuration parameters:
 
@@ -408,14 +408,14 @@ $ tar -xzvf <ruby-version.tar.gz>
 $ cd <ruby-version>
 </shell>
 
-h6. Apply the Patch
+h6. 打补丁
 
 <shell>
 $ curl http://github.com/wayneeseguin/rvm/raw/master/patches/ruby/1.9.2/p180/gcdata.patch | patch -p0 # if you're on 1.9.2!
 $ curl http://github.com/wayneeseguin/rvm/raw/master/patches/ruby/1.8.7/ruby187gc.patch | patch -p0 # if you're on 1.8.7!
 </shell>
 
-h6. Configure and Install
+h6. 配置和安装
 
 The following will install Ruby in your home directory's +/rubygc+ directory. Make sure to replace +&lt;homedir&gt;+ with a full patch to your actual home directory.
 
@@ -424,7 +424,7 @@ $ ./configure --prefix=/<homedir>/rubygc
 $ make && make install
 </shell>
 
-h6. Prepare Aliases
+h6. 准备别名
 
 For convenience, add the following lines in your +~/.profile+:
 
@@ -452,7 +452,7 @@ gem 'ruby-prof', :path => 'git://github.com/wycats/ruby-prof.git'
 
 Now run +bundle install+ and you're ready to go.
 
-h3. Command Line Tools
+h3. 命令行工具
 
 Writing performance test cases could be an overkill when you are looking for one time tests. Rails ships with two command line tools that enable quick and dirty performance testing:
 
