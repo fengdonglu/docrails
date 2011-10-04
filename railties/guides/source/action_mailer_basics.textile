@@ -6,7 +6,7 @@ endprologue.
 
 WARNING. This Guide is based on Rails 3.0. Some of the code shown here will not work in earlier versions of Rails.
 
-h3. Introduction
+h3. 介绍
 
 Action Mailer allows you to send emails from your application using a mailer model and views. So, in Rails, emails are used by creating mailers that inherit from +ActionMailer::Base+ and live in +app/mailers+. Those mailers have associated views that appear alongside controller views in +app/views+.
 
@@ -154,7 +154,7 @@ If you are using UTF-8 as your character set, you do not have to do anything spe
 
 For more complex examples such as defining alternate character sets or self encoding text first, please refer to the Mail library.
 
-h4. Complete List of Action Mailer Methods
+h4. ActionMailer 方法完全列表
 
 There are just three methods that you need to send pretty much any email message:
 
@@ -186,9 +186,9 @@ headers {"X-Spam" => value, "X-Special" => another_value}
 
 TIP: All <tt>X-Value</tt> headers per the RFC2822 can appear more than one time. If you want to delete an <tt>X-Value</tt> header, you need to assign it a value of <tt>nil</tt>.
 
-h5. Adding Attachments
+h5. 增加附件
 
-Adding attachments has been simplified in Action Mailer 3.0.
+在 Action Mailer 3.0 中，增加附件很简单。
 
 * Pass the file name and content and Action Mailer and the Mail gem will automatically guess the mime_type, set the encoding and create the attachment.
 
@@ -238,9 +238,9 @@ end
                                             :class => 'photos' %>
 </erb>
 
-h5. Sending Email To Multiple Recipients
+h5. 邮件发送至多个收件人
 
-It is possible to send email to one or more recipients in one email (for e.g. informing all admins of a new signup) by setting the list of emails to the <tt>:to</tt> key. The list of emails can be an array of email addresses or a single string with the addresses separated by commas.
+邮件发送给多个收件人是可能的 (for e.g. informing all admins of a new signup) by setting the list of emails to the <tt>:to</tt> key. The list of emails can be an array of email addresses or a single string with the addresses separated by commas.
 
 <ruby>
 class AdminMailer < ActionMailer::Base
@@ -342,7 +342,7 @@ end
 
 Will render the HTML part using the <tt>my_layout.html.erb</tt> file and the text part with the usual <tt>user_mailer.text.erb</tt> file if it exists.
 
-h4. Generating URLs in Action Mailer Views
+h4. 在ActionMailer视图中产生链接
 
 URLs can be generated in mailer views using +url_for+ or named routes.
 
@@ -401,7 +401,7 @@ Will put the HTML part first, and the plain text part second.
 
 h4. Sending Emails with Attachments
 
-Attachments can be added by using the +attachments+ method:
+可以使用 +attachments+ 方法添加附件：
 
 <ruby>
 class UserMailer < ActionMailer::Base
@@ -417,9 +417,9 @@ end
 
 The above will send a multipart email with an attachment, properly nested with the top level being <tt>multipart/mixed</tt> and the first part being a <tt>multipart/alternative</tt> containing the plain text and HTML email messages.
 
-h3. Receiving Emails
+h3. 接收电子邮件
 
-Receiving and parsing emails with Action Mailer can be a rather complex endeavor. Before your email reaches your Rails app, you would have had to configure your system to somehow forward emails to your app, which needs to be listening for that. So, to receive emails in your Rails app you'll need to:
+接收和解析电子邮件with Action Mailer can be a rather complex endeavor. Before your email reaches your Rails app, you would have had to configure your system to somehow forward emails to your app, which needs to be listening for that. So, to receive emails in your Rails app you'll need to:
 
 * Implement a +receive+ method in your mailer.
 
@@ -452,7 +452,7 @@ h3. Using Action Mailer Helpers
 
 Action Mailer now just inherits from Abstract Controller, so you have access to the same generic helpers as you do in Action Controller.
 
-h3. Action Mailer Configuration
+h3. Action Mailer 配置
 
 The following configuration options are best made in one of the environment files (environment.rb, production.rb, etc...)
 
@@ -465,7 +465,7 @@ The following configuration options are best made in one of the environment file
 |+perform_deliveries+|Determines whether deliveries are actually carried out when the +deliver+ method is invoked on the Mail message. By default they are, but this can be turned off to help functional testing.|
 |+deliveries+|Keeps an array of all the emails sent out through the Action Mailer with delivery_method :test. Most useful for unit and functional testing.|
 
-h4. Example Action Mailer Configuration
+h4. Action Mailer 配置示例
 
 An example would be adding the following to your appropriate <tt>config/environments/$RAILS_ENV.rb</tt> file:
 
@@ -480,9 +480,9 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = true
 </ruby>
 
-h4. Action Mailer Configuration for GMail
+h4. Action Mailer 的 GMail 配置
 
-As Action Mailer now uses the Mail gem, this becomes as simple as adding to your <tt>config/environments/$RAILS_ENV.rb</tt> file:
+As Action Mailer now uses the Mail gem, this becomes as simple as adding to your <tt>config/environments/$RAILS_ENV.rb</tt> 文件：
 
 <ruby>
 config.action_mailer.delivery_method = :smtp
@@ -496,9 +496,9 @@ config.action_mailer.smtp_settings = {
   :enable_starttls_auto => true  }
 </ruby>
 
-h3. Mailer Testing
+h3. Mailer 测试
 
-By default Action Mailer does not send emails in the test environment. They are just added to the +ActionMailer::Base.deliveries+ array.
+默认情况下，ActionMailer不能在测试环境下发送邮件。 They are just added to the +ActionMailer::Base.deliveries+ array.
 
 Testing mailers normally involves two things: One is that the mail was queued, and the other one that the email is correct. With that in mind, we could test our example mailer from above like so:
 
