@@ -30,7 +30,7 @@ Ruby on Rails 指南
 <% content_for :index_section do %>
 <div id="subCol">
   <dl>
-    <dd class="work-in-progress">Guides marked with this icon are currently being worked on. While they might still be useful to you, they may contain incomplete information and even errors. You can help by reviewing them and posting your comments and corrections to the author.</dd>
+    <dd class="work-in-progress">带有这个图标的指南还处于开发过程。虽然可能对你有用，但是他们可能包含不完全甚至是错误的信息。你可以帮助我们查看，并向作者反馈你的注解和修订。</dd>
   </dl>
 </div>
 <% end %>
@@ -38,130 +38,128 @@ Ruby on Rails 指南
 <h3>从这里开始</h3>
 
 <dl>
-<%= guide('Getting Started with Rails', 'getting_started.html') do %>
-  <p>Everything you need to know to install Rails and create your first application.</p>
+<%= guide('起步', 'getting_started.html') do %>
+  <p>关于安装和创建你的第一个应用程序所需知道的一切。</p>
 <% end %>
 </dl>
 
 <h3>模型</h3>
 
 <dl>
-<%= guide("Rails Database Migrations", 'migrations.html') do %>
-  <p>This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.</p>
+<%= guide("数据库迁移", 'migrations.html') do %>
+  <p>如何有结构地、有组织地使用Active Record 迁移来改变你的数据库。</p>
 <% end %>
 
-<%= guide("Active Record Validations and Callbacks", 'active_record_validations_callbacks.html') do %>
-  <p>This guide covers how you can use Active Record validations and callbacks.</p>
+<%= guide("Active Record校验和回调", 'active_record_validations_callbacks.html') do %>
+  <p>如何使用 Active Record 校验和回调。</p>
 <% end %>
 
-<%= guide("Active Record Associations", 'association_basics.html') do %>
-  <p>This guide covers all the associations provided by Active Record.</p>
+<%= guide("Active Record关联", 'association_basics.html') do %>
+  <p>Active Record提供的关联。</p>
 <% end %>
 
-<%= guide("Active Record Query Interface", 'active_record_querying.html') do %>
-  <p>This guide covers the database query interface provided by Active Record.</p>
-<% end %>
-</dl>
-
-<h3>Views</h3>
-
-<dl>
-<%= guide("Layouts and Rendering in Rails", 'layouts_and_rendering.html') do %>
-  <p>This guide covers the basic layout features of Action Controller and Action View, including rendering and redirecting, using content_for blocks, and working with partials.</p>
-<% end %>
-
-<%= guide("Action View Form Helpers", 'form_helpers.html', :work_in_progress => true) do %>
-  <p>Guide to using built-in Form helpers.</p>
+<%= guide("Active Record查询界面", 'active_record_querying.html') do %>
+  <p>Active Record提供的数据库查询界面。</p>
 <% end %>
 </dl>
 
-<h3>Controllers</h3>
+<h3>视图</h3>
 
 <dl>
-<%= guide("Action Controller Overview", 'action_controller_overview.html') do %>
-  <p>This guide covers how controllers work and how they fit into the request cycle in your application. It includes sessions, filters, and cookies, data streaming, and dealing with exceptions raised by a request, among other topics.</p>
+<%= guide("布局和渲染", 'layouts_and_rendering.html') do %>
+  <p>Action Controller 和 Action View的基本布局特性，包含渲染和重定向、使用 content_for 代码块和使用局部模板工作。</p>
 <% end %>
 
-<%= guide("Rails Routing from the Outside In", 'routing.html') do %>
-  <p>This guide covers the user-facing features of Rails routing. If you want to understand how to use routing in your own Rails applications, start here.</p>
+<%= guide("Action View表单辅助方法", 'form_helpers.html', :work_in_progress => true) do %>
+  <p>使用内置的表单辅助方法。</p>
 <% end %>
 </dl>
 
-<h3>Digging Deeper</h3>
+<h3>控制器</h3>
 
 <dl>
-
-<%= guide("Active Support Core Extensions", 'active_support_core_extensions.html') do %>
-  <p>This guide documents the Ruby core extensions defined in Active Support.</p>
+<%= guide("ActionController概述", 'action_controller_overview.html') do %>
+  <p>控制器如何工作，它们如何构成应用程序的应答圈。包含了sessions、过滤器和 cookies, 数据流和异常处理 raised by a request, among other topics.</p>
 <% end %>
 
-<%= guide("Rails Internationalization API", 'i18n.html') do %>
-  <p>This guide covers how to add internationalization to your applications. Your application will be able to translate content to different languages, change pluralization rules, use correct date formats for each country and so on.</p>
-<% end %>
-
-<%= guide("Action Mailer Basics", 'action_mailer_basics.html', :work_in_progress => true) do %>
-  <p>This guide describes how to use Action Mailer to send and receive emails.</p>
-<% end %>
-
-<%= guide("Testing Rails Applications", 'testing.html', :work_in_progress => true) do %>
-  <p>This is a rather comprehensive guide to doing both unit and functional tests in Rails. It covers everything from &quot;What is a test?&quot; to the testing APIs. Enjoy.</p>
-<% end %>
-
-<%= guide("Securing Rails Applications", 'security.html') do %>
-  <p>This guide describes common security problems in web applications and how to avoid them with Rails.</p>
-<% end %>
-
-<%= guide("Debugging Rails Applications", 'debugging_rails_applications.html') do %>
-  <p>This guide describes how to debug Rails applications. It covers the different ways of achieving this and how to understand what is happening "behind the scenes" of your code.</p>
-<% end %>
-
-<%= guide("Performance Testing Rails Applications", 'performance_testing.html') do %>
-  <p>This guide covers the various ways of performance testing a Ruby on Rails application.</p>
-<% end %>
-
-<%= guide("Configuring Rails Applications", 'configuring.html') do %>
-  <p>This guide covers the basic configuration settings for a Rails application.</p>
-<% end %>
-
-<%= guide("Rails Command Line Tools and Rake tasks", 'command_line.html') do %>
-  <p>This guide covers the command line tools and rake tasks provided by Rails.</p>
-<% end %>
-
-<%= guide("Caching with Rails", 'caching_with_rails.html', :work_in_progress => true) do %>
-  <p>Various caching techniques provided by Rails.</p>
-<% end %>
-
-<%= guide('Asset Pipeline', 'asset_pipeline.html') do %>
-  <p>This guide documents the asset pipeline.</p>
+<%= guide("路由深入浅出", 'routing.html') do %>
+  <p>用户面对的 Rails 路由特性。如果你想了解如何在你自己的应用程序中使用路由，从这里开始。</p>
 <% end %>
 </dl>
 
-<h3>Extending Rails</h3>
+<h3>深入</h3>
 
 <dl>
-  <%= guide("The Basics of Creating Rails Plugins", 'plugins.html', :work_in_progress => true) do %>
-    <p>This guide covers how to build a plugin to extend the functionality of Rails.</p>
+
+<%= guide("Active Support核心扩展", 'active_support_core_extensions.html') do %>
+  <p>在Active Support中定义的核心扩展。</p>
+<% end %>
+
+<%= guide("国际化接口", 'i18n.html') do %>
+  <p>如何在你的应用程序中加入国际化。 你的应用程序可以将内容翻译成不同的语言、 change pluralization rules, 使用每个国家准确的日期格式等等。</p>
+<% end %>
+
+<%= guide("Action Mailer基础", 'action_mailer_basics.html', :work_in_progress => true) do %>
+  <p>本篇描述了如何使用 Action Mailer 发送和接收邮件。</p>
+<% end %>
+
+<%= guide("测试", 'testing.html', :work_in_progress => true) do %>
+  <p>综合讲述了Rails中的单元测试和功能测试。 It covers everything from &quot;What is a test?&quot; to the testing APIs. Enjoy.</p>
+<% end %>
+
+<%= guide("安全", 'security.html') do %>
+  <p>web应用程序中常见的安全问题，如何在 Rails 中应对。</p>
+<% end %>
+
+<%= guide("调试", 'debugging_rails_applications.html') do %>
+  <p>如何调试 Rails 应用程序。 实现的不同方法和如何理解 what is happening "behind the scenes" of your code.</p>
+<% end %>
+
+<%= guide(" Rails 应用程序性能测试", 'performance_testing.html') do %>
+  <p>几种应用程序性能测试的方法。</p>
+<% end %>
+
+<%= guide("配置", 'configuring.html') do %>
+  <p>Rails应用程序的配置设定。</p>
+<% end %>
+
+<%= guide("命令行工具和Rake任务", 'command_line.html') do %>
+  <p>Rails 提供的命令行工具和Rake任务。</p>
+<% end %>
+
+<%= guide("缓存", 'caching_with_rails.html', :work_in_progress => true) do %>
+  <p> Rails 提供的各种缓存技术。</p>
+<% end %>
+
+<%= guide('资产管道', 'asset_pipeline.html') do %>
+  <p>资产管道的指南文档。</p>
+<% end %>
+</dl>
+
+<h3>扩展Rails</h3>
+
+<dl>
+  <%= guide("插件创建基础", 'plugins.html', :work_in_progress => true) do %>
+    <p>本篇描述了如何创建插件来扩展 Rails 的功能。</p>
   <% end %>
 
   <%= guide("Rails on Rack", 'rails_on_rack.html') do %>
-    <p>This guide covers Rails integration with Rack and interfacing with other Rack components.</p>
+    <p>Rails 与 Rack 集成、与其它 Rack 组件接合。</p>
   <% end %>
 
-  <%= guide("Creating and Customizing Rails Generators", 'generators.html') do %>
-    <p>This guide covers the process of adding a brand new generator to your extension
-      or providing an alternative to an element of a built-in Rails generator (such as
-      providing alternative test stubs for the scaffold generator).</p>
+  <%= guide("创建和定制 Rails 生成器", 'generators.html') do %>
+    <p>为你的扩展加入全新的生成器，或者为内置的生成器提供选项(比如给脚手架生成添加可选的测试桩).</p>
   <% end %>
 </dl>
 
-<h3>Contributing to Ruby on Rails</h3>
+<h3>为 Ruby on Rails 做贡献</h3>
 
 <dl>
-  <%= guide("Contributing to Ruby on Rails", 'contributing_to_ruby_on_rails.html') do %>
-    <p>Rails is not &quot;somebody else's framework.&quot; This guide covers a variety of ways that you can get involved in the ongoing development of Rails.</p>
+  <%= guide("为 Ruby on Rails 做贡献", 'contributing_to_ruby_on_rails.html') do %>
+    <p>Rails 不是 &quot;他人的框架。&quot; 本篇涵盖了你参与开发过程的几种方法。</p>
   <% end %>
 
-  <%= guide('API Documentation Guidelines', 'api_documentation_guidelines.html') do %>
+  <%= guide('API文档指南', 'api_documentation_guidelines.html') do %>
     <p>This guide documents the Ruby on Rails API documentation guidelines.</p>
   <% end %>
 
