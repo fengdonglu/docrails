@@ -10,19 +10,19 @@ h2. Action View概览
 
 endprologue.
 
-h3. What is Action View?
+h3. 什么是ActionView？
 
-Action View and Action Controller are the two major components of Action Pack. In Rails, web requests are handled by Action Pack, which splits the work into a controller part (performing the logic) and a view part (rendering a template). Typically, Action Controller will be concerned with communicating with the database and performing CRUD actions where necessary. Action View is then responsible for compiling the response.
+Action View和Action Controller是Action Pack中两个主要的组件。 在 Rails 中, web请求由 Action Pack 获取, 它把工作分为控制器部分 (performing the logic)和视图部分（渲染模板） 。 典型地， Action Controller将在必要时参与数据库和performing CRUD actions之间的通讯。Action View然后负责响应。
 
-Action View templates are written using embedded Ruby in tags mingled with HTML. To avoid cluttering the templates with boilerplate code, a number of helper classes provide common behavior for forms, dates, and strings. It's also easy to add new helpers to your application as it evolves.
+Action View模板使用嵌入式Ruby编写，在HTML内混入标签。 To avoid cluttering the templates with boilerplate code, 一些辅助方法类提供了表单、日期和字符串的常见行为。在你的应用程序程序进化过程中加入新的辅助方法也很容易。
 
-Note: Some features of Action View are tied to Active Record, but that doesn't mean that Action View depends on Active Record. Action View is an independent package that can be used with any sort of backend.
+Note: 一些Action View的特性和Active Record有关，但是这并不是说Action View 基于 Active Record。 Action View 是一个独立的软件包that can be used with any sort of backend.
 
 h3. Using Action View with Rails
 
-For each controller there is an associated directory in the <tt>app/views</tt> directory which holds the template files that make up the views associated with that controller. These files are used to display the view that results from each controller action.
+对于每个控制器，都在 <tt>app/views</tt> 目录下有一个关联目录，保存着模板文件，用于产生关联到控制器的视图。这些文件用于显示每个控制器Action结果的视图。
 
-Let's take a look at what Rails does by default when creating a new resource using the scaffold generator:
+让我们看看，当使用脚手架生成器创建一个新的资源时，Rails都干了些啥：
 
 <shell>
 $ rails generate scaffold post
@@ -103,7 +103,7 @@ get '/' do
 end
 </ruby>
 
-Then, we can run the application:
+然后，我们可以运行应用程序：
 
 <shell>
 $ ruby hello_world.rb
@@ -113,16 +113,16 @@ Once the application is running, you can see Sinatra and Action View working tog
 
 TODO needs a screenshot? I have one - not sure where to put it.
 
-h3. Templates, Partials and Layouts
+h3. 模板、局部模板和布局
 
 As mentioned before, the final HTML output is a composition of three Rails elements: +Templates+, +Partials+ and +Layouts+.
 Find below a brief overview of each one of them.
 
-h4. Templates
+h4. 模板
 
-Action View templates can be written in several ways. If the template file has a <tt>.erb</tt> extension then it uses a mixture of ERB (included in Ruby) and HTML. If the template file has a <tt>.builder</tt> extension then a fresh instance of <tt>Builder::XmlMarkup</tt> library is used.
+Action View模板可以使用几种办法编写。 如果模板文件是 <tt>.erb</tt> 后缀， then it uses a mixture of ERB (included in Ruby) and HTML. 如果模板文件是 <tt>.builder</tt> 后缀， then a fresh instance of <tt>Builder::XmlMarkup</tt> library is used.
 
-Rails supports multiple template systems and uses a file extension to distinguish amongst them. For example, an HTML file using the ERB template system will have <tt>.html.erb</tt> as a file extension.
+Rails支持多个模板系统，使用文件扩展名分清该用哪个。例如， an HTML file using the ERB template system will have <tt>.html.erb</tt> as a file extension.
 
 h5. ERB
 
@@ -150,7 +150,7 @@ h5. Builder
 
 Builder templates are a more programmatic alternative to ERB. They are especially useful for generating XML content. An XmlMarkup object named +xml+ is automatically made available to templates with a <tt>.builder</tt> extension.
 
-Here are some basic examples:
+这里有一些基本示例：
 
 <ruby>
 xml.em("emphasized")
@@ -159,7 +159,7 @@ xml.a("A Link", "href"=>"http://rubyonrails.org")
 xml.target("name"=>"compile", "option"=>"fast")
 </ruby>
 
-will produce
+将产生
 
 <html>
 <em>emphasized</em>
@@ -211,9 +211,9 @@ xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
 end
 </ruby>
 
-h5. Template Caching
+h5. 模板缓存
 
-By default, Rails will compile each template to a method in order to render it. When you alter a template, Rails will check the file's modification time and recompile it in development mode.
+By default, Rails will compile each template to a method in order to render it. 当你修改一个模板， Rails 会检查文件的修改时间，重新编译 in development mode.
 
 h4. Partials
 
@@ -235,7 +235,7 @@ This will render a file named +_menu.html.erb+ at that point within the view is 
 
 That code will pull in the partial from +app/views/shared/_menu.html.erb+.
 
-h5. Using Partials to simplify Views
+h5. 使用局部模板简化视图
 
 One way to use partials is to treat them as the equivalent of subroutines: as a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looked like this:
 
@@ -254,7 +254,7 @@ One way to use partials is to treat them as the equivalent of subroutines: as a 
 
 Here, the +_ad_banner.html.erb+ and +_footer.html.erb+ partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
 
-h5. The :as and :object options
+h5. :as 和 :object 选项
 
 By default <tt>ActionView::Partials::PartialRenderer</tt> has its object in a local variable with the same name as the template. So, given
 
@@ -276,7 +276,7 @@ With the <tt>:as</tt> option we can specify a different name for said local vari
 
 The <tt>:object</tt> option can be used to directly specify which object is rendered into the partial; useful when the template's object is elsewhere, in a different ivar or in a local variable for instance.
 
-For example, instead of:
+例如， instead of:
 
 <erb>
 <%= render :partial => "product", :locals => { :product  => @item } %>
@@ -365,7 +365,7 @@ The +post+ partial wraps the post's +body+ in a +div+ with the +id+ of the post 
 <% end %>
 </ruby>
 
-This example would output the following:
+这个例子将输出：
 
 <html>
 <div class='box'>
@@ -419,7 +419,7 @@ Returns a string with a DIV containing all of the error messages for the objects
 error_messages_for "post"
 </ruby>
 
-h5. form
+h5. 表单
 
 Returns a form with inputs for all attributes of the specified Active Record object. For example, let's say we have a +@post+ with attributes named +title+ of type +String+ and +body+ of type +Text+. Calling +form+ would produce a form to creating a new post with inputs for those attributes.
 
@@ -443,11 +443,11 @@ form("post")
 
 Typically, +form_for+ is used instead of +form+ because it doesn't automatically include all of the model's attributes.
 
-h5. input
+h5. 输入
 
 Returns a default input tag for the type of object returned by the method.
 
-For example, if +@post+ has an attribute +title+ mapped to a +String+ column that holds "Hello World":
+例如， if +@post+ has an attribute +title+ mapped to a +String+ column that holds "Hello World":
 
 <ruby>
 input("post", "title") # =>
