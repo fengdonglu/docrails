@@ -11,17 +11,17 @@ After reading this guide, you should be able to use and configure:
 
 endprologue.
 
-h3. Basic Caching
+h3. 缓存基础
 
-This is an introduction to the three types of caching techniques that Rails provides by default without the use of any third party plugins.
+这里介绍了Rails默认提供（不使用第三方插件）的三种缓存技术。
 
-To start playing with caching you'll want to ensure that +config.action_controller.perform_caching+ is set to +true+, if you're running in development mode. This flag is normally set in the corresponding +config/environments/*.rb+ and caching is disabled by default for development and test, and enabled for production.
+开始前，如果你运行在开发模式下，需要确认 +config.action_controller.perform_caching+ 选项已经设置成 +true+ 。这个选项通常在 +config/environments/*.rb+ 对应的地方，开发和测试模式的默认情况下，缓存是关闭的，而在生产模式中打开。
 
 <ruby>
 config.action_controller.perform_caching = true
 </ruby>
 
-h4. Page Caching
+h4. 页面缓存
 
 Page caching is a Rails mechanism which allows the request for a generated page to be fulfilled by the webserver (i.e. Apache or nginx), without ever having to go through the Rails stack at all. Obviously, this is super-fast. Unfortunately, it can't be applied to every situation (such as pages that need authentication) and since the webserver is literally just serving a file from the filesystem, cache expiration is an issue that needs to be dealt with.
 
@@ -153,7 +153,7 @@ h4. Sweepers
 
 Cache sweeping is a mechanism which allows you to get around having a ton of +expire_{page,action,fragment}+ calls in your code. It does this by moving all the work required to expire cached content into an +ActionController::Caching::Sweeper+ subclass. This class is an observer and looks for changes to an object via callbacks, and when a change occurs it expires the caches associated with that object in an around or after filter.
 
-Continuing with our Product controller example, we could rewrite it with a sweeper like this:
+继续我们的Product控制器例子，我们用sweeper重写：
 
 <ruby>
 class ProductSweeper < ActionController::Caching::Sweeper
@@ -211,7 +211,7 @@ h4. SQL Caching
 
 Query caching is a Rails feature that caches the result set returned by each query so that if Rails encounters the same query again for that request, it will use the cached result set as opposed to running the query against the database again.
 
-For example:
+例如：
 
 <ruby>
 class ProductsController < ActionController
@@ -237,7 +237,7 @@ h3. Cache Stores
 
 Rails provides different stores for the cached data created by action and fragment caches. Page caches are always stored on disk.
 
-h4. Configuration
+h4. 配置
 
 You can set up your application's default cache store by calling +config.cache_store=+ in the Application definition inside your +config/application.rb+ file or in an Application.configure block in an environment specific configuration file (i.e. +config/environments/*.rb+). The first argument will be the cache store to use and the rest of the argument will be passed as arguments to the cache store constructor.
 
@@ -332,7 +332,7 @@ caches_action :index, :expires_in => 60.seconds, :unless_exist => true
 For more information about Ehcache, see "http://ehcache.org/":http://ehcache.org/ .
 For more information about Ehcache for JRuby and Rails, see "http://ehcache.org/documentation/jruby.html":http://ehcache.org/documentation/jruby.html
 
-h4. Custom Cache Stores
+h4. 定制缓存存储
 
 You can create your own custom cache store by simply extending +ActiveSupport::Cache::Store+ and implementing the appropriate methods. In this way, you can swap in any number of caching technologies into your Rails application.
 
@@ -400,6 +400,6 @@ class ProductsController < ApplicationController
 end
 </ruby>
 
-h3. Further reading
+h3. 进阶阅读
 
 * "Scaling Rails Screencasts":http://railslab.newrelic.com/scaling-rails
