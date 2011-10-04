@@ -1,33 +1,33 @@
-h2. Rails Application Templates
+h2. Rails 应用程序模板
 
-Application templates are simple Ruby files containing DSL for adding plugins/gems/initializers etc. to your freshly created Rails project or an existing Rails project.
+应用程序模板是一些简单的 Ruby 文件，包含了添加插件/gems/初始化器等等的DSL 。可用于你新创建的应用程序，或是已存在的 Rails 项目。
 
-By referring to this guide, you will be able to:
+基于本篇，你可以：
 
-* Use templates to generate/customize Rails applications
-* Write your own reusable application templates using the Rails template API
+* 使用模板产生/定制 Rails 应用程序
+* 使用 Rails 模板 API 编写你自己的可重用应用程序模板
 
 endprologue.
 
-h3. Usage
+h3. 用法
 
-To apply a template, you need to provide the Rails generator with the location of the template you wish to apply, using -m option. This can either be path to a file or a URL.
+使用模板时，你需要通过 -m 选项为生成器指定模板的位置，可以是文件路径或URL。
 
 <shell>
 $ rails new blog -m ~/template.rb
 $ rails new blog -m http://example.com/template.rb
 </shell>
 
-You can use the rake task +rails:template+ to apply templates to an existing Rails application. The location of the template needs to be passed in to an environment variable named LOCATION. Again, this can either be path to a file or a URL.
+你可以使用 rake 任务 +rails:template+ 把模板应用到已存在的应用程序中。模板的位置需要使用名为 LOCATION 的环境变量传入。这同样可以是文件路径或URL。
 
 <shell>
 $ rake rails:template LOCATION=~/template.rb
 $ rake rails:template LOCATION=http://example.com/template.rb
 </shell>
 
-h3. Template API
+h3. 模板API
 
-Rails templates API is very self explanatory and easy to understand. Here's an example of a typical Rails template:
+模板API是自注释的，很容易理解。这是一个典型模板的示例：
 
 <ruby>
 # template.rb
@@ -41,13 +41,13 @@ git :add => "."
 git :commit => "-a -m 'Initial commit'"
 </ruby>
 
-The following sections outlines the primary methods provided by the API:
+下面这些小节描述了API提供的主要方法的概况：
 
 h4. gem(name, options = {})
 
 Adds a +gem+ entry for the supplied gem to the generated application’s +Gemfile+.
 
-For example, if your application depends on the gems +bj+ and +nokogiri+:
+例如，如果你的应用程序依赖于 +bj+ 和 +nokogiri+  gems ：
 
 <ruby>
 gem "bj"
@@ -64,7 +64,7 @@ h4. gem_group(*names, &block)
 
 Wraps gem entries inside a group.
 
-For example, if you want to load +rspec-rails+ only in +development+ and +test+ group:
+例如, if you want to load +rspec-rails+ only in +development+ and +test+ group:
 
 <ruby>
 gem_group :development, :test do
@@ -76,7 +76,7 @@ h4. add_source(source, options = {})
 
 Adds the given source to the generated application's +Gemfile+.
 
-For example, if you need to source a gem from "http://code.whytheluckystiff.net":
+例如, if you need to source a gem from "http://code.whytheluckystiff.net":
 
 <ruby>
 add_source "http://code.whytheluckystiff.net"
@@ -99,7 +99,7 @@ plugin 'authentication', :git => 'git://github.com/foor/bar.git',
                          :submodule => true
 </ruby>
 
-Please note that you need to +git :init+ before you can install a plugin as a submodule.
+请注意你需要 +git :init+ before you can install a plugin as a submodule.
 
 Or use plain old SVN:
 
@@ -142,7 +142,7 @@ That’ll create +app/components+ directory and put +foo.rb+ in there.
 
 h4. rakefile(filename, data = nil, &block)
 
-Creates a new rake file under +lib/tasks+ with the supplied tasks:
+创建一个新的 rake 文件 under +lib/tasks+ with the supplied tasks:
 
 <ruby>
 rakefile("bootstrap.rake") do
@@ -198,7 +198,7 @@ route "root :to => 'person#index'"
 
 h4. inside(dir)
 
-Enables you to run a command from the given directory. For example, if you have a copy of edge rails that you wish to symlink from your new apps, you can do this:
+Enables you to run a command from the given directory. 例如, if you have a copy of edge rails that you wish to symlink from your new apps, you can do this:
 
 <ruby>
 inside('vendor') do
