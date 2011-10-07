@@ -25,9 +25,9 @@ h3. 创建响应
 
 我会逐个讲解这些方法。但是首先， a few words about the very easiest thing that the controller can do to create a response: nothing at all.
 
-h4. Rendering by Default: Convention Over Configuration in Action
+h4. 默认渲染：约定重于配置的实践
 
-You've heard that Rails promotes "convention over configuration". Default rendering is an excellent example of this. By default, controllers in Rails automatically render views with names that correspond to valid routes. 例如， if you have this code in your +BooksController+ class:
+你一定听说Rails的“约定重于配置”。默认渲染是这句口号的一个很好的例子。默认地，控制器自动地渲染视图 with names that correspond to valid routes. 例如， 如果你有这样一个 +BooksController+ 类：
 
 <ruby>
 class BooksController < ApplicationController
@@ -40,7 +40,7 @@ end
 resources :books
 </ruby>
 
-And you have a view file +app/views/books/index.html.erb+:
+而你还有一个视图文件 +app/views/books/index.html.erb+ ：
 
 <ruby>
 <h1>Books are coming soon!</h1>
@@ -58,9 +58,9 @@ class BooksController < ApplicationController
 end
 </ruby>
 
-Note that we don't have explicit render at the end of the index action in accordance with "convention over configuration" principle. The rule is that if you do not explicitly render something at the end of a controller action, Rails will automatically look for the +action_name.html.erb+ template in the controller's view path and render it. So in this case, Rails will render the +app/views/books/index.html.erb+ file.
+Note that we don't have explicit render at the end of the index action in accordance with “约定重于配置” principle. The rule is that if you do not explicitly render something at the end of a controller action, Rails 会自动在控制器的视图路径下查找 +action_name.html.erb+ 模板并渲染。所以，在这种情况下， Rails 会渲染 +app/views/books/index.html.erb+ 文件。
 
-如果我们希望 to display the properties of all the books in our view, we can do so with an ERB template like this:
+如果我们希望在视图中显示所有图书的属性，我们可以 do so with an ERB template like this:
 
 <ruby>
 <h1>Listing Books</h1>
@@ -90,7 +90,7 @@ Note that we don't have explicit render at the end of the index action in accord
 <%= link_to 'New book', new_book_path %>
 </ruby>
 
-NOTE: 实际上渲染由 +ActionView::TemplateHandlers+ 的子类完成。 本篇不打算深入处理过程，但是 it's important to know that the file extension on your view controls the choice of template handler. 从 Rails 2 开始，标准扩展名 are +.erb+ for ERB (HTML with embedded Ruby), and +.builder+ for Builder (XML生成器).
+NOTE: 实际上渲染由 +ActionView::TemplateHandlers+ 的子类完成。 本篇不打算深入处理过程，但是有一点很重要，你要知道视图中文件的扩展名决定了由哪个模板进行处理。 从 Rails 2 开始，标准扩展名 +.erb+ 分配给了 ERB (内嵌 Ruby 的HTML), 而 +.builder+ 分配给了 Builder (XML生成器).
 
 h4. 使用 +render+
 
@@ -188,7 +188,7 @@ render :template => 'products/show'
 
 h5. 渲染任意文件
 
-The +render+ method can also use a view that's entirely outside of your application (perhaps you're sharing views between two Rails applications):
++render+ 方法也可以使用在你应用程序之外的视图(你可以在两个Rails应用间共享视图)：
 
 <ruby>
 render "/u/apps/warehouse_app/current/app/views/products/show"
@@ -205,7 +205,7 @@ The +:file+ option takes an absolute file-system path. Of course, you need to ha
 
 NOTE: By default, the file is rendered without using the current layout. If you want Rails to put the file into the current layout, you need to add the +:layout => true+ option.
 
-TIP: If you're running Rails on Microsoft Windows, you should use the +:file+ option to render a file, because Windows filenames do not have the same format as Unix filenames.
+TIP: 如果你在微软的 Windows 上运行 Rails ， 你可以使用 +:file+ 选项来渲染文件，因为 Windows 的文件名与Unix上的文件名格式不同。
 
 h5. 包装起来
 
@@ -258,9 +258,9 @@ h5. 渲染文本
 render :text => "OK"
 </ruby>
 
-TIP: Rendering pure text is most useful when you're responding to AJAX or web service requests that are expecting something other than proper HTML.
+TIP: 渲染纯文本会很有用 when you're responding to AJAX or web service requests that are expecting something other than proper HTML.
 
-NOTE: By default, if you use the +:text+ option, the text is rendered without using the current layout. If you want Rails to put the text into the current layout, you need to add the +:layout => true+ option.
+NOTE: 默认地，如果你使用 +:text+ 选项， the text is rendered without using the current layout. If you want Rails to put the text into the current layout, you need to add the +:layout => true+ option.
 
 h5. 渲染 JSON
 
@@ -282,7 +282,7 @@ render :xml => @product
 
 TIP: You don't need to call +to_xml+ on the object that you want to render. If you use the +:xml+ option, +render+ will automatically call +to_xml+ for you.
 
-h5. Rendering Vanilla JavaScript
+h5. 渲染 Vanilla JavaScript
 
 Rails can render vanilla JavaScript:
 
@@ -301,9 +301,9 @@ Calls to the +render+ method generally accept four options:
 * +:status+
 * +:location+
 
-h6. The +:content_type+ Option
+h6.  +:content_type+ 选项
 
-By default, Rails will serve the results of a rendering operation with the MIME content-type of +text/html+ (or +application/json+ if you use the +:json+ option, or +application/xml+ for the +:xml+ option.). There are times when you might like to change this, and you can do so by setting the +:content_type+ option:
+默认地， Rails will serve the results of a rendering operation with the MIME content-type of +text/html+ (or +application/json+ if you use the +:json+ option, or +application/xml+ for the +:xml+ option.). There are times when you might like to change this, and you can do so by setting the +:content_type+ option:
 
 <ruby>
 render :file => filename, :content_type => 'application/rss'
@@ -617,7 +617,7 @@ Or you can use other HTTP headers to convey additional information:
 head :created, :location => photo_path(@photo)
 </ruby>
 
-Which would produce:
+生成：
 
 <shell>
 HTTP/1.1 201 Created
@@ -654,7 +654,7 @@ Asset tags provide methods for generating HTML that links views to feeds, JavaSc
 
 WARNING: The asset tags do _not_ verify the existence of the assets at the specified locations; they simply assume that you know what you're doing and generate the link.
 
-h5. Linking to Feeds with +auto_discovery_link_tag+
+h5. 使用 +auto_discovery_link_tag+ 链接到  Feeds 
 
 The +auto_discovery_link_tag+ helper builds HTML that most browsers and newsreaders can use to detect the presences of RSS or ATOM feeds. It takes the type of the link (+:rss+ or +:atom+), a hash of options that are passed through to url_for, and a hash of options for the tag:
 
@@ -669,9 +669,9 @@ There are three tag options available for +auto_discovery_link_tag+:
 * +:type+ specifies an explicit MIME type. Rails will generate an appropriate MIME type automatically.
 * +:title+ specifies the title of the link
 
-h5. Linking to JavaScript Files with +javascript_include_tag+
+h5. 使用 +javascript_include_tag+ 链接到 JavaScript 文件
 
-The +javascript_include_tag+ helper returns an HTML +script+ tag for each source provided. Rails looks in +public/javascripts+ for these files by default, but you can specify a full path relative to the document root, or a URL, if you prefer. 例如， to include +public/javascripts/main.js+:
+The +javascript_include_tag+ 辅助方法 returns an HTML +script+ tag for each source provided. Rails looks in +public/javascripts+ for these files by default, but you can specify a full path relative to the document root, or a URL, if you prefer. 例如， to include +public/javascripts/main.js+:
 
 <erb>
 <%= javascript_include_tag "main" %>
@@ -795,9 +795,9 @@ By default, the combined file will be delivered as +stylesheets/all.css+. You ca
   :cache => 'cache/main/display' %>
 </erb>
 
-You can even use dynamic paths such as +cache/#{current_site}/main/display+.
+你甚至可以使用动态路径，例如 +cache/#{current_site}/main/display+.
 
-h5. Linking to Images with +image_tag+
+h5. 使用 +image_tag+ 链接到图片
 
 The +image_tag+ helper builds an HTML +&lt;img /&gt;+ tag to the specified file. By default, files are loaded from +public/images+.
 
@@ -999,7 +999,7 @@ Here, the +_ad_banner.html.erb+ and +_footer.html.erb+ partials could contain co
 
 TIP: For content that is shared among all pages in your application, you can use partials directly from layouts.
 
-h5. Partial Layouts
+h5. 局部布局
 
 A partial can use its own layout file, just as a view can use a layout. 例如， you might call a partial like this:
 
@@ -1119,7 +1119,7 @@ In the event that the collection is empty, +render+ will return nil, so it shoul
 <p>Employee: <%= employee.name %></p>
 </erb>
 
-In this case, Rails will use the customer or employee partials as appropriate for each member of the collection.
+这种情况下， Rails will use the customer or employee partials as appropriate for each member of the collection.
 
 h5. 局部变量
 
