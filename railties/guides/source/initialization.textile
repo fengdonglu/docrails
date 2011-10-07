@@ -2,8 +2,8 @@ h2. Rails的初始化过程
 
 本篇说明了 Rails 3.1 内部初始化过程。这是进阶读物，推荐高级开发者。
 
-* Using +rails server+
-* Using Passenger
+* 使用 +rails server+
+* 使用 Passenger
 
 endprologue.
 
@@ -13,7 +13,7 @@ NOTE: Paths in this guide are relative to Rails or a Rails application unless ot
 
 h3. Launch!
 
-As of Rails 3, +script/server+ has become +rails server+. This was done to centralize all rails related commands to one common file.
+在 Rails 3 中， +script/server+ 已经变成了 +rails server+ 。 This was done to centralize all rails related commands to one common file.
 
 h4. +bin/rails+
 
@@ -152,7 +152,7 @@ rescue Bundler::GemNotFound => e
 end if File.exist?(gemfile)
 </ruby>
 
-In a standard Rails application, there's a +Gemfile+ which declares all dependencies of the application. +config/boot.rb+ sets +ENV["BUNDLE_GEMFILE"]+ to the location of this file, then requires Bundler and calls +Bundler.setup+ which adds the dependencies of the application (including all the Rails parts) to the load path, making them available for the application to load. The gems that a Rails 3.1 application depends on are as follows:
+在标准的 Rails 应用程序中， there's a +Gemfile+ which declares all dependencies of the application. +config/boot.rb+ sets +ENV["BUNDLE_GEMFILE"]+ to the location of this file, then requires Bundler and calls +Bundler.setup+ which adds the dependencies of the application (including all the Rails parts) to the load path, making them available for the application to load. The gems that a Rails 3.1 application depends on are as follows:
 
 * abstract (1.0.0)
 * actionmailer (3.1.0.beta)
