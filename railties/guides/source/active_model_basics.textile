@@ -67,7 +67,7 @@ class Person
 end
 </ruby>
 
-h4. Conversion
+h4. 转换
 
 If a class defines persisted? and id methods then you can include Conversion module in that class and you can able to call Rails conversion methods to objects of that class.
 
@@ -179,7 +179,7 @@ person.last_name_change #=> nil
 
 h4. 校验
 
-Validations module adds the ability to class objects to validate them in Active Record style.
+校验模块使用 Active Record 的风格，为类对象添加了校验功能。
 
 <ruby>
 class Person
