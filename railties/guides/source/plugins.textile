@@ -4,7 +4,7 @@ h2. Rails 插件创建基础
 
 * 开发者可以分享超前的想法，而不会影响稳定的基本代码
 * 积木化的体系结构，代码单元可以按它们自己的发行时间表修正或升级
-* 解放了核心开发者的途径，使他们可以不必在核心中包括每个超酷的特性
+* 解放核心开发者的途径，使他们可以不必在核心中包括每个超酷的特性
 
 阅读本指南后，你将会熟悉：
 
@@ -22,7 +22,7 @@ Your favorite bird is the Yaffle，你希望创建一个插件，让其它开发
 
 endprologue.
 
-h3. Setup
+h3. 设置
 
 在开始前，花一点时间确定你的新插件是否可能会在不同的 Rails 应用程序间共享。
 
@@ -41,7 +41,7 @@ h4. 或者产生一个 gem 化的插件。
 
 以 gem 的方法编写你的插件，而不是 vendored 插件，让你的插件可以使用 RubyGems 和 Bundler 在不同的rails应用程序间分享。 
 
-Rails 3.1 带来了 +rails plugin new+ 命令，这可以创建开发任何Rails扩展的骨架， with the ability to run ntegration tests using a dummy Rails application. 查看帮助了解用法和选项：
+Rails 3.1 带来了 +rails plugin new+ 命令，这可以创建开发任何Rails扩展的骨架，并可以使用一个虚拟的Rails应用程序进行集成测试。查看帮助了解用法和选项：
 
 <shell>
 $ rails plugin --help
@@ -162,7 +162,7 @@ end
 
 h4. 添加类方法
 
-This plugin will expect that you've added a method to your model named 'last_squawk'. 然而，插件的用户可能已经为了其它目的，在他们的模型中定义了名为 'last_squawk' 的方法。 This plugin will allow the name to be changed by adding a class method called 'yaffle_text_field'.
+This plugin will expect that你还没有在 'last_squawk' 模块中加入方法。然而，插件的用户可能已经为了其它目的，在他们的模型中定义了名为 'last_squawk' 的方法。 This plugin will allow the name to be changed by adding a class method called 'yaffle_text_field'.
 
 To start out, write a failing test that shows the behavior you'd like:
 
@@ -200,7 +200,7 @@ end
 	5 tests, 3 assertions, 0 failures, 2 errors, 0 skips
 </shell>
 
-这告诉我们， that we don't have the necessary models (Hickwall and Wickwall) that we are trying to test.我们可以轻易地生成这些模型 in our "dummy" Rails application by running the following commands from the test/dummy directory:
+这告诉我们， 我们测试的模型并不是我们想要的 (Hickwall 和 Wickwall) 。我们可以轻易地生成这些模型 in our "dummy" Rails application by running the following commands from the test/dummy directory:
 
 <shell>
 $ cd test/dummy
@@ -208,7 +208,7 @@ $ rails generate model Hickwall last_squawk:string
 $ rails generate model Wickwall last_squawk:string last_tweet:string
 </shell>
 
-现在你可以在你的测试数据库中创建所需的数据库表 by navigating to your dummy app ，迁移数据库。首先
+现在进入你的虚拟应用，在的测试数据库中创建所需的数据库表，迁移数据库。首先：
 
 <shell>
 $ cd test/dummy
@@ -378,7 +378,7 @@ NOTE: The use of +write_attribute+ to write to the field in model is just one ex
 
 h3. 生成器
 
-Generators can be included in your gem simply by creating them in a lib/generators directory of your plugin. 可以在"Generators Guide"中找到更多有关创建生成器的信息：generators.html
+Generators can be included in your gem simply by creating them in a lib/generators directory of your plugin. 可以在"Generators Guide":generators.html 中找到更多有关创建生成器的信息。
 
 h3. 发布你的 Gem
 
@@ -436,8 +436,8 @@ $ rake rdoc
 
 h4. 参考资料
 
-* "Developing a RubyGem using Bundler":https://github.com/radar/guides/blob/master/gem-development.md
+* "使用Bundler开发 RubyGem using ":https://github.com/radar/guides/blob/master/gem-development.md
 * "Using Gemspecs As Intended":http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/
-* "Gemspec Reference":http://docs.rubygems.org/read/chapter/20
+* "Gemspec 参考":http://docs.rubygems.org/read/chapter/20
 * "GemPlugins":http://www.mbleigh.com/2008/06/11/gemplugins-a-brief-introduction-to-the-future-of-rails-plugins
-* "Keeping init.rb thin":http://daddy.platte.name/2007/05/rails-plugins-keep-initrb-thin.html
+* "保持 init.rb 干净":http://daddy.platte.name/2007/05/rails-plugins-keep-initrb-thin.html
