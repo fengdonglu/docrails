@@ -1,9 +1,9 @@
 h2. AJAX on Rails
 
-Rails 内置的 Ajax/JavaScript 功能（和更多）；它让你轻易地创建丰富的动态 AJAX 应用程序！将包含以下主题：
+Rails 内置了 Ajax/JavaScript 功能（和更多）；它让你轻易地创建丰富的动态 AJAX 应用程序！本篇将包含以下话题：
 
 * AJAX的快速介绍和相关技术
-* Handling JavaScript the Rails way: Rails helpers, Prototype and script.aculo.us
+* Handling JavaScript the Rails way: Rails 辅助方法、 Prototype 和 script.aculo.us
 * 测试 JavaScript 功能
 
 endprologue.
@@ -16,9 +16,9 @@ h4. 异步 JavaScript + XML
 
 基本术语，创建web应用程序的新风格
 
-h4. The DOM
+h4. DOM
 
-basics of the DOM, how is it built, properties, features, why is it central to AJAX
+DOM的基础, how is it built, properties, features, why is it central to AJAX
 
 h4. 标准 HTML 通讯 vs AJAX
 
@@ -28,7 +28,7 @@ h3. 内置的 Rails 辅助方法
 
 Rails选择的的JavaScript框架是 "Prototype":http://www.prototypejs.org. Prototype是一个通用的JavaScript框架， 目的是通过操作DOM来简化web应用程序开发 AJAX 和其它 JavaScript 功能 ranging from utility functions to object oriented constructs. 它并未为任何特定语言编写，所以 Rails 提供了一套辅助方法， 将Prototype 无缝集成至你的 Rails 视图。
 
-To get access to these helpers, all you have to do is to include the prototype framework in your pages - 一般是在你的主布局页面， application.html.erb - like so:
+要访问这些辅助方法，你要做的所有事情，就是在你的页面中包含 prototype 框架 - 一般是在你的主布局页面， application.html.erb - 象这样：
 
 <ruby>
 javascript_include_tag 'prototype'
@@ -65,7 +65,7 @@ link_to_remote "Add to cart",
   :update => { :success => "cart", :failure => "error" }
 </ruby>
 
-如果服务器返回 200, the output of the above example is equivalent to our first, simple one. However, in case of error, the element with the DOM id +error+ is updated rather than the +cart+ element.
+如果服务器返回 200, 上面示例的输出 is equivalent to our first, simple one. However, in case of error, the element with the DOM id +error+ is updated rather than the +cart+ element.
 
 ** *position* By default (i.e. when not specifying this option, like in the examples before) the response is injected into the element with the specified DOM id, replacing the original content of the element (if there was any). You might want to alter this behavior by keeping the original content - the only question is where to place the new content? This can specified by the +position+ parameter, with four possibilities:
 *** +:before+ Inserts the response text just before the target element. More precisely, it creates a text node from the response and inserts it as the left sibling of the target element.
@@ -140,7 +140,7 @@ link_to_remote "Add new item",
 ** If you specify the +href+ parameter, the AJAX link will degrade gracefully, i.e. the link will point to the URL even if JavaScript is disabled in the client browser
 ** +link_to_remote+ gains it's AJAX behavior by specifying the remote call in the onclick handler of the link. If you supply +html_options[:onclick]+ you override the default behavior, so use this with care!
 
-We are finished with +link_to_remote+. I know this is quite a lot to digest for one helper function, but remember, these options are common for all the rest of the Rails view helpers, so we will take a look at the differences / additional parameters in the next sections.
+我们已经完成了 +link_to_remote+ 。 我知道 this is quite a lot to digest for one helper function, but remember, these options are common for all the rest of the Rails view helpers, so we will take a look at the differences / additional parameters in the next sections.
 
 h4. AJAX 表单
 
@@ -192,7 +192,7 @@ What happens here is that by specifying the Content-Type header variable, 我们
 
 h3. 测试 JavaScript
 
-JavaScript 测试让我们想起了Mark Twain对'classic'的定义： "A classic is something that everybody wants to have read and nobody wants to read." It's similar with JavaScript testing: everyone would like to have it, yet it's not done by too much developers as it is tedious, complicated, there is a proliferation of tools and no consensus/accepted best practices, but we will nevertheless take a stab at it:
+JavaScript 测试让我们想起了Mark Twain对于'classic'的定义： "A classic is something that everybody wants to have read and nobody wants to read." 。在 JavaScript 测试中也是这样： everyone would like to have it, yet it's not done by too much developers as it is tedious, complicated, there is a proliferation of tools and no consensus/accepted best practices, but we will nevertheless take a stab at it:
 
 * (Fire)Watir
 * Selenium
