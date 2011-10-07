@@ -52,7 +52,7 @@ person.id  # => 1
 
 h4. 更新
 
-To update an existing resource, 'save' method is used. This method make a HTTP PUT request in JSON format.
+更新已存在的资源，使用 'save' 方法。 This method make a HTTP PUT request in JSON format.
 
 <ruby>
 person = Person.find(1)
