@@ -1,24 +1,24 @@
-h2. Action View概览
+h2. Action View 概述
 
-在本指南中，你将会学习到：
+在本篇中，你将会学习到：
 
-* Action View是什么，怎么在Rails中使用它
-* 怎么在Rails之外使用Action View
-* 怎么更好地使用模板, partials, and layouts
-* What helpers are provided by Action View, and how to make your own
-* 怎么使用本地化视图
+* Action View是什么，如何在Rails中使用它
+* 如何在Rails之外使用Action View
+* 如何更好地使用模板, partials, and layouts
+* Action View提供了哪些辅助方法，如何编写自己的辅助方法
+* 如何使用本地化视图
 
 endprologue.
 
-h3. 什么是ActionView？
+h3. 什么是 ActionView ？
 
-Action View和Action Controller是Action Pack中两个主要的组件。 在 Rails 中, web请求由 Action Pack 获取, 它把工作分为控制器部分 (performing the logic)和视图部分（渲染模板） 。 典型地， Action Controller将在必要时参与数据库和performing CRUD actions之间的通讯。Action View然后负责响应。
+Action View 和 Action Controller 是 Action Pack 中两个主要的组件。 在 Rails 中， Action Pack 获取 Web 请求，它把工作分为控制器部分 （performing the logic ）和视图部分（渲染模板）。典型地， Action Controller将在必要时参与数据库和performing CRUD actions之间的通讯。Action View然后负责响应。
 
-Action View模板使用嵌入式Ruby编写，在HTML内混入标签。 To avoid cluttering the templates with boilerplate code, 一些辅助方法类提供了表单、日期和字符串的常见行为。在你的应用程序程序进化过程中加入新的辅助方法也很容易。
+Action View模板使用嵌入式Ruby编写，在HTML内混入标签。为了避免模板被代码搅乱，一些辅助方法类提供了表单、日期和字符串的常见行为。在你的应用程序程序进化过程中加入新的辅助方法也很容易。
 
-Note: 一些Action View的特性和Active Record有关，但是这并不是说Action View 基于 Active Record。 Action View 是一个独立的软件包that can be used with any sort of backend.
+Note: 一些 Action View 的特性和 Active Record 有关，但是这并不是说 Action View 基于 Active Record。 Action View 是一个独立的软件包，可以与任意后端协同使用。
 
-h3. Using Action View with Rails
+h3. 在 Rails 中使用 Action View
 
 对于每个控制器，都在 <tt>app/views</tt> 目录下有一个关联目录，保存着模板文件，用于产生关联到控制器的视图。这些文件用于显示每个控制器Action结果的视图。
 
@@ -39,22 +39,22 @@ $ rails generate scaffold post
       [...]
 </shell>
 
-There is a naming convention for views in Rails. Typically, the views share their name with the associated controller action, as you can see above.
-For example, the index controller action of the <tt>posts_controller.rb</tt> will use the <tt>index.html.erb</tt> view file in the <tt>app/views/posts</tt> directory.
-The complete HTML returned to the client is composed of a combination of this ERB file, a layout template that wraps it, and all the partials that the view may reference. Later on this guide you can find a more detailed documentation of each one of this three components.
+Rails的视图中有一个命名约定。典型地，视图与关联的控制器Action共享名字，你从上面可以看出来。
+例如，the index controller action of the <tt>posts_controller.rb</tt> 会使用 <tt>app/views/posts</tt> 目录中的 <tt>index.html.erb</tt> 视图文件。
+发送给客户端的完整 HTML 是由这个 ERB 文件、布局模板包装它、和所有这个视图引用的局部模板共享创作完成的。 本篇后面会讲述这三个组件的更多细节。
 
-h3. Using Action View outside of Rails
+h3. 在Rails之外使用Action View
 
-Action View works well with Action Record, but it can also be used with other Ruby tools. We can demonstrate this by creating a small "Rack":http://rack.rubyforge.org/ application that includes Action View functionality. This may be useful, for example, if you'd like access to Action View's helpers in a Rack application.
+Action View 能和 Action Record 一齐很好地工作，但是它也可以和其它 Ruby 工具协同工作。我们可以通过创建一个小型的 "Rack":http://rack.rubyforge.org/ 应用程序来展示这点，这个应用程序包含了 Action View 的功能。这点会有用，比如你想在Rack应用程序中访问Action View的辅助方法。
 
-Let's start by ensuring that you have the Action Pack and Rack gems installed:
+ 确认安装了 Action Pack 和 Rack gems 后，开始吧：
 
 <shell>
 $ gem install actionpack
 $ gem install rack
 </shell>
 
-Now we'll create a simple "Hello World" application that uses the +titleize+ method provided by Active Support.
+现在我们创建了一个简单的 "Hello World" 应用程序，它使用了 Active Support 提供的 +titleize+ 方法。
 
 *hello_world.rb:*
 
@@ -78,18 +78,18 @@ $ ruby hello_world.rb
 
 TODO needs a screenshot? I have one - not sure where to put it.
 
-Notice how 'hello world' has been converted into 'Hello World' by the +titleize+ helper method.
+注意一下 'hello world' 是如何被 +titleize+ 辅助方法转换成 'Hello World' 的。
 
-Action View can also be used with "Sinatra":http://www.sinatrarb.com/ in the same way.
+以同样的方式，Action View 也可以在 "Sinatra":http://www.sinatrarb.com/ 中使用。
 
-Let's start by ensuring that you have the Action Pack and Sinatra gems installed:
+确认安装了Action Pack 和 Sinatra gems后，让我们开始吧：
 
 <shell>
 $ gem install actionpack
 $ gem install sinatra
 </shell>
 
-Now we'll create the same "Hello World" application in Sinatra.
+现在，我们在 Sinatra 中创建了相同的 "Hello World" 应用程序。
 
 *hello_world.rb:*
 
@@ -109,24 +109,24 @@ end
 $ ruby hello_world.rb
 </shell>
 
-Once the application is running, you can see Sinatra and Action View working together by visiting +http://localhost:4567/+
+程序运行后，你可以访问 +http://localhost:4567/+ ， Sinatra 和 Action View 已经协同工作了。
 
 TODO needs a screenshot? I have one - not sure where to put it.
 
 h3. 模板、局部模板和布局
 
-As mentioned before, the final HTML output is a composition of three Rails elements: +Templates+, +Partials+ and +Layouts+.
-Find below a brief overview of each one of them.
+之前提到过，最终的 HTML 输出是由三种 Rails 元素合作完成的： +模板+ 、 +局部模板视图+ 和 +布局+ 。
+下面简要介绍一下它们。
 
 h4. 模板
 
-Action View模板可以使用几种办法编写。 如果模板文件是 <tt>.erb</tt> 后缀， then it uses a mixture of ERB (included in Ruby) and HTML. 如果模板文件是 <tt>.builder</tt> 后缀， then a fresh instance of <tt>Builder::XmlMarkup</tt> library is used.
+Action View模板可以使用几种办法编写。 如果模板文件是 <tt>.erb</tt> 后缀， 那里面混合了嵌入式 Ruby 语言（ERB）和 HTML 。如果模板文件是 <tt>.builder</tt> 后缀， then a fresh instance of <tt>Builder::XmlMarkup</tt> library is used.
 
 Rails支持多个模板系统，使用文件扩展名分清该用哪个。例如， an HTML file using the ERB template system will have <tt>.html.erb</tt> as a file extension.
 
 h5. ERB
 
-Within an ERB template Ruby code can be included using both +<% %>+ and +<%= %>+ tags. The +<% %>+ are used to execute Ruby code that does not return anything, such as conditions, loops or blocks, and the +<%= %>+ tags are used when you want output.
+在 ERB 模板中，Ruby 代码可以包含在 +<% %>+ 和 +<%= %>+ 标签之中。 +<% %>+ 标签用于执行 Ruby 代码，不会返回什么东西，比如判断、循环或者代码块。而当你希望获得输出时，使用 +<%= %>+ 标签。
 
 Consider the following loop for names:
 
@@ -137,7 +137,7 @@ Consider the following loop for names:
 <% end %>
 </erb>
 
-The loop is setup in regular embedding tags +<% %>+ and the name is written using the output embedding tag +<%= %>+. Note that this is not just a usage suggestion, for Regular output functions like print or puts won't work with ERB templates. So this would be wrong:
+循环 is setup in regular embedding tags +<% %>+ and the name is written using the output embedding tag +<%= %>+. Note that this is not just a usage suggestion, for Regular output functions like print or puts won't work with ERB templates. 所以这是错误的：
 
 <erb>
 <%# WRONG %>
@@ -148,7 +148,7 @@ To suppress leading and trailing whitespaces, you can use +<%-+ +-%>+ interchang
 
 h5. Builder
 
-Builder templates are a more programmatic alternative to ERB. They are especially useful for generating XML content. An XmlMarkup object named +xml+ is automatically made available to templates with a <tt>.builder</tt> extension.
+Builder 模板 are a more programmatic alternative to ERB. They are especially useful for generating XML content. 一个名为 +xml+ 的 XmlMarkup 对象 is automatically made available to templates with a <tt>.builder</tt> extension.
 
 这里有一些基本示例：
 
@@ -168,7 +168,7 @@ xml.target("name"=>"compile", "option"=>"fast")
 <target option="fast" name="compile" />
 </html>
 
-Any method with a block will be treated as an XML markup tag with nested markup in the block. For example, the following:
+Any method with a block will be treated as an XML markup tag with nested markup in the block. 例如，以下代码：
 
 <ruby>
 xml.div {
@@ -177,7 +177,7 @@ xml.div {
 }
 </ruby>
 
-would produce something like:
+会生成：
 
 <html>
 <div>
@@ -186,7 +186,7 @@ would produce something like:
 </div>
 </html>
 
-A full-length RSS example actually used on Basecamp:
+ Basecamp 实际使用中的一条全长度 RSS 示例：
 
 <ruby>
 xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
@@ -213,31 +213,31 @@ end
 
 h5. 模板缓存
 
-By default, Rails will compile each template to a method in order to render it. 当你修改一个模板， Rails 会检查文件的修改时间，重新编译 in development mode.
+默认地， Rails 会把每个模板编译成方法，以便渲染它。开发模式下，当你修改一个模板， Rails 会检查文件的修改时间并重新编译。
 
-h4. Partials
+h4. 局部模板
 
-Partial templates – usually just called "partials" – are another device for breaking the rendering process into more manageable chunks. With a partial, you can move the code for rendering a particular piece of a response to its own file.
+局部模板 – usually just called "partials" – are another device for breaking the rendering process into more manageable chunks. With a partial, you can move the code for rendering a particular piece of a response to its own file.
 
-h5. Naming Partials
+h5. 命名局部模板
 
-To render a partial as part of a view, you use the +render+ method within the view:
+你可以在视图中使用 +render+ 方法，编译其中的局部模板：
 
 <ruby>
 <%= render "menu" %>
 </ruby>
 
-This will render a file named +_menu.html.erb+ at that point within the view is being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
+这会渲染名为 +_menu.html.erb+ 的文件 at that point within the view is being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
 
 <ruby>
 <%= render "shared/menu" %>
 </ruby>
 
-That code will pull in the partial from +app/views/shared/_menu.html.erb+.
+这段代码 will pull in the partial from +app/views/shared/_menu.html.erb+.
 
 h5. 使用局部模板简化视图
 
-One way to use partials is to treat them as the equivalent of subroutines: as a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looked like this:
+局部模板的一种用法，是把它们看成子程序的等价物：把细节移出视图的一种方法，这样你可以更容易地抓住重点。例如这个视图：
 
 <erb>
 <%= render "shared/ad_banner" %>
@@ -252,7 +252,7 @@ One way to use partials is to treat them as the equivalent of subroutines: as a 
 <%= render "shared/footer" %>
 </erb>
 
-Here, the +_ad_banner.html.erb+ and +_footer.html.erb+ partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
+在这里， +_ad_banner.html.erb+ 和 +_footer.html.erb+ 局部模板会包含应用程序中很多页面需要分享的内容。引用时，你不需要了解这些局部模板中的内容细节。
 
 h5. :as 和 :object 选项
 
@@ -323,15 +323,15 @@ h4. Layouts
 
 TODO...
 
-h3. Using Templates, Partials and Layouts in "The Rails Way"
+h3. 按“ Rails 的方式”使用模板、局部视图和布局
 
 TODO...
 
-h3. Partial Layouts
+h3. 局部布局
 
 Partials can have their own layouts applied to them. These layouts are different than the ones that are specified globally for the entire action, but they work in a similar fashion.
 
-Let's say we're displaying a post on a page where it should be wrapped in a +div+ for display purposes. First, we'll create a new +Post+:
+Let's say we're displaying a post on a page where it should be wrapped in a +div+ for display purposes. 首先，我们创建一个新的 +Post+ ：
 
 <ruby>
 Post.create(:body => 'Partial Layouts are cool!')
@@ -345,7 +345,7 @@ In the +show+ template, we'll render the +post+ partial wrapped in the +box+ lay
 <%= render :partial => 'post', :layout => 'box', :locals => {:post => @post} %>
 </ruby>
 
-The +box+ layout simply wraps the +post+ partial in a +div+:
+ +box+ 布局在一个 +div+ 中简单地包装了 +post+ 局部模板：
 
 *posts/_box.html.erb*
 
@@ -375,9 +375,9 @@ The +post+ partial wraps the post's +body+ in a +div+ with the +id+ of the post 
 </div>
 </html>
 
-Note that the partial layout has access to the local +post+ variable that was passed into the +render+ call. However, unlike application-wide layouts, partial layouts still have the underscore prefix.
+Note that the partial layout has access to the local +post+ variable that was passed into the +render+ call. 然而，不象应用级的而已，局部布局还是带有下划线的前缀。
 
-You can also render a block of code within a partial layout instead of calling +yield+. For example, if we didn't have the +post+ partial, we could do this instead:
+You can also render a block of code within a partial layout instead of calling +yield+. 例如，如果我们没有 +post+ partial, 我们可以这样代替：
 
 *posts/show.html.erb*
 
@@ -391,13 +391,13 @@ You can also render a block of code within a partial layout instead of calling +
 
 If we're using the same +box+ partial from above, his would produce the same output as the previous example.
 
-h3. View Paths
+h3. 视图路径
 
 TODO...
 
-h3. Overview of all the helpers provided by Action View
+h3. Action View 提供的所有辅助方法概述
 
-The following is only a brief overview summary of the helpers available in Action View. It's recommended that you review the API Documentation, which covers all of the helpers in more detail, but this should serve as a good starting point.
+以下只是一个简要的 overview summary of the helpers available in Action View. 推荐你查看 API 文档，它涵盖了所有辅助方法的细节，但是这里提供了一个很好的入口。
 
 h4. ActiveRecordHelper
 
@@ -478,7 +478,7 @@ This will generate this HTML output:
 </tr>
 </html>
 
-You can also supply HTML attributes as an additional option hash. For example:
+You can also supply HTML attributes as an additional option hash. 例如：
 
 <ruby>
 <%= content_tag_for(:tr, @post, :class => "frontpage") do %>
@@ -486,7 +486,7 @@ You can also supply HTML attributes as an additional option hash. For example:
 <% end %>
 </ruby>
 
-Will generate this HTML output:
+会生成：
 
 <html>
 <tr id="post_1234" class="post frontpage">
@@ -944,7 +944,7 @@ third:
 
 h4. FormHelper
 
-Form helpers are designed to make working with models much easier compared to using just standard HTML elements by providing a set of methods for creating forms based on your models. This helper generates the HTML for forms, providing a method for each sort of input (e.g., text, password, select, and so on). When the form is submitted (i.e., when the user hits the submit button or form.submit is called via JavaScript), the form inputs will be bundled into the params object and passed back to the controller.
+表单辅助方法设计用于 make working with models much easier compared to using just standard HTML elements by providing a set of methods for creating forms based on your models. This helper generates the HTML for forms, providing a method for each sort of input (e.g., text, password, select, and so on). When the form is submitted (i.e., when the user hits the submit button or form.submit is called via JavaScript), the form inputs will be bundled into the params object and passed back to the controller.
 
 There are two types of form helpers: those that specifically work with model attributes and those that don't. This helper deals with those that work with model attributes; to see an example of form helpers that don't work with model attributes, check the ActionView::Helpers::FormTagHelper documentation.
 
@@ -959,7 +959,7 @@ The core method of this helper, form_for, gives you the ability to create a form
 <% end %>
 </ruby>
 
-The HTML generated for this would be:
+生成的 HTML 会这样：
 
 <html>
 <form action="/persons/create" method="post">
@@ -1422,7 +1422,7 @@ link_to_function "Greeting", "alert('Hello world!')"
 
 h4. NumberHelper
 
-Provides methods for converting numbers into formatted strings. Methods are provided for phone numbers, currency, percentage, precision, positional notation, and file size.
+将数字转换成格式化的字符串。Methods are provided for phone numbers, currency, percentage, precision, positional notation, and file size.
 
 h5. number_to_currency
 
@@ -1451,7 +1451,7 @@ number_to_percentage(100, :precision => 0)        # => 100%
 
 h5. number_to_phone
 
-Formats a number into a US phone number.
+将数字格式成为美国电话号码格式。
 
 <ruby>
 number_to_phone(1235551234) # => 123-555-1234
@@ -1459,7 +1459,7 @@ number_to_phone(1235551234) # => 123-555-1234
 
 h5. number_with_delimiter
 
-Formats a number with grouped thousands using a delimiter.
+把数字加入千分位逗号。
 
 <ruby>
 number_with_delimiter(12345678) # => 12,345,678
@@ -1467,20 +1467,20 @@ number_with_delimiter(12345678) # => 12,345,678
 
 h5. number_with_precision
 
-Formats a number with the specified level of +precision+, which defaults to 3.
+Formats a number with the specified level of +precision+, 默认为 3 位。
 
 <ruby>
 number_with_precision(111.2345)     # => 111.235
 number_with_precision(111.2345, 2)  # => 111.23
 </ruby>
 
-h3. Localized Views
+h3. 本地化视图
 
-Action View has the ability render different templates depending on the current locale.
+Action View可以根据当前的区域渲染不同的模板。
 
-For example, suppose you have a Posts controller with a show action. By default, calling this action will render +app/views/posts/show.html.erb+. But if you set +I18n.locale = :de+, then +app/views/posts/show.de.html.erb+ will be rendered instead. If the localized template isn't present, the undecorated version will be used. This means you're not required to provide localized views for all cases, but they will be preferred and used if available.
+例如， suppose you have a Posts controller with a show action. 调用这个Action默认会渲染 +app/views/posts/show.html.erb+ 。但是如果你设置了 +I18n.locale = :de+ ，那么会渲染 +app/views/posts/show.de.html.erb+ 。 如果本地化模板不存在，the undecorated version will be used. 这意味着你不需要为所有的情况提供本地化视图， but they will be preferred and used if available.
 
-You can use the same technique to localize the rescue files in your public directory. For example, setting +I18n.locale = :de+ and creating +public/500.de.html+ and +public/404.de.html+ would allow you to have localized rescue pages.
+你可以使用同样的技术来本地化公共文件夹中的 rescue files 。 例如，设置 +I18n.locale = :de+ 并创建了 +public/500.de.html+ 和 +public/404.de.html+ ，会让你拥有本地化的 rescue 页面。
 
 Since Rails doesn't restrict the symbols that you use to set I18n.locale, you can leverage this system to display different content depending on anything you like. For example, suppose you have some "expert" users that should see different pages from "normal" users. You could add the following to +app/controllers/application.rb+:
 
@@ -1492,6 +1492,6 @@ def set_expert_locale
 end
 </ruby>
 
-Then you could create special views like +app/views/posts/show.expert.html.erb+ that would only be displayed to expert users.
+Then you could create special views like +app/views/posts/show.expert.html.erb+ that would only be displayed to 高级用户。
 
-You can read more about the Rails Internationalization (I18n) API "here":i18n.html.
+你可以在 "这里":i18n.html 阅读到更多的 Rails 国际化API。
