@@ -12,36 +12,36 @@ endprologue.
 
 h3. 什么是ActiveRecord?
 
-Active Record是"MVC"中的M： getting_started.html#the-mvc-architecture - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
+Active Record是"MVC"中的M： getting_started.html#the-mvc-architecture - the model - which is the layer of the system responsible for representing business data and logic. Active Record 减轻了创建和使用基于数据库存储的商业对象的困难。 It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
 
 h4. The Active Record模式
 
-Martin Fowler在他的书 _Patterns of Enterprise Application Architecture_ 中描述了Active Record. 在ActiveRecord中，对象携带着所有的非易失的数据和操作数据的行为。Active Record takes the opinion that ensuring data access logic is part of the object will educate users of that object on how to write to and read from the database.
+Martin Fowler 在他的著作 _Patterns of Enterprise Application Architecture_ 中描述了 Active Record 。在ActiveRecord中，对象携带着所有的非易失的数据和操作数据的行为。Active Record takes the opinion that ensuring data access logic is part of the object will educate users of that object on how to write to and read from the database.
 
-h4. Object Relational Mapping
+h4. 关系-对象映射（Object Relational Mapping）
 
-Object-Relational Mapping，通常缩写成ORM, 是用来将应用程序中丰富的对象连接至关系型数据库管理库中的表的技术。使用ORM，可以在不写SQL语句，使用很少的数据库访问代码的情况下，在数据库中轻易地存储和检索应用程序中对象的属性和关系。
+关系-对象映射（Object-Relational Mapping），通常缩写成 ORM ，是用来将应用程序中丰富的对象连接至关系型数据库管理库中的表的技术。使用ORM，可以在不写SQL语句，使用很少的数据库访问代码的情况下，在数据库中轻易地存储和检索应用程序中对象的属性和关系。
 
 h4. 作为ORM框架的ActiveRecord
 
 ActiveRecord给了我们一些机制, 其中最重要的功能是：
 
-* Represent models和其中的数据
-* Represent associations between these models
-* Represent inheritance hierarchies through related models
+* 表现模型和其中的数据
+* 体现模型之间的关联
+* 体现关联模型的继承层次
 * 在保存至数据库前校验模型
 * 以面向对象的风格实现数据库操作
 
-h3. Convention over Configuration in Active Record
+h3. Active Record中的“约定重于配置”
 
-When writing applications using other programming languages or frameworks, it may be necessary to write a lot of configuration code. This is particularly true for ORM frameworks in general. However, if you follow the conventions adopted by Rails, you'll need to write very little configuration (in some case no configuration at all) when creating Active Record models. The idea is that if you configure your applications in the very same way most of the times then this should be the default way. In this cases, explicit configuration would be needed only in those cases where you can't follow the conventions for any reason.
+当使用其它语言或者框架编写应用程序时，需要编写一大堆配置代码。 This is particularly true for ORM frameworks in general. 然而，在创建 Active Record 模型时，如果你遵守Rails的约定，你只需要编写一点点配置（有时什么配置都不需要）。 The idea is that if you configure your applications in the very same way most of the times then this should be the default way. 这种情况下，只有出于不明原因，你不遵守约定时，才需要明确的配置。
 
-h4. 名称转换
+h4. 命名约定
 
-默认地, Active Record使用一些名称转换to find out how the mapping between models and database tables should be created. Rails will pluralize your class names to find the respective database table. So, for a class +Book+, you should have a database table called *books*. The Rails pluralization mechanisms are very powerful, being capable to pluralize (and singularize) both regular and irregular words. When using class names composed of two or more words, the model class name should follow the Ruby conventions, using the camelCase form, while the table name must contain the words separated by underscores. Examples:
+默认地, Active Record使用一些命名约定于映射模型和数据表。 Rails 先把你的类名变成复数，然后找出对应的数据表。因此，对于 +Book+ 类，对应的数据表就是 *books* 。 Rails 的复数化/单数化机制相当强大， 规则和不规则单词都可以使用。如果类名包含了两个或以上的单词，模型类名遵守 Ruby 约定，使用“驼峰”（camelCase）格式，同时表名使用下划线分隔单词。例如：
 
-* 数据库表 - Plural with underscores separating words (e.g., book_clubs)
-* 模型类 - Singular with the first letter of each word capitalized (e.g., BookClub)
+* 数据库表 - 复数，用下划线分隔单词（例如 book_clubs ）
+* 模型类 - 单数，每个单词的首个字母大写（例如 BookClub ）
 
 |_.模型 / 类 |_.表 / 模式 |
 |Post          |posts|
@@ -53,7 +53,7 @@ h4. 名称转换
 
 h4. 模式转换
 
-Active Record使用名称转换for the columns in database tables，基于这些列的意图。
+Active Record对数据表的字段名称也使用命名约定，基于这些列的意图。
 
 * *外键* - These fields should be named following the pattern table_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.
 * *主键* - 默认情况下，ActiveRecord会使用名为"id"的整数字段作为表的主键。当使用"Rails Migrations":migrations.html to create your tables, this column will be automatically created.
@@ -64,11 +64,11 @@ Active Record使用名称转换for the columns in database tables，基于这些
 * *created_on* - 自动设为记录的创建日期
 * *updated_at* - 自动设为记录的更新日期和时间
 * *updated_on* - 自动设为记录的更新日期
-* *lock_version* - Adds "optimistic locking":http://api.rubyonrails.org/classes/ActiveRecord/Locking.html to a model.
-* *type* - Specifies that the model uses "Single Table Inheritance":http://api.rubyonrails.org/classes/ActiveRecord/Base.html
-* *(table_name)_count* - Used to cache the number of belonging objects on associations. 例如, a +comments_count+ column in a +Post+ class that has many instances of +Comment+ will cache the number of existent comments for each post.
+* *lock_version* - 在模型上添加 "乐观锁":http://api.rubyonrails.org/classes/ActiveRecord/Locking.html 
+* *type* - 指定模型使用 "单表继承":http://api.rubyonrails.org/classes/ActiveRecord/Base.html
+* *(table_name)_count* - 用于缓存 the number of belonging objects on associations. 例如, a +comments_count+ column in a +Post+ class that has many instances of +Comment+ will cache the number of existent comments for each post.
 
-NOTE: While these column names are optional they are in fact reserved by Active Record. Steer clear of reserved keywords unless you want the extra functionality. For example, "type" is a reserved keyword used to designate a table using Single Table Inheritance. 如果你不使用STI, try an analogous keyword like "context", that may still accurately describe the data you are modeling.
+NOTE: While 这些字段名是可选项， they are in fact reserved by Active Record. Steer clear of reserved keywords unless you want the extra functionality. 例如， "type" is a reserved keyword used to designate a table using Single Table Inheritance. 如果你不使用STI, try an analogous keyword like "context", that may still accurately describe the data you are modeling.
 
 h3. 创建ActiveRecord模型
 
@@ -78,7 +78,7 @@ h3. 创建ActiveRecord模型
 class Product < ActiveRecord::Base; end
 </ruby>
 
-这样就创建了 +Product+ 模型，映射到数据库中名为 *products* 的表。By doing this you'll also have the ability to map the columns of each row in that table with the attributes of the instances of your model. So, suppose that the *products* table was created using an SQL sentence like:
+这样就创建了 +Product+ 模型，映射到数据库中名为 *products* 的表。By doing this you'll also have the ability to map the columns of each row in that table with the attributes of the instances of your model. So, 假设 *products* 表使用SQL语句来创建：
 
 <sql>
 CREATE TABLE products (
@@ -96,9 +96,9 @@ p.name = "Some Book"
 puts p.name # "Some Book"
 </ruby>
 
-h3. 重载名称转换
+h3. 重载命名约定
 
-What if you need to follow a different naming convention or need to use your Rails application with a legacy database? No problem, you can easily override the default conventions.
+你想使用另类的命名约定，或者在遗留的数据库上开发Rails应用？没有问题，你可以轻易地重载默认约定。
 
 你可以使用 +ActiveRecord::Base.set_table_name+ 方法指定要使用的表名：
 
@@ -108,7 +108,7 @@ class Product < ActiveRecord::Base
 end
 </ruby>
 
-If you do so, 你必须手工地定义类名that is hosting the fixtures (class_name.yml) using the +set_fixture_class+ method in your test definition:
+If you do so, 你必须手工地定义类名that is hosting the 夹具 (class_name.yml) using the +set_fixture_class+ method in your test definition:
 
 <ruby>
 class FunnyJoke < ActiveSupport::TestCase
@@ -128,13 +128,13 @@ end
 
 h3. 读写数据
 
-CRUD is an acronym for the four verbs we use to operate on data: *C*reate, *R*ead, *U*pdate and *D*elete. Active Record automatically creates methods to allow an application to read and manipulate data stored within its tables.
+CRUD 是我们操作数据的四个动词的缩写： *C*reate, *R*ead, *U*pdate and *D*elete 。 Active Record 自动创建方法以允许应用程序在表中读取和操作数据。
 
 h4. 创建
 
-Active Record objects can be created from a hash, a block or have its attributes manually set after creation. The _new_ method will return a new object while _create_ will return the object and save it to the database.
+Active Record 对象可以被创建 from a hash, a block or have its attributes manually set after creation.  _new_ 方法会返回一个新的对象，而 _create_ 方法会返回对象，并同时将对象保存入数据库。
 
-例如, given a model +User+ with attributes of +name+ and +occupation+, the _create_ method call will create and save a new record into the database:
+例如,对于带有 +name+ 和 +occupation+ 属性的 +User+ 模型， the _create_ method call will create and save a new record into the database:
 
 <ruby>
   user = User.create(:name => "David", :occupation => "Code Artist")
@@ -148,7 +148,7 @@ Active Record objects can be created from a hash, a block or have its attributes
   user.occupation = "Code Artist"
 </ruby>
 
-A call to _user.save_ will commit the record to the database.
+调用 _user.save_ 会把记录提交至数据库。
 
 最后， passing a block to either create or new will return a new User object:
 
@@ -183,11 +183,11 @@ ActiveRecord提供了丰富的API在数据库中访问数据。以下是由Activ
   users = User.where(:name => 'David', :occupation => 'Code Artist').order('created_at DESC')
 </ruby>
 
-You can learn more about querying an Active Record model in the "Active Record Query Interface":"active_record_querying.html" guide.
+你可以在 "Active Record 查询界面":"active_record_querying.html" 指南中学习到更多关于查询 Active Record 模型的内容。
 
 h4. 修改
 
-ActiveRecord对象被检索后， 它的属性据可以被修改，并回存至数据库。
+ActiveRecord对象被检索后，它的属性据可以被修改，并回存至数据库。
 
 <ruby>
   user = User.find_by_name('David')
@@ -197,7 +197,7 @@ ActiveRecord对象被检索后， 它的属性据可以被修改，并回存至�
 
 h4. 删除
 
-Likewise, once retrieved an Active Record object can be destroyed which removes it from the database.
+同样，一旦 retrieved an Active Record object can be destroyed which removes it from the database.
 
 <ruby>
   user = User.find_by_name('David')
@@ -206,12 +206,12 @@ Likewise, once retrieved an Active Record object can be destroyed which removes 
 
 h3. 校验
 
-Active Record允许你在将模型写入数据库前进行状态校验。There are several methods that you can use to check your models and validate that an attribute value is not empty, is unique and not already in the database, follows a specific format and many more. You can learn more about validations in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#validations-overview.
+Active Record允许你在将模型写入数据库前进行状态校验。你可以使用几种方法检查你的模型和 validate that an attribute value is not empty, is unique and not already in the database, follows a specific format and many more. You can learn more about validations in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#validations-overview.
 
 h3. 回调
 
-ActiveRecord回调允许你to attach code to certain events in the life-cycle of your models. This enables you to add behavior to your models by transparently executing code when those events occur, like when you create a new record, update it, destroy it and so on. You can learn more about callbacks in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#callbacks-overview.
+ActiveRecord回调允许你在模型的生命周期中to attach code to certain events. This enables you to add behavior to your models by transparently executing code when those events occur, like when you create a new record, update it, destroy it and so on. You can learn more about callbacks in the "Active Record Validations and Callbacks guide":active_record_validations_callbacks.html#callbacks-overview.
 
 h3. 迁移
 
-Rails provides a domain-specific language for managing a database schema called migrations. Migrations are stored in files which are executed against any database that Active Record support using rake. Rails keeps track of which files have been committed to the database and provides rollback features. You can learn more about migrations in the "Active Record Migrations guide":migrations.html
+Rails 提供了领域专用语言（DSL），用于迁移管理数据库模式。迁移任务存储在文件中， which are executed against any database that Active Record support using rake. Rails 保持跟踪提交到数据库中的文件并提供了回滚功能。 学习迁移，请查阅 "Active Record 迁移指南":migrations.html 。
