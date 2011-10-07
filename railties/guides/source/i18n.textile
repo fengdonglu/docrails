@@ -1,46 +1,46 @@
 h2. Rails 国际化 (I18n) API
 
-The Ruby I18n (shorthand for _internationalization_) gem which is shipped with Ruby on Rails (从2.2版开始) provides an easy-to-use and extensible framework for *translating your application to a single custom language* other than English or for *提供多语言支持* in your application.
+The Ruby I18n ( _internationalization_ 的缩写) gem 由 Ruby on Rails （从2.2版开始）默认提供，提供了容易使用的和可扩展的框架，可以在应用程序中，除了英语之外， *把你的应用程序翻译成一个单一的用户语言* ，或者 *提供多语言支持* 。
 
-The process of "internationalization" usually means to abstract all strings and other locale specific bits (such as date or currency formats) out of your application. The process of "localization" means to provide translations and localized formats for these bits. [1]
+国际化处理通常意味着从应用程序中提取字符串和其它区域相关的信息（比如日期或者货币格式）。本地化处理意味着提供语言文件和这些信息的本地化格式。 [1]
 
-So, in the process of _internationalizing_ your Rails application you have to:
+所以，在国际化你的Rails应用程序的过程中，你必须：
 
-* Ensure you have support for i18n
-* Tell Rails where to find locale dictionaries
-* Tell Rails how to set, preserve and switch locales
+* 确保支持国际化
+* 告诉 Rails 如何查找区域词典文件
+* 告诉 Rails 如何设置，维持，切换区域
 
-In the process of _localizing_ your application you'll probably want to do the following three things:
+在本地化的过程中，你也许想做以下三件事：
 
-* Replace or supplement Rails' default locale -- e.g. date and time formats, month names, Active Record model names, etc.
-* Abstract strings in your application into keyed dictionaries -- e.g. flash messages, static text in your views, etc.
+* 替换或者补充 Rails 的默认区域 -- 例如日期和时间格式，月份名称， Active Record 模型名称等等。
+* 把应用程序中的字符串提取到字典 -- 例如闪动的消息、视图中的静态文本等等。
 * Store the resulting dictionaries somewhere
 
-This guide will walk you through the I18n API and contains a tutorial on how to internationalize a Rails application from the start.
+本篇将带你体验国际化的接口，还包含了一个如何从头开始国际化一个应用程序的教程。
 
 endprologue.
 
-NOTE: The Ruby I18n framework provides you with all necessary means for internationalization/localization of your Rails application. You may, however, use any of various plugins and extensions available, which add additional functionality or features. See the Rails "I18n Wiki":http://rails-i18n.org/wiki for more information.
+NOTE: Ruby I18n 框架提供了国际化/本地化所需的一切。你可以，然而， use any of various plugins and extensions available, which add additional functionality or features. See the Rails "I18n Wiki":http://rails-i18n.org/wiki for more information.
 
 h3. How I18n in Ruby on Rails Works
 
-Internationalization is a complex problem. Natural languages differ in so many ways (e.g. in pluralization rules) that it is hard to provide tools for solving all problems at once. For that reason the Rails I18n API focuses on:
+国际化是一个复杂的问题。自然语言提供如此多的表达方式（例如复数规则），所以不能用工具解决所有的问题。因此Rails 的国际化接口着重于：
 
-* providing support for English and similar languages out of the box
-* making it easy to customize and extend everything for other languages
+* 内建支持英语或类似的语言
+* 为其它语言的定制和扩展提供必要的帮助
 
-As part of this solution, *every static string in the Rails framework* -- e.g. Active Record validation messages, time and date formats -- *has been internationalized*, so _localization_ of a Rails application means "over-riding" these defaults.
+作为解决方案的一部分， *Rails框架中的所有静态字符串* -- 例如 Active Record 的校验消息，日期和时间格式等 -- *都已经被国际化了* ， so _localization_ of a Rails application means "over-riding" these defaults.
 
 h4. 库总体架构
 
 总的来说，Ruby I18n gem 分为两部分：
 
 * The public API of the i18n framework -- a Ruby module with public methods that define how the library works
-* A default backend (which is intentionally named _Simple_ backend) that implements these methods
+* 一个默认的后端 (which is intentionally named _Simple_ backend) 来实现这些方法
 
-As a user you should always only access the public methods on the I18n module, but it is useful to know about the capabilities of the backend.
+作为用户，你永远只需要访问I18n模块的公共方法，但了解后端的能力也是很有用的。
 
-NOTE: It is possible (or even desirable) to swap the shipped Simple backend with a more powerful one, which would store translation data in a relational database, GetText dictionary, or similar. See section "Using different backends":#using-different-backends below.
+NOTE: 可以把简单的后端替换为一个更强大的后端（虽然并不可取），它可在关系型数据库、GetText 字典、或者类似的东西中存储翻译文件。 查看下面的 "使用不同的后端":#using-different-backends 小节。
 
 h4. The Public I18n API
 
@@ -51,7 +51,7 @@ translate # Lookup text translations
 localize  # Localize Date and Time objects to local formats
 </ruby>
 
-These have the aliases #t and #l so you can use them like this:
+它们有 #t 和 #l 这两个别名，所以你可以这样使用：
 
 <ruby>
 I18n.t 'store.title'
@@ -68,7 +68,7 @@ exception_handler # Use a different exception_handler
 backend           # Use a different backend
 </ruby>
 
-好了，下一章，让我们从无到有，国际化一个简单的 Rails 应用程序 from the ground up ！
+好了，下一章，让我们从无到有，国际化一个简单的 Rails 应用程序！
 
 h3. 应用程序国际化准备
 
@@ -76,24 +76,24 @@ h3. 应用程序国际化准备
 
 h4. 配置 I18n 模块
 
-Following the _convention over configuration_ philosophy, Rails will set up your application with reasonable defaults. If you need different settings, you can overwrite them easily.
+遵守 _约定重于配置_ 的哲学， Rails 会合理设置你的应用程序的默认值。如果你需要不同的设置，你可以轻易地覆盖它们。
 
-Rails adds all +.rb+ and +.yml+ files from the +config/locales+ directory to your *translations load path*, automatically.
+Rails 自动地从 +config/locales+ 目录中把所有的 +.rb+ 和 +.yml+ 文件加入你的 *translations load path* 。
 
-这个目录中默认的 +en.yml+ 区域包含了 a sample pair of translation strings:
+这个目录中默认的 +en.yml+ 区域文件包含了一对简单的字符串：
 
 <ruby>
 en:
   hello: "Hello world"
 </ruby>
 
-This means, that in the +:en+ locale, the key _hello_ will map to the _Hello world_ string. Every string inside Rails is internationalized in this way, see for instance Active Record validation messages in the "+activerecord/lib/active_record/locale/en.yml+":https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml file or time and date formats in the "+activesupport/lib/active_support/locale/en.yml+":https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml file. You can use YAML or standard Ruby Hashes to store translations in the default (Simple) backend.
+这意味着， that in the +:en+ locale, the key _hello_ will map to the _Hello world_ 字符串。每一条 Rails 中的字符串都是用这种方式进行国际化， see for instance Active Record validation messages in the "+activerecord/lib/active_record/locale/en.yml+":https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml file or time and date formats in the "+activesupport/lib/active_support/locale/en.yml+":https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml file. 你可以使用 YAML 或者标准的 Ruby Hashes 来存储 translations in the default (Simple) backend.
 
-I18n库会使用 *英语* 作为 *默认的区域*, i.e. if you don't set a different locale, +:en+ will be used for looking up translations.
+I18n库会使用 *英语* 作为 *默认的区域* ，也就是说，如果没有设置区域， +:en+ 会用于查找语言文件。
 
 NOTE: The i18n library takes a *pragmatic approach* to locale keys (after "some discussion":http://groups.google.com/group/rails-i18n/browse_thread/thread/14dede2c7dbe9470/80eec34395f64f3c?hl=en), including only the _locale_ ("language") part, like +:en+, +:pl+, not the _region_ part, like +:en-US+ or +:en-GB+, which are traditionally used for separating "languages" and "regional setting" or "dialects". Many international applications use only the "language" element of a locale such as +:cs+, +:th+ or +:es+ (for Czech, Thai and Spanish). However, there are also regional differences within different language groups that may be important. For instance, in the +:en-US+ locale you would have $ as a currency symbol, while in +:en-GB+, you would have £. Nothing stops you from separating regional and other settings in this way: you just have to provide full "English - United Kingdom" locale in a +:en-GB+ dictionary. Various "Rails I18n plugins":http://rails-i18n.org/wiki such as "Globalize2":https://github.com/joshmh/globalize2/tree/master may help you implement it.
 
-The *translations load path* (+I18n.load_path+) is just a Ruby Array of paths to your translation files that will be loaded automatically and available in your application. You can pick whatever directory and translation file naming scheme makes sense for you.
+*语言文件载入路径* (+I18n.load_path+) is just a Ruby Array of paths to your translation files that will be loaded automatically and available in your application. You can pick whatever directory and translation file naming scheme makes sense for you.
 
 NOTE: The backend will lazy-load these translations when a translation is looked up for the first time. This makes it possible to just swap the backend with something else even after translations have already been announced.
 
@@ -121,9 +121,9 @@ I18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
 I18n.default_locale = :pt
 </ruby>
 
-h4. Setting and Passing the Locale
+h4. 设置和忽略区域
 
-If you want to translate your Rails application to a *single language other than English* (the default locale), you can set I18n.default_locale to your locale in +application.rb+ or an initializer as shown above, and it will persist through the requests.
+如果你想把Rails应用程序翻译到一个 *单一的语言但不是英语* （默认的区域），你可以 set I18n.default_locale to your locale in +application.rb+ or an initializer as shown above, and it will persist through the requests.
 
 However, you would probably like to *provide support for more locales* in your application. In such case, you need to set and pass the locale between requests.
 
@@ -143,16 +143,16 @@ This requires you to pass the locale as a URL query parameter as in +http://exam
 
 Of course, you probably don't want to manually include the locale in every URL all over your application, or want the URLs look differently, e.g. the usual +http://example.com/pt/books+ versus +http://example.com/en/books+. Let's discuss the different options you have.
 
-h4. Setting the Locale from the Domain Name
+h4. 使用域名设置区域
 
-One option you have is to set the locale from the domain name where your application runs. For example, we want +www.example.com+ to load the English (or default) locale, and +www.example.es+ to load the Spanish locale. Thus the _top-level domain name_ is used for locale setting. This has several advantages:
+One option you have is to set the locale from the domain name where your application runs. 例如，我们希望 +www.example.com+ 载入英语（或者默认）区域， 而 +www.example.es+ 载入西班牙区域。 Thus the _top-level domain name_ is used for locale setting. 这有几个优点：
 
 * The locale is an _obvious_ part of the URL.
 * People intuitively grasp in which language the content will be displayed.
 * It is very trivial to implement in Rails.
-* Search engines seem to like that content in different languages lives at different, inter-linked domains.
+* 搜索引擎好像比较喜欢 that content in different languages lives at different, inter-linked domains.
 
-You can implement it like this in your +ApplicationController+:
+你可以在 +ApplicationController+ 中这样实现它：
 
 <ruby>
 before_filter :set_locale
@@ -173,7 +173,7 @@ def extract_locale_from_tld
 end
 </ruby>
 
-We can also set the locale from the _subdomain_ in a very similar way:
+你也可以用很简单的方式，设置区域 from the _subdomain_ 。
 
 <ruby>
 # Get locale code from request subdomain (like http://it.application.local:3000)
@@ -192,11 +192,11 @@ end
 link_to("Deutsch", "#{APP_CONFIG[:deutsch_website_url]}#{request.env['REQUEST_URI']}")
 </ruby>
 
-assuming you would set +APP_CONFIG[:deutsch_website_url]+ to some value like +http://www.application.de+.
+假定你已经设定了 +APP_CONFIG[:deutsch_website_url]+ 为象 +http://www.application.de+ 这样的值。
 
-This solution has aforementioned advantages, however, you may not be able or may not want to provide different localizations ("language versions") on different domains. The most obvious solution would be to include locale code in the URL params (or request path).
+这种方案的优势上面已经说过了，但是，你无法或者不希望在不同的域名上提供提供不同的区域（“语言版本”）。 The most obvious solution would be to include locale code in the URL params (or request path).
 
-h4. Setting the Locale from the URL Params
+h4. 使用URL参数设置区域
 
 The most usual way of setting (and passing) the locale would be to include it in URL params, as we did in the +I18n.locale = params[:locale]+ _before_filter_ in the first example. We would like to have URLs like +www.example.com/books?locale=ja+ or +www.example.com/ja/books+ in this case.
 
@@ -218,7 +218,7 @@ end
 
 Every helper method dependent on +url_for+ (e.g. helpers for named routes like +root_path+ or +root_url+, resource routes like +books_path+ or +books_url+, etc.) will now *automatically include the locale in the query string*, like this: +http://localhost:3001/?locale=ja+.
 
-You may be satisfied with this. It does impact the readability of URLs, though, when the locale "hangs" at the end of every URL in your application. Moreover, from the architectural standpoint, locale is usually hierarchically above the other parts of the application domain: and URLs should reflect this.
+你会对此感到满意。 It does impact the readability of URLs, though, when the locale "hangs" at the end of every URL in your application. Moreover, from the architectural standpoint, locale is usually hierarchically above the other parts of the application domain: and URLs should reflect this.
 
 You probably want URLs to look like this: +www.example.com/en/books+ (which loads the English locale) and +www.example.com/nl/books+ (which loads the Netherlands locale). This is achievable with the "over-riding +default_url_options+" strategy from above: you just have to set up your routes with "+path_prefix+":http://api.rubyonrails.org/classes/ActionController/Resources.html#M000354 option in this way:
 
@@ -242,7 +242,7 @@ end
 
 With this approach you will not get a +Routing Error+ when accessing your resources such as +http://localhost:3001/books+ without a locale. This is useful for when you want to use the default locale when one is not specified.
 
-Of course, you need to take special care of the root URL (usually "homepage" or "dashboard") of your application. An URL like +http://localhost:3001/nl+ will not work automatically, because the +root :to => "books#index"+ declaration in your +routes.rb+ doesn't take locale into account. (And rightly so: there's only one "root" URL.)
+当然，你需要 you need to take special care of the root URL (usually "homepage" or "dashboard") of your application. An URL like +http://localhost:3001/nl+ will not work automatically, because the +root :to => "books#index"+ declaration in your +routes.rb+ doesn't take locale into account. (And rightly so: there's only one "root" URL.)
 
 You would probably need to map URLs like these:
 
@@ -253,9 +253,9 @@ match '/:locale' => 'dashboard#index'
 
 Do take special care about the *order of your routes*, so this route declaration does not "eat" other ones. (You may want to add it directly before the +root :to+ declaration.)
 
-NOTE: Have a look at two plugins which simplify work with routes in this way: Sven Fuchs's "routing_filter":https://github.com/svenfuchs/routing-filter/tree/master and Raul Murciano's "translate_routes":https://github.com/raul/translate_routes/tree/master.
+NOTE: 花一点时间看一下这两个插件，它们会简化这种方式下的路由工作： Sven Fuchs's "routing_filter":https://github.com/svenfuchs/routing-filter/tree/master 和 Raul Murciano 的 "translate_routes":https://github.com/raul/translate_routes/tree/master.
 
-h4. Setting the Locale from the Client Supplied Information
+h4. 从客户端提供的信息中设置区域
 
 In specific cases, it would make sense to set the locale from client-supplied information, i.e. not from the URL. This information may come for example from the users' preferred language (set in their browser), can be based on the users' geographical location inferred from their IP, or users can provide it simply by choosing the locale in your application interface and saving it to their profile. This approach is more suitable for web-based applications or services, not for websites -- see the box about _sessions_, _cookies_ and RESTful architecture above.
 
@@ -282,7 +282,7 @@ Of course, in a production environment you would need much more robust code, and
 
 h5. 使用 GeoIP (或类似的)数据库
 
-另一种从用户信息中选择区域的方法，是使用映射客户端 IP 至区域的数据库，比如 "GeoIP Lite Country":http://www.maxmind.com/app/geolitecountry. 代码技巧和之前很类似 -- you would need to query the database for the user's IP, and look up your preferred locale for the country/region/city returned.
+另一种从用户信息中选择区域的方法，是使用映射客户端 IP 至区域的数据库，比如 "GeoIP Lite Country":http://www.maxmind.com/app/geolitecountry 。代码技巧和之前很类似 -- 你只需要在数据库中查询用户的 IP 地址，and look up your preferred locale for the country/region/city returned.
 
 h5. User Profile
 
@@ -316,9 +316,9 @@ end
 
 !images/i18n/demo_untranslated.png(rails i18n demo untranslated)!
 
-h4. Adding Translations
+h4. 添加语言文件
 
-Obviously there are *two strings that are localized to English*. In order to internationalize this code, *replace these strings* with calls to Rails' +#t+ helper with a key that makes sense for the translation:
+显然 there are *two strings that are localized to English*. In order to internationalize this code, *replace these strings* with calls to Rails' +#t+ helper with a key that makes sense for the translation:
 
 <ruby>
 # app/controllers/home_controller.rb
@@ -333,7 +333,7 @@ end
 <p><%= flash[:notice] %></p>
 </ruby>
 
-When you now render this view, it will show an error message which tells you that the translations for the keys +:hello_world+ and +:hello_flash+ are missing.
+渲染这个视图时，它会显示一条出错消息，告诉你找不到 the translations for the keys +:hello_world+ and +:hello_flash+ 。
 
 !images/i18n/demo_translation_missing.png(rails i18n demo translation missing)!
 
@@ -361,9 +361,9 @@ And when you change the URL to pass the pirate locale (+http://localhost:3000?lo
 
 !images/i18n/demo_translated_pirate.png(rails i18n demo translated to pirate)!
 
-NOTE: You need to restart the server when you add new locale files.
+NOTE: 增加了新的区域文件后，需要重启服务器
 
-You may use YAML (+.yml+) or plain Ruby (+.rb+) files for storing your translations in SimpleStore. YAML is the preferred option among Rails developers. However, it has one big disadvantage. YAML is very sensitive to whitespace and special characters, so the application may not load your dictionary properly. Ruby files will crash your application on first request, so you may easily find what's wrong. (If you encounter any "weird issues" with YAML dictionaries, try putting the relevant portion of your dictionary into a Ruby file.)
+你可以使用 YAML (+.yml+) 或者标准的 Ruby (+.rb+) 文件存储你的语言文件 in SimpleStore. YAML is the preferred option among Rails developers. However, it has one big disadvantage. YAML is very sensitive to whitespace and special characters, so the application may not load your dictionary properly. Ruby files will crash your application on first request, so you may easily find what's wrong. (If you encounter any "weird issues" with YAML dictionaries, try putting the relevant portion of your dictionary into a Ruby file.)
 
 h4. Passing variables to translations
 
@@ -454,7 +454,7 @@ Do check the "Rails i18n Wiki":http://rails-i18n.org/wiki for list of tools avai
 
 h3. Overview of the I18n API Features
 
-You should have good understanding of using the i18n library now, knowing all necessary aspects of internationalizing a basic Rails application. In the following chapters, we'll cover it's features in more depth.
+You should have good understanding of using the i18n library now, 知道了国际化一个基本的应用程序所需的所有方面。 下面的这章中，我们将在更深的层次 cover it's features。
 
 Covered are features like these:
 
@@ -462,9 +462,9 @@ Covered are features like these:
 * interpolating data into translations
 * pluralizing translations
 * using safe HTML translations
-* localizing dates, numbers, currency, etc.
+* 本地化日期、数字、货币等等
 
-h4. Looking up Translations
+h4. 查找语言文件
 
 h5. Basic Lookup, Scopes and Nested Keys
 
@@ -498,9 +498,9 @@ I18n.t :record_invalid, :scope => 'activerecord.errors.messages'
 I18n.t :record_invalid, :scope => [:activerecord, :errors, :messages]
 </ruby>
 
-h5. Defaults
+h5. 默认值
 
-When a +:default+ option is given, its value will be returned if the translation is missing:
+如果设置了 +:default+ 选项， its value will be returned if the translation is missing:
 
 <ruby>
 I18n.t :missing, :default => 'Not here'
@@ -615,7 +615,7 @@ I18n.default_locale = :de
 
 h4. 使用安全的 HTML 翻译
 
-Keys with a '_html' suffix and keys named 'html' are marked as HTML safe. Use them in views without escaping.
+Keys with a '_html' suffix and keys named 'html' are marked as HTML safe. 在视图中使用它们不需要转义。
 
 <ruby>
 # config/locales/en.yml
@@ -636,9 +636,9 @@ en:
 
 h3. 如何保存你自定义的翻译
 
-The Simple backend shipped with Active Support allows you to store translations in both plain Ruby and YAML format. [2]
+Active Support 自带的Simple后台允许你使用普通的Ruby和YAML格式存储你的语言文件。 [2]
 
-For example a Ruby Hash providing translations can look like this:
+例如，一个Ruby Hash 提供的语言文件，看起来象这样：
 
 <ruby>
 {
@@ -680,13 +680,13 @@ I18n.t :short, :scope => 'date.formats'
 I18n.t :short, :scope => [:date, :formats]
 </ruby>
 
-Generally we recommend using YAML as a format for storing translations. There are cases, though, where you want to store Ruby lambdas as part of your locale data, e.g. for special date formats.
+一般来说，我们推荐使用 YAML 作为存储语言文件的格式。 There are cases, though, where you want to store Ruby lambdas as part of your locale data, e.g. for special date formats.
 
 h4. Translations for Active Record Models
 
 You can use the methods +Model.model_name.human+ and +Model.human_attribute_name(attribute)+ to transparently look up translations for your model and attribute names.
 
-For example when you add the following translations:
+例如，当你加入如下的语言文件：
 
 <ruby>
 en:
@@ -763,7 +763,7 @@ h5. 错误信息Interpolation
 
 The translated model name, translated attribute name, and value are always available for interpolation.
 
-So, for example, instead of the default error message +"can not be blank"+ you could use the attribute name like this : +"Please fill in your %{attribute}"+.
+So, 例如， instead of the default error message +"can not be blank"+ you could use the attribute name like this : +"Please fill in your %{attribute}"+.
 
 * +count+, where available, can be used for pluralization if present:
 
@@ -809,9 +809,9 @@ en:
 
 h4. 其它支持国际化的内置方法概览
 
-Rails uses fixed strings and other localizations, such as format strings and other format information in a couple of helpers. Here's a brief overview.
+Rails 使用固定的字符串和其它 localizations, such as format strings and other format information in a couple of helpers. Here's a brief overview.
 
-h5. Action View Helper Methods
+h5. Action View 辅助方法
 
 * +distance_of_time_in_words+ translates and pluralizes its result and interpolates the number of seconds, minutes, hours, and so on. See "datetime.distance_in_words":https://github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml#L51 translations.
 
@@ -819,7 +819,7 @@ h5. Action View Helper Methods
 
 * The +number_to_currency+, +number_with_precision+, +number_to_percentage+, +number_with_delimiter+, and +number_to_human_size+ helpers use the number format settings located in the "number":https://github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml#L2 scope.
 
-h5. Active Record Methods
+h5. Active Record 方法
 
 * +model_name.human+ and +human_attribute_name+ use translations for model names and attribute names if available in the "activerecord.models":https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml#L29 scope. They also support translations for inherited class names (e.g. for use with STI) as explained above in "Error message scopes".
 
@@ -827,23 +827,23 @@ h5. Active Record Methods
 
 *+ ActiveRecord::Errors#full_messages+ prepends the attribute name to the error message using a separator that will be looked up from "activerecord.errors.format.separator":https://github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml#L91 (and which defaults to +'&nbsp;'+).
 
-h5. Active Support Methods
+h5. Active Support 方法
 
 * +Array#to_sentence+ uses format settings as given in the "support.array":https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml#L30 scope.
 
-h3. Customize your I18n Setup
+h3. 定制你的 I18n 设置
 
 h4. 使用不同的后端
 
 For several reasons the Simple backend shipped with Active Support only does the "simplest thing that could possibly work" _for Ruby on Rails_ [3] ... which means that it is only guaranteed to work for English and, as a side effect, languages that are very similar to English. Also, the simple backend is only capable of reading translations but can not dynamically store them to any format.
 
-That does not mean you're stuck with these limitations, though. The Ruby I18n gem makes it very easy to exchange the Simple backend implementation with something else that fits better for your needs. E.g. you could exchange it with Globalize's Static backend:
+这当然不是说，你必须忍受这些限制。 Ruby I18n gem 可以容易地把简单的后端替换成你需要的。 例如，你可以把它替换成 Globalize's Static 的后端：
 
 <ruby>
 I18n.backend = Globalize::Backend::Static.new
 </ruby>
 
-You can also use the Chain backend to chain multiple backends together. This is useful when you want to use standard translations with a Simple backend but store custom application translations in a database or other backends. For example, you could use the Active Record backend and fall back to the (default) Simple backend:
+你也可以使用 Chain 来串联多个后端。如果你想在默认的后端中存储默认的语言文件，又在数据库或者其它后端中存储了定制的语言文件时，会很有用。例如，你可以使用 Active Record 后端，然后是默认的 Simple 后端：
 
 <ruby>
 I18n.backend = I18n::Backend::Chain.new(I18n::Backend::ActiveRecord.new, I18n.backend)
