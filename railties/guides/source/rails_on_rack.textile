@@ -150,7 +150,7 @@ config.middleware.swap ActionController::Failsafe, Lifo::Failsafe
 
 h5. 中间件堆是一个队列Middleware Stack is an Array
 
-中间堆表现象一个普通的 +Array+ 。 你可以使用任意的 +Array+ 方法去插入、排序或者删除 items from the stack. Methods described in the section above are just convenience methods.
+中间堆表现象一个普通的 +Array+ 。 你可以使用任意的 +Array+ 方法去插入、排序或者删除堆中的元素。本节之前描述的方法 are just convenience methods.
 
 例如， the following removes the middleware matching the supplied class name:
 
@@ -160,7 +160,7 @@ config.middleware.delete(middleware)
 
 h4. 内部中间件堆
 
-Much of Action Controller's functionality is implemented as Middlewares. The following table explains the purpose of each of them:
+很多 Action Controller 的功能是用中间件实现的。 下面的表格展示了每个的用途：
 
 |_.Middleware|_.Purpose|
 |+Rack::Lock+|Sets <tt>env["rack.multithread"]</tt> flag to +true+ and wraps the application within a Mutex.|
@@ -200,7 +200,7 @@ use Rack::Head
 run ActionController::Dispatcher.new
 </shell>
 
-h4. Using Rack Builder
+h4. 使用 Rack 构建器
 
 The following shows how to replace use +Rack::Builder+ instead of the Rails supplied +MiddlewareStack+.
 
